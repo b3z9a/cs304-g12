@@ -36,23 +36,9 @@ CREATE TABLE Doctor (
     HID				    integer,
     certificationNumber integer,
     specialization  varchar(30) CHECK (specialization IN ('Anesthesiologist', 'Cardiologist', 'Dermatologist', 'Endocrinologist', 'Gastroenterologist', 'Geriatric Medicine Specialist', 'Gynecologist', 'Hematologist', 'Heptologist', 'Neonatologist', 'Nephrologist', 'Neurologist', 'Obstetrician', 'Oncologist', 'Oral Surgeon', 'Ophthalmologist', 'Orthopedic Surgeon', 'Otolaryngologist', 'Pediatrician', 'Psychiatrist', 'Pulmonologist', 'Radiologist', 'Rheumatologist', 'Sleep Disorder Specialist', 'Surgeon', 'Urologist', 'Family Doctor')),
-    
-    /* Invalid type declaration, see above for proper implementation
-    specialization 		enum ('Anesthesiologist', 'Cardiologist', 'Dermatologist', 'Endocrinologist', 'Gastroenterologist', 'Geriatric Medicine Specialist', 'Gynecologist', 'Hematologist', 'Heptologist', 'Neonatologist', 'Nephrologist', 'Neurologist', 'Obstetrician', 'Oncologist', 'Oral Surgeon', 'Ophthalmologist', 'Orthopedic Surgeon', 'Otolaryngologist', 'Pediatrician', 'Psychiatrist', 'Pulmonologist', 'Radiologist', 'Rheumatologist', 'Sleep Disorder Specialist', 'Surgeon', 'Urologist', 'Family Doctor'),
-    */
-
     PRIMARY KEY(HID),
     FOREIGN KEY (HID) REFERENCES HealthCareProfessional
 );
-
-/* Test to see how the CHECK type works
-CREATE TABLE DocTest (
-    HID				    integer,
-    certificationNumber integer,
-    specialization  varchar(30) CHECK (specialization IN ('Anesthesiologist', 'Cardiologist', 'Dermatologist', 'Endocrinologist', 'Gastroenterologist', 'Geriatric Medicine Specialist', 'Gynecologist', 'Hematologist', 'Heptologist', 'Neonatologist', 'Nephrologist', 'Neurologist', 'Obstetrician', 'Oncologist', 'Oral Surgeon', 'Ophthalmologist', 'Orthopedic Surgeon', 'Otolaryngologist', 'Pediatrician', 'Psychiatrist', 'Pulmonologist', 'Radiologist', 'Rheumatologist', 'Sleep Disorder Specialist', 'Surgeon', 'Urologist', 'Family Doctor')),
-    PRIMARY KEY(HID)
-);
-*/
 
 CREATE TABLE Patient (
     patientID 		integer,
@@ -129,10 +115,6 @@ CREATE TABLE LabTest (
 CREATE TABLE ProvincialHealthPlan (
     planID 		integer,
     policyType  VARCHAR(40) CHECK (policyType IN ('BC Resident - MSP', 'BC Resident - Premium MSP', 'BC Resident - Income Assistance', 'BC Resident - Convention Refugees', 'Out-of-Province')),
-    
-    /* Invalid type declaration, see above for proper implementation
-    policyType 	enum('BC Resident - MSP', 'BC Resident - Premium MSP', 'BC Resident - Income Assistance', 'BC Resident - Convention Refugees', 'Out-of-Province'),
-    */
     startDate	date not null,
     endDate		date not null,
     patientID	integer not null,
@@ -174,16 +156,8 @@ CREATE TABLE Invoice (
     creationDate 		date not null,
     dueDate 			date not null,
     paymentStatus   VARCHAR(10) CHECK (paymentStatus IN ('Paid', 'Unpaid')) not null,
-    /* Invalid type declaration, see above for proper implementation
-    paymentStatus 		enum('Paid', 'Unpaid') not null,
-    */
-
     paymentDate 		date,
     paymentMethod       VARCHAR(20) CHECK (paymentMethod IN ('Credit\Debit', 'Cash', 'Cheque')),
-    /* Invalid type declaration, see above for proper implementation
-    paymentMethod 		enum('Credit\Debit', 'Cash', 'Cheque'),
-    */
-
     amountOwing 		decimal not null,
     paymentID			integer,
     planID				integer not null,
