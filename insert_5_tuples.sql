@@ -1,4 +1,4 @@
-/* TODO: Fill out tables with 5 tuples */
+/* TODO: Test inserts. */
 
 insert into PostalCode values ('V6Z 1Y6', 'Vancouver', 'BC', 'Canada');
 insert into PostalCode values ('V6H 3N1', 'Vancouver', 'BC', 'Canada');
@@ -9,7 +9,6 @@ insert into PostalCode values ('V6Y 2V7', 'Richmond', 'BC', 'Canada');
 insert into PostalCode values ('V6X 4J7', 'Richmond', 'BC', 'Canada');
 insert into PostalCode values ('T5A 0A1', 'Edmonton', 'AB', 'Canada');
 insert into PostalCode values ('98226', 'Seattle', 'WA', 'USA');
-/* TODO: Test inserts. */
 
 insert into HealthcareProfessional values (54337, 'Joel', 'Lewis', '306', '1081 Burrard St', 'V6Z 1Y6', '604-713-2291', '604-682-2344 x306');
 insert into HealthcareProfessional values (52731, 'Melissa', 'Clark', '211', '1081 Burrard St', 'V6Z 1Y6', '604-779-3101', '604-682-2344 x211');
