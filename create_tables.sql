@@ -58,7 +58,7 @@ CREATE TABLE Referral (
     referreeHID			integer,
     referredDate		date not null,
     PRIMARY KEY (patientID, referrerHID, referreeHID),
-    FOREIGN KEY (patientID, referrerHID, referreeHID) REFERENCES Patient,
+    FOREIGN KEY (patientID) REFERENCES Patient,
     FOREIGN KEY (referrerHID) REFERENCES Doctor,
     FOREIGN KEY (referreeHID) REFERENCES Doctor
 );
@@ -108,7 +108,7 @@ CREATE TABLE LabTest (
     performedDate	date,
     PRIMARY KEY(testID),
     FOREIGN KEY (patientID) REFERENCES Patient,
-    FOREIGN KEY (drHID, labTechHID) REFERENCES Doctor,
+    FOREIGN KEY (drHID) REFERENCES Doctor,
     FOREIGN KEY (labTechHID) REFERENCES LabTechnician
 );
 
@@ -127,12 +127,12 @@ CREATE TABLE ExtendedBenefitsPlan (
     planID		    integer not null,
     startDate 	    date not null,
     endDate 	    date not null,
-    chiropractic 	boolean,
-    physiotherapy 	boolean,
-    nonSurgicalPodiatry 	boolean,
-    massageTherapy			boolean,
-    acupuncture 	boolean,
-    medication 		boolean,
+    chiropractic 	varchar(1) CHECK (chiropractic IN ('Y', 'N')),
+    physiotherapy 	varchar(1) CHECK (physiotherapy IN ('Y', 'N')),
+    nonSurgicalPodiatry 	varchar(1) CHECK (nonSurgicalPodiatry IN ('Y', 'N')),
+    massageTherapy			varchar(1) CHECK (massageTherapy IN ('Y', 'N')),
+    acupuncture 	varchar(1) CHECK (acupuncture IN ('Y', 'N')),
+    medication 		varchar(1) CHECK (medication IN ('Y', 'N')),
     physiotherapyAnnualLimit 	decimal,
     physiotherapyYTD	 	decimal,
     nonSurgicalPodiatryAnnualLimit 	decimal,
