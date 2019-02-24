@@ -10,10 +10,10 @@ CREATE TABLE HealthcareProfessional (
     firstName 		varchar2(20),
     lastName 		varchar2(20),
     officeNumber 	varchar2(10),
-    street 			varchar2(20),
+    street 			varchar2(40),
     postalCode 		varchar2(6),
-    homePhone 		varchar2(10),
-    mobilePhone 	varchar2(10),
+    homePhone 		varchar2(20),
+    mobilePhone 	varchar2(20),
     PRIMARY KEY (HID),
     FOREIGN KEY (postalCode) REFERENCES PostalCode
 );
