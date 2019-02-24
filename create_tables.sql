@@ -35,7 +35,7 @@ CREATE TABLE Pharmacist (
 CREATE TABLE Doctor (
     HID				    integer,
     certificationNumber integer,
-    specialization 		enum(‘Anesthesiologist’, ‘Cardiologist’, ‘Dermatologist’, ‘Endocrinologist’,     ‘Gastroenterologist’, ‘Geriatric Medicine Specialist’, ‘Gynecologist’, ‘Hematologist’, ‘Heptologist’, ‘Neonatologist’, ‘Nephrologist’, ‘Neurologist’, ‘Obstetrician’, ‘Oncologist’, ‘Oral Surgeon’, ‘Ophthalmologist’, Orthopedic Surgeon’, ‘Otolaryngologist’, ‘Pediatrician’, ‘Psychiatrist’, ‘Pulmonologist’, ‘Radiologist’, ‘Rheumatologist’, ‘Sleep Disorder Specialist’, ‘Surgeon’, ‘Urologist’, ‘Family Doctor’),
+    specialization 		enum('Anesthesiologist', 'Cardiologist', 'Dermatologist', 'Endocrinologist', 'Gastroenterologist', 'Geriatric Medicine Specialist', 'Gynecologist', 'Hematologist', 'Heptologist', 'Neonatologist', 'Nephrologist', 'Neurologist', 'Obstetrician', 'Oncologist', 'Oral Surgeon', 'Ophthalmologist', 'Orthopedic Surgeon', 'Otolaryngologist', 'Pediatrician', 'Psychiatrist', 'Pulmonologist', 'Radiologist', 'Rheumatologist', 'Sleep Disorder Specialist', 'Surgeon', 'Urologist', 'Family Doctor'),
     PRIMARY KEY(HID),
     FOREIGN KEY (HID) REFERENCES HealthCareProfessional
 );
@@ -114,7 +114,7 @@ CREATE TABLE LabTest (
 
 CREATE TABLE ProvincialHealthPlan (
     planID 		integer,
-    policyType 	enum(‘BC Resident - MSP’, ‘BC Resident - Premium MSP’, ‘BC Resident - Income Assistance’, ‘BC Resident - Convention Refugees’, ‘Out-of-Province’),
+    policyType 	enum('BC Resident - MSP', 'BC Resident - Premium MSP', 'BC Resident - Income Assistance', 'BC Resident - Convention Refugees', 'Out-of-Province'),
     startDate	date not null,
     endDate		date not null,
     patientID	integer not null,
@@ -154,9 +154,9 @@ CREATE TABLE Invoice (
     invoiceItem 		varchar2(40),
     creationDate 		date not null,
     dueDate 			date not null,
-    paymentStatus 		enum(‘Paid’, ‘Unpaid’) not null,
+    paymentStatus 		enum('Paid', 'Unpaid') not null,
     paymentDate 		date,
-    paymentMethod 		enum(‘Credit\Debit’, ‘Cash’, ‘Cheque’),
+    paymentMethod 		enum('Credit\Debit', 'Cash', 'Cheque'),
     amountOwing 		decimal not null,
     paymentID			integer,
     planID				integer not null,
