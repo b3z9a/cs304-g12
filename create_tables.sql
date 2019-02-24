@@ -1,6 +1,7 @@
 CREATE TABLE PostalCode (
     postalCode  varchar(6),
     city        varchar(20),
+    province    varchar(20),
     country     varchar(20),
     PRIMARY KEY (postalCode)
 );
@@ -10,7 +11,7 @@ CREATE TABLE HealthcareProfessional (
     firstName 		varchar2(20),
     lastName 		varchar2(20),
     officeNumber 	varchar2(10),
-    street 			varchar2(40),
+    street 			varchar2(60),
     postalCode 		varchar2(6),
     homePhone 		varchar2(20),
     mobilePhone 	varchar2(20),
@@ -44,10 +45,10 @@ CREATE TABLE Patient (
     patientID 		integer,
     firstName 		varchar2(20),
     lastName 		varchar2(20),
-    street 			varchar2(20),
+    street 			varchar2(60),
     postalCode 		varchar2(6),
-    homePhone 		varchar2(10),
-    mobilePhone 	varchar2(10),
+    homePhone 		varchar2(20),
+    mobilePhone 	varchar2(20),
     PRIMARY KEY (patientID),
     FOREIGN KEY (postalCode) REFERENCES PostalCode
 );
@@ -80,10 +81,10 @@ CREATE TABLE Prescription (
     prescribedDate	date not null,
     filledDate		date,
     PRIMARY KEY (prescriptionID),
-    FOREIGN KEY (medication) REFERENCES Medication,  
-    FOREIGN KEY (patientID) REFERENCES Patient,  
-    FOREIGN KEY (drHID) REFERENCES Doctor,  
-    FOREIGN KEY (pharmHID) REFERENCES Pharmacist  
+    FOREIGN KEY (medication) REFERENCES Medication,
+    FOREIGN KEY (patientID) REFERENCES Patient,
+    FOREIGN KEY (drHID) REFERENCES Doctor,
+    FOREIGN KEY (pharmHID) REFERENCES Pharmacist
 );
 
 CREATE TABLE LabTest (
@@ -152,7 +153,7 @@ CREATE TABLE ExtendedBenefitsPlan (
 CREATE TABLE Invoice (
     invoiceID 			integer,
     patientID 		integer,
-    invoiceItem 		varchar2(40),
+    invoiceItem 		varchar2(60),
     creationDate 		date not null,
     dueDate 			date not null,
     paymentStatus   VARCHAR(10) CHECK (paymentStatus IN ('Paid', 'Unpaid')) not null,
@@ -165,4 +166,3 @@ CREATE TABLE Invoice (
     FOREIGN KEY (patientID) REFERENCES Patient,
     FOREIGN KEY (planID) REFERENCES ProvincialHealthPlan
 );
-
