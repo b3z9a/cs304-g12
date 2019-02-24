@@ -1,0 +1,132 @@
+SQL> start print_all
+
+POSTAL CITY		    PROVINCE		 COUNTRY
+------ -------------------- -------------------- --------------------
+V6Z1Y6 Vancouver	    BC			 Canada
+V6H3N1 Vancouver	    BC			 Canada
+V6K2G2 Vancouver	    BC			 Canada
+V6S0J9 Vancouver	    BC			 Canada
+V6B3N6 Vancouver	    BC			 Canada
+V6Y2V7 Richmond 	    BC			 Canada
+V6X4J7 Richmond 	    BC			 Canada
+T5A0A1 Edmonton 	    AB			 Canada
+98226  Seattle		    WA			 USA
+
+9 rows selected.
+
+
+       HID FIRSTNAME		LASTNAME	     OFFICENUMB STREET							     POSTAL HOMEPHONE		 MOBILEPHONE
+---------- -------------------- -------------------- ---------- ------------------------------------------------------------ ------ -------------------- --------------------
+     54337 Joel 		Lewis		     306	1081 Burrard St 					     V6Z1Y6 604-713-2291	 604-682-2344 x306
+     52731 Melissa		Clark		     211	1081 Burrard St 					     V6Z1Y6 604-779-3101	 604-682-2344 x211
+     54781 Alice		Liu		     E-117	4480 Oak St						     V6H3N1 604-785-4001	 604-875-2345 x33115
+     53833 Aarav		Patel		     A-220	4480 Oak St						     V6H3N1 778-885-3411	 604-682-2344 x33219
+     52918 David		Chen				2685 W Broadway 					     V6K2G2 604-668-4228	 604-731-9187
+     52127 Grace		Wong				6060 Minoru Blvd					     V6Y2V7 604-668-2187	 604-273-6187
+     53573 Anna 		Brown				6060 Minoru Blvd					     V6Y2V7 604-668-2944	 604-273-6187
+     51853 Micheal		Smith				1295 Seymour St 					     V6B3N6 604-785-8322	 604-801-5708
+     55246 Richard		Zhang				1295 Seymour St 					     V6B3N6 604-913-2911	 604-801-5708
+     53763 Tanvi		Chabra				5968 Webber Ln						     V6S0J9 604-785-8763	 604-224-3086
+     51833 Aaron		Daniels 	     #1150	4151 Hazelbridge Way					     V6X4J7 604-731-4522	 604-507-5070
+     54328 May			Chu		     #1150	4151 Hazelbridge Way					     V6X4J7 604-775-8811	 604-507-5070
+     52856 Angela		Summers 	     112	3540 W 41st Ave 					     V6X4J7 778-456-3282	 1-800-431-7206
+     53647 Ying Yue		Wong		     112	3540 W 41st Ave 					     V6X4J7 778-456-5285	 1-800-431-7206
+     53176 Vanya		Preet		     112	3540 W 41st Ave 					     V6X4J7 604-731-2411	 1-800-431-7206
+
+15 rows selected.
+
+
+       HID CERTIFICATIONNUMBER SPECIALIZATION
+---------- ------------------- ------------------------------
+     54337		922789 Cardiologist
+     52731		992833 Neurologist
+     54781		946721 Pediatrician
+     53833		996482 Surgeon
+     52918		956432 Family Doctor
+
+
+       HID CERTIFICATIONNUMBER
+---------- -------------------
+     52127		767332
+     53573		768329
+     51853		745264
+     55246		746261
+     53763		725154
+
+
+       HID CERTIFICATIONNUMBER
+---------- -------------------
+     51833		836275
+     54328		864271
+     52856		812674
+     53647		864527
+     53176		896264
+
+
+ PATIENTID FIRSTNAME		LASTNAME	     STREET							  POSTAL HOMEPHONE	      MOBILEPHONE
+---------- -------------------- -------------------- ------------------------------------------------------------ ------ -------------------- --------------------
+  32118954 Jonathan		Banks		     2144 Dunbar St.						  V6B3N6 604-731-2499	      778-456-2382
+  31294771 Christopher		Ellis		     E-104-N, Pinehurst Apartments, 422 Maple St		  V6B3N6
+  29562774 David		Chen		     1114 Lameys Mill Rd.					  V6S0J9 604-731-8753	      604-731-9187
+  31857372 Winny		Zhu		     4491 W 4th Ave						  V6S0J9 778-291-3753	      778-981-3722
+  31274656 Antar		Atwal		     Apt. 117, 8833 Hazelbridge Way				  V6Y2V7 604-233-4713	      604-233-8172
+  32485737 Alex 		Grossman	     271 Pike St.						  98226  206-775-9312	      206-744-2713
+  31572742 Mary 		Cornwall	     4532 Lakeview Way						  T5A0A1		      780-555-4031
+
+7 rows selected.
+
+
+ PATIENTID REFERRERHID REFERREEHID REFERREDD
+---------- ----------- ----------- ---------
+  32118954	 52918	     54337 21-FEB-19
+  31294771	 52918	     52731 01-MAY-18
+  32485737	 52918	     52731 18-FEB-19
+  31857372	 52918	     53833 11-DEC-18
+  31274656	 52918	     53833 06-OCT-18
+
+
+PRESCRIPTIONID MEDICATION				    DOSAGE   QUANTITY  PATIENTID      DRHID   PHARMHID PRESCRIBE FILLEDDAT
+-------------- ---------------------------------------- ---------- ---------- ---------- ---------- ---------- --------- ---------
+	452855 Albuterol					25	  100	32118954      54337	 55246 11-SEP-18 13-SEP-18
+	485274 Fluoxetine					20	  300	31294771      52918	 53763 20-JAN-19 20-JAN-19
+	438245 Esomeprazole					10	   40	31294771      52918	 53763 04-AUG-18
+	472947 Pregabalin					85	    1	31857372      52918	 52127 15-MAR-18 21-MAR-18
+	427437 Fluticasone					15	  100	31274656      52918	 52127 26-APR-18 01-MAY-18
+
+
+    TESTID CHOLESTEROL HDLCHOLESTEROL LDLCHOLESTEROL TRIGLYCERIDES WHITEBLOODCELLCOUNT REDBLOODCELLCOUNT HEMATOCRIT PLATELETCOUNT NRBCPERCENT NRBCABSOLUTE     SODIUM PHOSPHORUS    GLUCOSE  PATIENTID	    DRHID LABTECHHID ORDEREDDA PERFORMED
+---------- ----------- -------------- -------------- ------------- ------------------- ----------------- ---------- ------------- ----------- ------------ ---------- ---------- ---------- ---------- ---------- ---------- --------- ---------
+    827432	   175		   71		  95	       105		     2		       4	 45	      195	   26		 1	  140	       4	133   31294771	    52918      51833 29-JAN-19
+    882475	   132		   70		  62		86		     2		       3	 40	      206	   17		 1	  140	       4	121   31294771	    52918      52856 23-FEB-19
+    830485	   156		   86		  70	       113		     2		       4	 40	      173	   23		 1	  140	       4	141   31294771	    52918      53176 05-NOV-18 06-NOV-18
+    865282	   201		  104		  97		93		     2		       3	 48	      180	   20		 1	  140	       4	136   31294771	    52918      53647 21-OCT-18 23-OCT-18
+    818673	   125		   64		  62	       100		     2		       3	 43	      215	   22		 1	  140	       4	145   31294771	    52918      54328 13-DEC-18 17-DEC-18
+
+
+    PLANID POLICYTYPE				    STARTDATE ENDDATE	 PATIENTID
+---------- ---------------------------------------- --------- --------- ----------
+    128473 BC Resident - MSP			    01-JAN-18 31-DEC-19   32118954
+    125724 BC Resident - MSP			    01-JAN-18 31-DEC-19   29562774
+    127828 BC Resident - Income Assistance	    01-JAN-19 31-DEC-19   31294771
+    121738 Out-of-Province			    01-JAN-19 31-DEC-19   31274656
+    126724 Out-of-Province			    01-JAN-19 31-DEC-19   31274656
+
+
+     EBPID     PLANID STARTDATE ENDDATE   C P N M A M PHYSIOTHERAPYANNUALLIMIT PHYSIOTHERAPYYTD NONSURGICALPODIATRYANNUALLIMIT NONSURGICALPODIATRYYTD CHIROPRACTICANNUALLIMIT CHIROPRACTICYTD MASSAGETHERAPYANNUALLIMIT MASSAGETHERAPYYTD ACUPUNCTUREANNUALLIMIT ACUPUNCTUREYTD MEDICATIONANNUALLIMIT MEDICATIONYTD
+---------- ---------- --------- --------- - - - - - - ------------------------ ---------------- ------------------------------ ---------------------- ----------------------- --------------- ------------------------- ----------------- ---------------------- -------------- --------------------- -------------
+    238948     128473 01-JAN-19 01-JAN-20 N N N N N Y																	 2500		463
+    273284     125724 01-JAN-19 01-JAN-20 Y N Y Y Y Y			  2500		      0 			  2500			  400					   2500 		0		    2500	      0 		 2500		463
+    294742     127828 01-JAN-19 01-JAN-21 Y Y Y Y Y Y			  1000		      0 			  1000			  226			 1000		    0			   1000 	      125		    1000	    100 		 2500		225
+    274633     127828 01-JAN-18 01-JAN-20 Y N N N N Y			  1000		    125 											 1500		500
+    258291     121738 01-JAN-19 01-JAN-20 N N N N N Y																	 2500		  0
+
+
+ INVOICEID  PATIENTID INVOICEITEM						   CREATIOND DUEDATE   PAYMENTSTA PAYMENTDA PAYMENTMETHOD	 AMOUNTOWING  PAYMENTID     PLANID
+---------- ---------- ------------------------------------------------------------ --------- --------- ---------- --------- -------------------- ----------- ---------- ----------
+    119274   32118954 Annual exam						   02-NOV-18 02-DEC-18 Paid	  27-NOV-18 Credit\Debit		   0	 628462     128473
+    148924   32485737 Clinic visit						   14-OCT-18 14-NOV-18 Unpaid						 200		    121738
+    152748   31572742 Clinic visit						   11-MAY-18 11-MAY-18 Paid	  27-NOV-18 Cheque			   0	 628462     126724
+    119396   31857372 Orthodic insoles						   13-JAN-19 13-MAR-19 Unpaid						 266		    128473
+    192745   29562774 Massage re: back injury					   04-JAN-19 04-FEB-19 Unpaid						 145		    127828
+
+SQL> 
