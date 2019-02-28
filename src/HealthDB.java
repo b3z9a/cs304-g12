@@ -35,7 +35,7 @@ public class HealthDB
      * @param String username - the username of the user logging in
      * @param String password - the password of the user
      */
-    private void dbLogin()
+    private void dbLogin(String username, String password)
     {
         // TODO Create login process
     }
