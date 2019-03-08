@@ -1,3 +1,21 @@
+/**
+ * <h2>Integrated Healthcare Database</h2> 
+ * The application models a healthcare
+ * application and interacts with an Oracle database hosted on the UBC CS Ugrad
+ * servers. 
+ * <br>
+ * CPSC 304 Group 12
+ * 
+ * @author Jenna Bains
+ * @author Laura Green
+ * @author Michelle Kong
+ * @author Jan Louis Evangelista
+ * 
+ *         <br>
+ *         Note: The Oracle DB + JDBC example provided by the CS department,
+ *         branch.java has been used as a reference for building this
+ *         application.
+ */
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -74,6 +92,9 @@ public class MainAppWindow {
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 	}
 
+	/**
+	 * Generate the Oracle Login view
+	 */
 	private void oracleLoginPanel() {
 		panelOracleLogin = new JPanel();
 		frame.getContentPane().add(panelOracleLogin, "name_846939466916758");
@@ -141,6 +162,9 @@ public class MainAppWindow {
 		panelOracleLogin.add(btnLogin);
 	}
 
+	/**
+	 * Generate the User Class Selection view
+	 */
 	private void userClassPanel() {
 		panelUserClass = new JPanel();
 		frame.getContentPane().add(panelUserClass, "name_846941917719548");
@@ -197,6 +221,9 @@ public class MainAppWindow {
 
 	}
 
+	/**
+	 * Generate the DB Administrator user class view
+	 */
 	private void adminClassPanel() {
 		panelAdministrator = new JPanel();
 		frame.getContentPane().add(panelAdministrator, "name_1380417227282800");
@@ -222,6 +249,9 @@ public class MainAppWindow {
 		panelAdministrator.add(button);
 	}
 
+	/**
+	 * Generate the Doctor user class view
+	 */
 	private void doctorClassPanel() {
 		panelDoctor = new JPanel();
 		frame.getContentPane().add(panelDoctor, "name_1380421390345600");

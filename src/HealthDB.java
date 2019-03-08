@@ -1,7 +1,8 @@
 /**
- * <h2>Integrated Healthcare Database</h2> The application models a healthcare
- * application and interacts with an Oracle database hosted on the UBC CS Ugrad
- * servers. <br>
+ * <h2>HealthDB</h2> 
+ * Handles the back end logic of the Healthcare Database, including communication
+ * with the Oracle database
+ * <br>
  * CPSC 304 Group 12
  * 
  * @author Jenna Bains
