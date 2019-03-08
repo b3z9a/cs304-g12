@@ -52,6 +52,5 @@ public class HealthDB
         
         return true;
     }
-
-
 }
+

@@ -2,10 +2,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.awt.GridBagLayout;
 import java.awt.CardLayout;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
@@ -13,23 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.SwingConstants;
-import javax.swing.JList;
 import javax.swing.JComboBox;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
-import javax.swing.SpringLayout;
-import java.awt.Component;
-import javax.swing.Box;
 
 public class MainAppWindow
 {
