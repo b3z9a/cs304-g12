@@ -1,6 +1,8 @@
+.idea
 .classpath
 .project
 .vscode*
 *.jar
 *.zip
 /bin/
+/out/

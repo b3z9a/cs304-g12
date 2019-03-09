@@ -31,7 +31,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 
-public class MainAppWindow {
+public class HealthDBApp {
 
 	static HealthDB hdb;
 
@@ -60,7 +60,7 @@ public class MainAppWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainAppWindow window = new MainAppWindow();
+					HealthDBApp window = new HealthDBApp();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -72,7 +72,7 @@ public class MainAppWindow {
 	/**
 	 * Create the application.
 	 */
-	public MainAppWindow() {
+	public HealthDBApp() {
 		initialize();
 
 		oracleLoginPanel();
