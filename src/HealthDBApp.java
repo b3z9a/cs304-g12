@@ -190,7 +190,9 @@ public class HealthDBApp {
 				switch (userClass) {
 				case "Administrator":
 					System.out.println("Administrator Class Selected");
-
+					
+					hdb.setUserClass("Administrator");
+					
 					/* Switch to Administrator Class panel */
 					panelOracleLogin.setVisible(false);
 					panelUserClass.setVisible(false);
@@ -200,6 +202,8 @@ public class HealthDBApp {
 					break;
 				case "Doctor":
 					System.out.println("Doctor Class Selected");
+					
+					hdb.setUserClass("Doctor");
 
 					/* Switch to Administrator Class panel */
 					panelOracleLogin.setVisible(false);
