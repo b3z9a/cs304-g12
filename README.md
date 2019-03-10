@@ -33,7 +33,7 @@ Our database will model an integrated healthcare database that would be used by 
 
 ### Running the Application in SSH and a Command Line Interface
 
-1. SSH into the server by either running `./ssh-login.sh Your_CS_ID` in the root of the `cs304-g12` folder or by typing `ssh -X Your_CS_ID@thetis.ugrad.cs.ubc.ca`
+1. SSH into the server by either running `./ssh-login.sh Your_CS_ID` login script in the root of the `cs304-g12` folder or by typing `ssh -X Your_CS_ID@thetis.ugrad.cs.ubc.ca`
 
 2. Clone the repository into a folder of your choice.
 
