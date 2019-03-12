@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 public class HealthDBUI extends JFrame {
 
@@ -15,6 +16,7 @@ public class HealthDBUI extends JFrame {
     private static int width = 1280;
     private static int height = 720;
 
+    GridBagConstraints gbc;
 
     private JPanel panelRoot;
     private JPanel panelOracleLogin;
@@ -49,12 +51,25 @@ public class HealthDBUI extends JFrame {
     private JLabel lblInvoice;
     private JButton btnClear;
 
+    JLabel lblDocName;
+    JLabel lblDocPID;
+    JLabel lblDocAddr;
+    JLabel lblDocMobileNum;
+    JLabel lblDocHomeNum;
+
+    HashMap<String, String> doctorHashMap;
+
 
     public static void main(String args[]) {
         hdb = new HealthDB();
 
-        HealthDBUI ui = new HealthDBUI();
-        ui.frame.setVisible(true);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                HealthDBUI ui = new HealthDBUI();
+                ui.frame.setVisible(true);
+            }
+        });
     }
 
     public HealthDBUI() {
@@ -63,6 +78,8 @@ public class HealthDBUI extends JFrame {
         setPanelUserClass();
         setPanelUserClassSelect();
         setPanelUserClassInfo();
+
+        setPanelDoctor();
     }
 
     /**
@@ -78,6 +95,8 @@ public class HealthDBUI extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         cboxUserClass = new JComboBox(userClass);
+
+        doctorHashMap = new HashMap<String, String>();
     }
 
     /**
@@ -89,7 +108,7 @@ public class HealthDBUI extends JFrame {
         panelOracleLogin.setEnabled(true);
         panelRoot.add(panelOracleLogin, "Card1");
 
-        GridBagConstraints gbc;
+
 
         lblOracleLogin = new JLabel();
         lblOracleLogin.setHorizontalAlignment(0);
@@ -346,10 +365,8 @@ public class HealthDBUI extends JFrame {
         panelAdministrator.add(lblAdministrator);
 
         panelDoctor = new JPanel();
+        panelDoctor.setLayout(new GridBagLayout());
         panelUserClassInfo.add(panelDoctor, "Card2");
-        lblDoctor = new JLabel();
-        lblDoctor.setText("Doctor");
-        panelDoctor.add(lblDoctor);
 
         panelPharmacist = new JPanel();
         panelUserClassInfo.add(panelPharmacist, "Card3");
@@ -377,6 +394,99 @@ public class HealthDBUI extends JFrame {
 
         panelEmpty = new JPanel();
         panelUserClassInfo.add(panelEmpty, "Card7");
+    }
+
+    public void setPanelDoctor() {
+        lblDoctor = new JLabel("Doctor", SwingConstants.LEADING);
+        lblDoctor.setHorizontalAlignment(SwingConstants.LEADING);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 0; gbc.gridy = 0;
+        panelDoctor.add(lblDoctor, gbc);
+
+        /* Row 1 */
+        JLabel lblPID = new JLabel("PID:", SwingConstants.LEADING);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.gridx = 0; gbc.gridy = 1;
+        panelDoctor.add(lblPID, gbc);
+
+        JTextField txtPID = new JTextField(10);
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 1; gbc.gridy = 1;
+        panelDoctor.add(txtPID, gbc);
+
+        JLabel lblName = new JLabel("Name:", SwingConstants.LEADING);
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 2; gbc.gridy = 1;
+        panelDoctor.add(lblName, gbc);
+
+        JTextField txtName = new JTextField(12);
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 3; gbc.gridy = 1;
+        panelDoctor.add(txtName, gbc);
+
+        JButton btnFindDoctor = new JButton();
+        btnFindDoctor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                doctorHashMap = hdb.findDoctor(txtPID.getText(), txtName.getText());
+
+                System.out.println(doctorHashMap.get("docPID") + ", " + doctorHashMap.get("docName"));
+
+                lblDocName.setText(doctorHashMap.get("docName"));
+                lblDocPID.setText(doctorHashMap.get("docPID"));
+                lblDocAddr.setText(doctorHashMap.get("docAddr"));
+                lblDocHomeNum.setText(("Home: ") + doctorHashMap.get("docHomeNum"));
+                lblDocMobileNum.setText(("Mobile: ") + doctorHashMap.get("docMobileNum"));
+            }
+        });
+        btnFindDoctor.setText("Find Doctor");
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,10,0,0);
+        gbc.gridx = 4; gbc.gridy = 1;
+        panelDoctor.add(btnFindDoctor, gbc);
+
+        /* Row 2 */
+        JLabel lblPersonalInfo = new JLabel("Personal Information", SwingConstants.LEADING);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 0; gbc.gridy = 2;
+        panelDoctor.add(lblPersonalInfo, gbc);
+
+        /* Row 3 */
+        lblDocName = new JLabel();
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 1; gbc.gridy = 3;
+        panelDoctor.add(lblDocName, gbc);
+
+        lblDocPID = new JLabel();
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 3; gbc.gridy = 3;
+        panelDoctor.add(lblDocPID, gbc);
+
+        lblDocAddr = new JLabel();
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 1; gbc.gridy = 5;
+        panelDoctor.add(lblDocAddr, gbc);
+
+        lblDocMobileNum = new JLabel();
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 1; gbc.gridy = 6;
+        panelDoctor.add(lblDocMobileNum, gbc);
+
+        lblDocHomeNum = new JLabel();
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 3; gbc.gridy = 6;
+        panelDoctor.add(lblDocHomeNum, gbc);
     }
 
     /**

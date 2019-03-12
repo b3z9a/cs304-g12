@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  * <h2>HealthDB</h2> 
  * Handles the back end logic of the Healthcare Database, including communication
@@ -80,5 +82,30 @@ public class HealthDB {
 				this.userClass = 1;
 				break;
 		}
+	}
+
+	/**
+	 * findDoctor
+	 * Finds a doctor in the database, stores tuple information in a data structure
+	 *
+	 * Note: If you're not using HashMap, feel free to change the return type to whatever data structure you use
+	 *
+	 * @param PID
+	 * @param name
+	 * @return
+	 */
+	public HashMap<String, String> findDoctor(String PID, String name) {
+		HashMap<String, String> doctor = new HashMap<String, String>();
+
+		/* TODO Find a doctor in the database */
+
+		/* TEST ONLY - Add proper implementation */
+		doctor.put("docPID", PID);
+		doctor.put("docName", name);
+		doctor.put("docAddr", "123 Driveby Road, Surrey");
+		doctor.put("docMobileNum", "604 - 999 - 9999");
+		doctor.put("docHomeNum", "778 - 898 - 6969");
+
+		return doctor;
 	}
 }
