@@ -33,247 +33,378 @@ import javax.swing.JComboBox;
 
 public class HealthDBApp {
 
-	static HealthDB hdb;
+    static HealthDB hdb;
 
-	private String username;
-	private String password;
+    private String username;
+    private String password;
 
-	private String userClass[] = { "Administrator", "Doctor", "Pharmacist", "Lab Technicial",
-			"Healthcare Admin Staff" };
+    private String userClass[] = {"Administrator", "Doctor", "Pharmacist", "LabTechnician", "Patient", "Invoice"};
 
-	private JFrame frame;
-	private JTextField txtUsername;
-	private JPasswordField pwdPassword;
+    private JFrame frame;
+    private JTextField txtUsername;
+    private JPasswordField pwdPassword;
 
-	/* JPanels are different views within the program window */
-	private JPanel panelOracleLogin;
-	private JPanel panelUserClass;
-	private JPanel panelAdministrator;
-	private JPanel panelDoctor;
+    /* JPanels are different views within the program window */
+    private JPanel panelOracleLogin;
+    private JPanel panelUserClass;
+    private JPanel panelAdministrator;
+    private JPanel panelDoctor;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		hdb = new HealthDB();
+    private JPanel panelPharmacist;
+    private JPanel panelLabTechnician;
+    private JPanel panelPatient;
+    private JPanel panelInvoice;
 
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HealthDBApp window = new HealthDBApp();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the application.
-	 */
-	public HealthDBApp() {
-		initialize();
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        hdb = new HealthDB();
 
-		oracleLoginPanel();
-		userClassPanel();
-		adminClassPanel();
-		doctorClassPanel();
-	}
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    HealthDBApp window = new HealthDBApp();
+                    window.frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(0, 0, 1280, 720);
-		frame.setTitle("Integrated Healthcare Database");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new CardLayout(0, 0));
-	}
+    /**
+     * Create the application.
+     */
+    public HealthDBApp() {
+        initialize();
 
-	/**
-	 * Generate the Oracle Login view
-	 */
-	private void oracleLoginPanel() {
-		panelOracleLogin = new JPanel();
-		frame.getContentPane().add(panelOracleLogin, "name_846939466916758");
-		panelOracleLogin.setLayout(null);
-		panelOracleLogin.setVisible(true);
+        oracleLoginPanel();
+        userClassPanel();
+        adminClassPanel();
+        doctorClassPanel();
 
-		JLabel lblOracleDatabaseLogin = new JLabel("Oracle Database Login");
-		lblOracleDatabaseLogin.setBounds(458, 153, 300, 30);
-		lblOracleDatabaseLogin.setHorizontalAlignment(SwingConstants.CENTER);
-		lblOracleDatabaseLogin.setVerticalAlignment(SwingConstants.CENTER);
-		lblOracleDatabaseLogin.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		panelOracleLogin.add(lblOracleDatabaseLogin);
+        pharmacistClassPanel();
+        labTechnicianPanel();
+        patientPanel();
+        invoicePanel();
+    }
 
-		JLabel lblUsername = new JLabel("Username");
-		lblUsername.setBounds(573, 194, 75, 20);
-		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
-		panelOracleLogin.add(lblUsername);
+    /**
+     * Initialize the contents of the frame.
+     */
+    private void initialize() {
+        frame = new JFrame();
+        frame.setBounds(0, 0, 1280, 720);
+        frame.setTitle("Integrated Healthcare Database");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(new CardLayout(0, 0));
+    }
 
-		txtUsername = new JTextField();
-		txtUsername.setBounds(533, 215, 152, 20);
-		txtUsername.setColumns(10);
-		panelOracleLogin.add(txtUsername);
+    /**
+     * Generate the Oracle Login view
+     */
+    private void oracleLoginPanel() {
+        panelOracleLogin = new JPanel();
+        frame.getContentPane().add(panelOracleLogin, "name_846939466916758");
+        panelOracleLogin.setLayout(null);
+        panelOracleLogin.setVisible(true);
 
-		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(573, 252, 75, 20);
-		lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
-		panelOracleLogin.add(lblPassword);
+        JLabel lblOracleDatabaseLogin = new JLabel("Oracle Database Login");
+        lblOracleDatabaseLogin.setBounds(458, 153, 300, 30);
+        lblOracleDatabaseLogin.setHorizontalAlignment(SwingConstants.CENTER);
+        lblOracleDatabaseLogin.setVerticalAlignment(SwingConstants.CENTER);
+        lblOracleDatabaseLogin.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        panelOracleLogin.add(lblOracleDatabaseLogin);
 
-		pwdPassword = new JPasswordField();
-		pwdPassword.setBounds(533, 271, 152, 20);
-		pwdPassword.setEchoChar('*');
-		panelOracleLogin.add(pwdPassword);
+        JLabel lblUsername = new JLabel("Username");
+        lblUsername.setBounds(573, 194, 75, 20);
+        lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
+        panelOracleLogin.add(lblUsername);
 
-		JButton btnLogin = new JButton("Login");
-		btnLogin.setBounds(573, 308, 75, 25);
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+        txtUsername = new JTextField();
+        txtUsername.setBounds(533, 215, 152, 20);
+        txtUsername.setColumns(10);
+        panelOracleLogin.add(txtUsername);
 
-				username = txtUsername.getText();
-				password = String.valueOf(pwdPassword.getPassword()); /* Not secure at all! */
+        JLabel lblPassword = new JLabel("Password");
+        lblPassword.setBounds(573, 252, 75, 20);
+        lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
+        panelOracleLogin.add(lblPassword);
 
-				/* Error check for empty fields */
-				if (username.equals("") || password.equals("")) {
-					System.out.println("Login credentials invalid");
+        pwdPassword = new JPasswordField();
+        pwdPassword.setBounds(533, 271, 152, 20);
+        pwdPassword.setEchoChar('*');
+        panelOracleLogin.add(pwdPassword);
 
-					/* TODO Generate error dialog box */
-				} else {
-					System.out.println("Login credentials: " + username + " " + password);
+        JButton btnLogin = new JButton("Login");
+        btnLogin.setBounds(573, 308, 75, 25);
+        btnLogin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
 
-					hdb.setOracleCredentials(username, password);
+                username = txtUsername.getText();
+                password = String.valueOf(pwdPassword.getPassword()); /* Not secure at all! */
 
-					/* Switch to next view only if database connection is made */
-					if (hdb.connectToDB()) {
-						/* Switch to User Class panel when login achieved */
-						panelOracleLogin.setVisible(false);
-						panelUserClass.setVisible(true);
-						panelAdministrator.setVisible(false);
-					} else {
-						/* TODO Generate error dialog box */
-						System.out.println("Login Failed!");
-					}
-				}
-			}
-		});
-		panelOracleLogin.add(btnLogin);
-	}
+                /* Error check for empty fields */
+                if (username.equals("") || password.equals("")) {
+                    System.out.println("Login credentials invalid");
 
-	/**
-	 * Generate the User Class Selection view
-	 */
-	private void userClassPanel() {
-		panelUserClass = new JPanel();
-		frame.getContentPane().add(panelUserClass, "name_846941917719548");
-		panelUserClass.setLayout(null);
-		panelUserClass.setVisible(false);
+                    /* TODO Generate error dialog box */
+                } else {
+                    System.out.println("Login credentials: " + username + " " + password);
 
-		JLabel lblUserClass = new JLabel("User Class");
-		lblUserClass.setBounds(10, 11, 100, 23);
-		panelUserClass.add(lblUserClass);
+                    hdb.setOracleCredentials(username, password);
 
-		JComboBox comboBox = new JComboBox(userClass);
-		comboBox.setBounds(79, 12, 169, 20);
-		panelUserClass.add(comboBox);
+                    /* Switch to next view only if database connection is made */
+                    if (hdb.connectToDB()) {
+                        /* Switch to User Class panel when login achieved */
+                        panelOracleLogin.setVisible(false);
+                        panelUserClass.setVisible(true);
+                        panelAdministrator.setVisible(false);
 
-		JButton btnConfirm = new JButton("Confirm");
-		btnConfirm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+                        panelDoctor.setVisible(false);
+                        panelPharmacist.setVisible(false);
+                        panelLabTechnician.setVisible(false);
+                        panelPatient.setVisible(false);
+                        panelInvoice.setVisible(false);
+                    } else {
+                        /* TODO Generate error dialog box */
+                        System.out.println("Login Failed!");
+                    }
+                }
+            }
+        });
+        panelOracleLogin.add(btnLogin);
+    }
 
-				String userClass = comboBox.getSelectedItem().toString();
+    /**
+     * Generate the User Class Selection view
+     */
+    private void userClassPanel() {
+        panelUserClass = new JPanel();
+        frame.getContentPane().add(panelUserClass, "name_846941917719548");
+        panelUserClass.setLayout(null);
+        panelUserClass.setVisible(false);
 
-				System.out.println();
+        JLabel lblUserClass = new JLabel("User Class");
+        lblUserClass.setBounds(10, 11, 100, 23);
+        panelUserClass.add(lblUserClass);
 
-				switch (userClass) {
-				case "Administrator":
-					System.out.println("Administrator Class Selected");
+        JComboBox comboBox = new JComboBox(userClass);
+        comboBox.setBounds(79, 12, 169, 20);
+        panelUserClass.add(comboBox);
 
-					/* Switch to Administrator Class panel */
-					panelOracleLogin.setVisible(false);
-					panelUserClass.setVisible(false);
-					panelAdministrator.setVisible(true);
-					panelDoctor.setVisible(false);
+        JButton btnConfirm = new JButton("Confirm");
+        btnConfirm.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
 
-					break;
-				case "Doctor":
-					System.out.println("Doctor Class Selected");
+                String userClass = comboBox.getSelectedItem().toString();
 
-					/* Switch to Administrator Class panel */
-					panelOracleLogin.setVisible(false);
-					panelUserClass.setVisible(false);
-					panelAdministrator.setVisible(false);
-					panelDoctor.setVisible(true);
+                System.out.println();
 
-					break;
+                switch (userClass) {
+                    case "Administrator":
+                        System.out.println("Administrator Class Selected");
 
-				/* TODO Fill out other user classes */
+                        hdb.setUserClass("Administrator");
 
-				default:
-					break;
-				}
-			}
-		});
-		btnConfirm.setBounds(261, 11, 89, 23);
-		panelUserClass.add(btnConfirm);
+                        /* Switch to Administrator Class panel */
+                        panelOracleLogin.setVisible(false);
+                        panelUserClass.setVisible(false);
+                        panelAdministrator.setVisible(true);
+                        panelDoctor.setVisible(false);
 
-	}
+                        panelPharmacist.setVisible(false);
+                        panelLabTechnician.setVisible(false);
+                        panelPatient.setVisible(false);
+                        panelInvoice.setVisible(false);
 
-	/**
-	 * Generate the DB Administrator user class view
-	 */
-	private void adminClassPanel() {
-		panelAdministrator = new JPanel();
-		frame.getContentPane().add(panelAdministrator, "name_1380417227282800");
-		panelAdministrator.setLayout(null);
+                        break;
 
-		JLabel lblDatabaseAdministrator = new JLabel("Database Administrator");
-		lblDatabaseAdministrator.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDatabaseAdministrator.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblDatabaseAdministrator.setBounds(528, 0, 270, 36);
-		panelAdministrator.add(lblDatabaseAdministrator);
+                    case "Doctor":
+                        System.out.println("Doctor Class Selected");
 
-		JButton button = new JButton("Select User Class");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				/* Switch to User Class panel */
-				panelOracleLogin.setVisible(false);
-				panelUserClass.setVisible(true);
-				panelAdministrator.setVisible(false);
-				panelDoctor.setVisible(false);
-			}
-		});
-		button.setBounds(10, 10, 140, 25);
-		panelAdministrator.add(button);
-	}
+                        hdb.setUserClass("Doctor");
 
-	/**
-	 * Generate the Doctor user class view
-	 */
-	private void doctorClassPanel() {
-		panelDoctor = new JPanel();
-		frame.getContentPane().add(panelDoctor, "name_1380421390345600");
-		panelDoctor.setLayout(null);
+                        /* Switch to Doctor Class panel */
+                        panelOracleLogin.setVisible(false);
+                        panelUserClass.setVisible(false);
+                        panelAdministrator.setVisible(false);
+                        panelDoctor.setVisible(true);
 
-		JLabel lblNewLabel = new JLabel("Doctor");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(507, 12, 123, 25);
-		panelDoctor.add(lblNewLabel);
+                        panelPharmacist.setVisible(false);
+                        panelLabTechnician.setVisible(false);
+                        panelPatient.setVisible(false);
+                        panelInvoice.setVisible(false);
 
-		JButton btnSelClass = new JButton("Select User Class");
-		btnSelClass.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				/* Switch to User Class panel */
-				panelOracleLogin.setVisible(false);
-				panelUserClass.setVisible(true);
-				panelAdministrator.setVisible(false);
-				panelDoctor.setVisible(false);
-			}
-		});
-		btnSelClass.setBounds(10, 10, 140, 25);
-		panelDoctor.add(btnSelClass);
-	}
+                        break;
+
+                    /* TODO Fill out other user classes */
+
+                    case "Pharmacist":
+                        System.out.println("Pharmacist Class Selected");
+
+                        hdb.setUserClass("Pharmacist");
+
+                        /* Switch to Pharmacist Class panel */
+                        panelOracleLogin.setVisible(false);
+                        panelUserClass.setVisible(false);
+                        panelAdministrator.setVisible(false);
+                        panelDoctor.setVisible(false);
+
+                        panelPharmacist.setVisible(true);
+                        panelLabTechnician.setVisible(false);
+                        panelPatient.setVisible(false);
+                        panelInvoice.setVisible(false);
+
+                        break;
+
+                    case "LabTechnician":
+                        System.out.println("LabTechnician Class Selected");
+
+                        hdb.setUserClass("LabTechnician");
+
+                        /* Switch to LabTechnician Class panel */
+                        panelOracleLogin.setVisible(false);
+                        panelUserClass.setVisible(false);
+                        panelAdministrator.setVisible(false);
+                        panelDoctor.setVisible(false);
+
+                        panelPharmacist.setVisible(false);
+                        panelLabTechnician.setVisible(true);
+                        panelPatient.setVisible(false);
+                        panelInvoice.setVisible(false);
+
+                        break;
+
+                    case "Patient":
+                        System.out.println("Patient Class Selected");
+
+                        hdb.setUserClass("Patient");
+
+                        /* Switch to Patient Class panel */
+                        panelOracleLogin.setVisible(false);
+                        panelUserClass.setVisible(false);
+                        panelAdministrator.setVisible(false);
+                        panelDoctor.setVisible(false);
+
+                        panelPharmacist.setVisible(false);
+                        panelLabTechnician.setVisible(false);
+                        panelPatient.setVisible(true);
+                        panelInvoice.setVisible(false);
+
+                        break;
+
+                    case "Invoice":
+                        System.out.println("Invoice Class Selected");
+
+                        hdb.setUserClass("Invoice");
+
+                        /* Switch to Patient Class panel */
+                        panelOracleLogin.setVisible(false);
+                        panelUserClass.setVisible(false);
+                        panelAdministrator.setVisible(false);
+                        panelDoctor.setVisible(false);
+
+                        panelPharmacist.setVisible(false);
+                        panelLabTechnician.setVisible(false);
+                        panelPatient.setVisible(false);
+                        panelInvoice.setVisible(true);
+
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        });
+        btnConfirm.setBounds(261, 11, 89, 23);
+        panelUserClass.add(btnConfirm);
+
+    }
+
+    /**
+     * Generate the DB Administrator user class view
+     */
+    private void adminClassPanel() {
+        panelAdministrator = new JPanel();
+        frame.getContentPane().add(panelAdministrator, "name_1380417227282800");
+        panelAdministrator.setLayout(null);
+
+        JLabel lblDatabaseAdministrator = new JLabel("Database Administrator");
+        lblDatabaseAdministrator.setHorizontalAlignment(SwingConstants.CENTER);
+        lblDatabaseAdministrator.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblDatabaseAdministrator.setBounds(528, 0, 270, 36);
+        panelAdministrator.add(lblDatabaseAdministrator);
+
+        JButton button = new JButton("Select User Class");
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                /* Switch to User Class panel */
+                panelOracleLogin.setVisible(false);
+                panelUserClass.setVisible(true);
+                panelAdministrator.setVisible(false);
+                panelDoctor.setVisible(false);
+
+                panelPharmacist.setVisible(false);
+                panelLabTechnician.setVisible(false);
+                panelPatient.setVisible(false);
+                panelInvoice.setVisible(false);
+            }
+        });
+        button.setBounds(10, 10, 140, 25);
+        panelAdministrator.add(button);
+    }
+
+    /**
+     * Generate the Doctor user class view
+     */
+    private void doctorClassPanel() {
+        panelDoctor = new JPanel();
+        frame.getContentPane().add(panelDoctor, "name_1380421390345600");
+        panelDoctor.setLayout(null);
+
+        JLabel lblNewLabel = new JLabel("Doctor");
+        lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNewLabel.setBounds(507, 12, 123, 25);
+        panelDoctor.add(lblNewLabel);
+
+        JButton btnSelClass = new JButton("Select User Class");
+        btnSelClass.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                /* Switch to User Class panel */
+                panelOracleLogin.setVisible(false);
+                panelUserClass.setVisible(true);
+                panelAdministrator.setVisible(false);
+                panelDoctor.setVisible(false);
+
+                panelPharmacist.setVisible(false);
+                panelLabTechnician.setVisible(false);
+                panelPatient.setVisible(false);
+                panelInvoice.setVisible(false);
+            }
+        });
+        btnSelClass.setBounds(10, 10, 140, 25);
+        panelDoctor.add(btnSelClass);
+    }
+
+    /**
+     * Generate the Pharmacist user class view
+     */
+
+    /**
+     * Generate the LabTechnician user class view
+     */
+
+    /**
+     * Generate the Patient user class view
+     */
+
+    /**
+     * Generate the Invoice user class view
+     */
+
+
 }

@@ -15,9 +15,9 @@ Our database will model an integrated healthcare database that would be used by 
 
 1. Clone the repository to a local directory by running `git clone https://github.com/jello24/cs304-g12.git` on a command line terminal
 
-2. Import the project into Eclipse by using `File > Import > General > Existing Project into Workspace`
+2. Import the project into Eclipse by using `File > Open Project from File System > Import Source` and select the clone directory.
 
-3. Set `cs304-g12` as the root directory then select `HealthDB` as the project and click **Finish**.
+3. Set `cs304-g12` as the root directory and click **Finish**.
 
 4. Build the project and run it after importing the project into Eclipse.
 
@@ -27,9 +27,23 @@ Our database will model an integrated healthcare database that would be used by 
 
 2. Navigate to the `\cs304-g12\src\` folder
 
-3. Compile the source code by running `javac HealthDB.java` [Note: compile any other classes here as well.]
+3. Compile the source code by running `javac HealthDBApp.java HealthDB.java` [Note: compile any other classes here as well.]
 
-4. Run the application by running `java HealthDB`
+4. Run the application by running `java HealthDBApp`
+
+### Running the Application in SSH and a Command Line Interface
+
+1. SSH into the server by either running `./ssh-login.sh Your_CS_ID` login script in the root of the `cs304-g12` folder or by typing `ssh -X Your_CS_ID@thetis.ugrad.cs.ubc.ca`
+
+2. Clone the repository into a folder of your choice.
+
+3. Navigate to `Your_Folder\cs304-g12\src`
+
+4. Compile the .java files by running `javac HealthDBApp.java HealthDB.java`
+
+5. Run the app by running `java HealthDBApp`
+
+6. Use your Oracle DB credentials as provided in Tutorial 4 to log into the database and use the app.
 
 ### Common Errors and Fixes
 No issues yet.
