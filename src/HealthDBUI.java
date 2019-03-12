@@ -379,4 +379,11 @@ public class HealthDBUI extends JFrame {
         panelUserClassInfo.add(panelEmpty, "Card7");
     }
 
+    /**
+     * Updates the current panel with database information
+     */
+    private void updatePanel() {
+
+    }
+
 }
