@@ -169,7 +169,7 @@ public class HealthDBUI extends JFrame {
                 if (username.equals("") || password.equals("")) {
                     System.out.println("Login credentials invalid");
 
-                    /* TODO Generate error dialog box */
+                    JOptionPane.showMessageDialog(frame, "Login Failed: Username or Password missing!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
                 }
                 else {
                     System.out.println("Login credentials: " + username + " " + password);
@@ -177,7 +177,7 @@ public class HealthDBUI extends JFrame {
                     hdb.setOracleCredentials(username, password);
 
                     /* Switch to next view only if database connection is made */
-                    if (hdb.connectToDB()) {
+                    if (hdb.connectToDB(username, password)) {
                         /* Switch to User Class panel when login achieved */
                         panelOracleLogin.setVisible(false);
                         panelUserClass.setVisible(true);
@@ -190,8 +190,8 @@ public class HealthDBUI extends JFrame {
                         panelInvoice.setVisible(false);
                     }
                     else {
-                        /* TODO Generate error dialog box */
                         System.out.println("Login Failed!");
+                        JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }

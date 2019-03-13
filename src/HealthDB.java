@@ -49,9 +49,12 @@ public class HealthDB {
 	/**
 	 * connectToDB Connects to the Oracle DB using credentials
 	 * 
+	 * @param username - the username to log into the Oracle DB
+	 * @param password - the password to log into the Oracle DB
+	 * 
 	 * @return true - if Oracle database is connected to the app, false otherwise
 	 */
-	public Boolean connectToDB() {
+	public Boolean connectToDB(String username, String password) {
 		/* TODO Connect to the Oracle DB */
 
 		return true;
