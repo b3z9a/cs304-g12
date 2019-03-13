@@ -455,7 +455,7 @@ public class HealthDBUI extends JFrame {
 
         /* Row 5 */
         panelDoctorPrescriptions = new JPanel();
-        panelDoctorPrescriptions.setLayout(new GridBagLayout());
+        panelDoctorPrescriptions.setLayout(new BorderLayout());
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
@@ -474,8 +474,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 7 */
         panelDoctorTests = new JPanel();
-        panelDoctorTests.setSize(new Dimension(width-20, 150));
+        panelDoctorTests.setLayout(new BorderLayout());
         gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 7;
         panelDoctor.add(panelDoctorTests, gbc);
@@ -492,8 +493,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 9 */
         panelDoctorReferrals = new JPanel();
-        panelDoctorReferrals.setSize(new Dimension(width-20, 200));
+        panelDoctorReferrals.setLayout(new BorderLayout());
         gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 9;
         panelDoctor.add(panelDoctorReferrals, gbc);
@@ -621,85 +623,30 @@ public class HealthDBUI extends JFrame {
     }
 
     private void setPanelDoctorPrescriptions() {
-
-        JLabel lbl = new JLabel("ID");
-        lbl.setPreferredSize(new Dimension(50, 25));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 1;
-        panelDoctorPrescriptions.add(lbl, gbc);
-
-        lbl = new JLabel("Date");
-        lbl.setPreferredSize(new Dimension(75, 25));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1; gbc.gridy = 1;
-        panelDoctorPrescriptions.add(lbl, gbc);
-
-        lbl = new JLabel("Medication");
-        lbl.setPreferredSize(new Dimension(150, 25));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2; gbc.gridy = 1;
-        panelDoctorPrescriptions.add(lbl, gbc);
-
-        lbl = new JLabel("Dosage");
-        lbl.setPreferredSize(new Dimension(75, 25));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3; gbc.gridy = 1;
-        panelDoctorPrescriptions.add(lbl, gbc);
-
-        lbl = new JLabel("Quantity");
-        lbl.setPreferredSize(new Dimension(75, 25));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 4; gbc.gridy = 1;
-        panelDoctorPrescriptions.add(lbl, gbc);
-
-        lbl = new JLabel("Status");
-        lbl.setPreferredSize(new Dimension(50, 25));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 5; gbc.gridy = 1;
-        panelDoctorPrescriptions.add(lbl, gbc);
+        String cols[] = {"ID", "Date", "Medication", "Dosage", "Quantity", "Status"};
+        String data[][] = {};
+        JTable presTable = new JTable(data, cols);
+        panelDoctorPrescriptions.add(presTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelDoctorPrescriptions.add(presTable, BorderLayout.CENTER);
     }
 
     private void setPanelDoctorTests() {
 
-        JLabel lbl = new JLabel("ID");
-        lbl.setPreferredSize(new Dimension(50, 25));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 0;
-        panelDoctorTests.add(lbl, gbc);
-
-        lbl = new JLabel("Date");
-        lbl.setPreferredSize(new Dimension(75, 25));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1; gbc.gridy = 0;
-        panelDoctorTests.add(lbl, gbc);
-
-        lbl = new JLabel("Status");
-        lbl.setPreferredSize(new Dimension(150, 25));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2; gbc.gridy = 0;
-        panelDoctorTests.add(lbl, gbc);
+        String cols[] = {"ID", "Date", "Status"};
+        String data[][] = {};
+        JTable testTable = new JTable(data, cols);
+        panelDoctorTests.add(testTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelDoctorTests.add(testTable, BorderLayout.CENTER);
 
     }
 
     private void setPanelDoctorReferrals() {
 
-        JLabel lbl = new JLabel("Doctor");
-        lbl.setPreferredSize(new Dimension(150, 25));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 0;
-        panelDoctorReferrals.add(lbl, gbc);
-
-        lbl = new JLabel("Specialization");
-        lbl.setPreferredSize(new Dimension(100, 25));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1; gbc.gridy = 0;
-        panelDoctorReferrals.add(lbl, gbc);
-
-        lbl = new JLabel("Date");
-        lbl.setPreferredSize(new Dimension(75, 25));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2; gbc.gridy = 0;
-        panelDoctorReferrals.add(lbl, gbc);
+        String cols[] = {"Doctor", "Specialization", "Date"};
+        String data[][] = {};
+        JTable refTable = new JTable(data, cols);
+        panelDoctorReferrals.add(refTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelDoctorReferrals.add(refTable, BorderLayout.CENTER);
 
     }
 
