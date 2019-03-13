@@ -453,11 +453,12 @@ public class HealthDBUI extends JFrame {
         panelDoctor.add(lblPrescriptions, gbc);
 
 
-
         /* Row 5 */
         panelDoctorPrescriptions = new JPanel();
         panelDoctorPrescriptions.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 5;
         panelDoctor.add(panelDoctorPrescriptions, gbc);
 
@@ -473,7 +474,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 7 */
         panelDoctorTests = new JPanel();
+        panelDoctorTests.setSize(new Dimension(width-20, 150));
         gbc = new GridBagConstraints();
+        gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 7;
         panelDoctor.add(panelDoctorTests, gbc);
 
@@ -489,7 +492,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 9 */
         panelDoctorReferrals = new JPanel();
+        panelDoctorReferrals.setSize(new Dimension(width-20, 200));
         gbc = new GridBagConstraints();
+        gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 9;
         panelDoctor.add(panelDoctorReferrals, gbc);
 
