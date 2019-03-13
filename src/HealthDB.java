@@ -103,11 +103,11 @@ public class HealthDB {
 		/* TODO Find a doctor in the database */
 
 		/* TEST ONLY - Add proper implementation */
-		doctor.put("docPID", PID);
-		doctor.put("docName", name);
-		doctor.put("docAddr", "123 Driveby Road, Surrey");
-		doctor.put("docMobileNum", "604 - 999 - 9999");
-		doctor.put("docHomeNum", "778 - 898 - 6969");
+		doctor.put("PID", PID);
+		doctor.put("Name", name);
+		doctor.put("Addr", "123 Driveby Road, Surrey");
+		doctor.put("MobileNum", "604 - 999 - 9999");
+		doctor.put("HomeNum", "778 - 898 - 6969");
 
 		return doctor;
 	}
