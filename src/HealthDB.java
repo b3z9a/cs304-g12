@@ -193,4 +193,17 @@ public class HealthDB {
 		/* TODO Return prescriptions */
 		return new Object();
 	}
+
+	/**
+	 * Finds tests and returns it
+	 * @param testNum
+	 * @param pid
+	 * @param name
+	 * @return
+	 */
+	public Object findTest(String testNum, String pid, String name) {
+
+		/* TODO Return tests */
+		return new Object();
+	}
 }
