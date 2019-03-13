@@ -180,4 +180,17 @@ public class HealthDB {
 
 		/* TODO Return the referrals of the specified doctor */
 	}
+
+	/**
+	 * Finds a prescription and returns it
+	 * @param presNum
+	 * @param pid
+	 * @param name
+	 * @return
+	 */
+	public Object findPrescription(String presNum, String pid, String name) {
+
+		/* TODO Return prescriptions */
+		return new Object();
+	}
 }
