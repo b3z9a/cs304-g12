@@ -56,6 +56,7 @@ public class HealthDBUI extends JFrame {
     private JPanel panelDoctorPrescriptions;
     private JPanel panelDoctorTests;
     private JPanel panelDoctorReferrals;
+    private JPanel panelDoctorActions;
 
     JTextField txtDocName;
     JTextField txtDocPID;
@@ -91,6 +92,7 @@ public class HealthDBUI extends JFrame {
         setPanelDoctorPrescriptions();
         setPanelDoctorTests();
         setPanelDoctorReferrals();
+        setPanelDoctorActions();
     }
 
     /**
@@ -409,10 +411,9 @@ public class HealthDBUI extends JFrame {
 
     private void setPanelDoctor() {
         lblDoctor = new JLabel("Doctor");
-        lblDoctor.setFont(new Font("Serif", Font.BOLD, 16));
+        lblDoctor.setFont(new Font("Arial", Font.BOLD, 20));
         lblDoctor.setHorizontalAlignment(SwingConstants.LEADING);
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0,0,5,0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 0; gbc.gridy = 0;
         panelDoctor.add(lblDoctor, gbc);
@@ -426,7 +427,7 @@ public class HealthDBUI extends JFrame {
 
         /* Row 2 */
         JLabel lblPersonalInfo = new JLabel("Personal Information", SwingConstants.LEADING);
-        lblPersonalInfo.setFont(new Font("Serif", Font.BOLD, 16));
+        lblPersonalInfo.setFont(new Font("Arial", Font.BOLD, 20));
         gbc = new GridBagConstraints();
         gbc.insets= new Insets(10,0,0,0);
         gbc.anchor = GridBagConstraints.LINE_START;
@@ -443,7 +444,7 @@ public class HealthDBUI extends JFrame {
 
         /* Row 4 */
         JLabel lblPrescriptions = new JLabel("Prescriptions", SwingConstants.LEADING);
-        lblPrescriptions.setFont(new Font("Serif", Font.BOLD, 16));
+        lblPrescriptions.setFont(new Font("Arial", Font.BOLD, 20));
         gbc = new GridBagConstraints();
         gbc.insets= new Insets(10,0,0,0);
         gbc.anchor = GridBagConstraints.LINE_START;
@@ -451,15 +452,18 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 4;
         panelDoctor.add(lblPrescriptions, gbc);
 
+
+
         /* Row 5 */
         panelDoctorPrescriptions = new JPanel();
+        panelDoctorPrescriptions.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 5;
         panelDoctor.add(panelDoctorPrescriptions, gbc);
 
         /* Row 6 */
         JLabel lblTests = new JLabel("Tests", SwingConstants.LEADING);
-        lblTests.setFont(new Font("Serif", Font.BOLD, 16));
+        lblTests.setFont(new Font("Arial", Font.BOLD, 20));
         gbc = new GridBagConstraints();
         gbc.insets= new Insets(10,0,0,0);
         gbc.anchor = GridBagConstraints.LINE_START;
@@ -475,7 +479,7 @@ public class HealthDBUI extends JFrame {
 
         /* Row 8 */
         JLabel lblReferrals = new JLabel("Referrals", SwingConstants.LEADING);
-        lblReferrals.setFont(new Font("Serif", Font.BOLD, 16));
+        lblReferrals.setFont(new Font("Arial", Font.BOLD, 20));
         gbc = new GridBagConstraints();
         gbc.insets= new Insets(10,0,0,0);
         gbc.anchor = GridBagConstraints.LINE_START;
@@ -488,6 +492,13 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 9;
         panelDoctor.add(panelDoctorReferrals, gbc);
+
+        /* Row 10 */
+        panelDoctorActions= new JPanel();
+        panelDoctorActions.setLayout(new FlowLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 10;
+        panelDoctor.add(panelDoctorActions, gbc);
     }
 
     private void setPanelDoctorFinder() {
@@ -516,6 +527,11 @@ public class HealthDBUI extends JFrame {
                 txtDocAddr.setText(doctorMap.get("Addr"));
                 txtDocHomeNum.setText(doctorMap.get("HomeNum"));
                 txtDocMobileNum.setText(doctorMap.get("MobileNum"));
+
+                /* TODO Update prescription, test and referral panels */
+                hdb.getPrescriptions(doctorMap.get("PID"));
+                hdb.getTests(doctorMap.get("PID"));
+                hdb.getReferrals(doctorMap.get("PID"));
             }
         });
         btnFindDoctor.setText("Find Doctor");
@@ -601,20 +617,127 @@ public class HealthDBUI extends JFrame {
 
     private void setPanelDoctorPrescriptions() {
 
+        JLabel lbl = new JLabel("ID");
+        lbl.setPreferredSize(new Dimension(50, 25));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 1;
+        panelDoctorPrescriptions.add(lbl, gbc);
+
+        lbl = new JLabel("Date");
+        lbl.setPreferredSize(new Dimension(75, 25));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1; gbc.gridy = 1;
+        panelDoctorPrescriptions.add(lbl, gbc);
+
+        lbl = new JLabel("Medication");
+        lbl.setPreferredSize(new Dimension(150, 25));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2; gbc.gridy = 1;
+        panelDoctorPrescriptions.add(lbl, gbc);
+
+        lbl = new JLabel("Dosage");
+        lbl.setPreferredSize(new Dimension(75, 25));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3; gbc.gridy = 1;
+        panelDoctorPrescriptions.add(lbl, gbc);
+
+        lbl = new JLabel("Quantity");
+        lbl.setPreferredSize(new Dimension(75, 25));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4; gbc.gridy = 1;
+        panelDoctorPrescriptions.add(lbl, gbc);
+
+        lbl = new JLabel("Status");
+        lbl.setPreferredSize(new Dimension(50, 25));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 5; gbc.gridy = 1;
+        panelDoctorPrescriptions.add(lbl, gbc);
     }
 
     private void setPanelDoctorTests() {
+
+        JLabel lbl = new JLabel("ID");
+        lbl.setPreferredSize(new Dimension(50, 25));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 0;
+        panelDoctorTests.add(lbl, gbc);
+
+        lbl = new JLabel("Date");
+        lbl.setPreferredSize(new Dimension(75, 25));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1; gbc.gridy = 0;
+        panelDoctorTests.add(lbl, gbc);
+
+        lbl = new JLabel("Status");
+        lbl.setPreferredSize(new Dimension(150, 25));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2; gbc.gridy = 0;
+        panelDoctorTests.add(lbl, gbc);
 
     }
 
     private void setPanelDoctorReferrals() {
 
+        JLabel lbl = new JLabel("Doctor");
+        lbl.setPreferredSize(new Dimension(150, 25));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 0;
+        panelDoctorReferrals.add(lbl, gbc);
+
+        lbl = new JLabel("Specialization");
+        lbl.setPreferredSize(new Dimension(100, 25));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1; gbc.gridy = 0;
+        panelDoctorReferrals.add(lbl, gbc);
+
+        lbl = new JLabel("Date");
+        lbl.setPreferredSize(new Dimension(75, 25));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2; gbc.gridy = 0;
+        panelDoctorReferrals.add(lbl, gbc);
+
     }
 
-    /**
-     * Updates the current panel with database information
-     */
-    private void updatePanel() {
+    private void setPanelDoctorActions() {
+        JButton btnCreatePrescription = new JButton();
+        btnCreatePrescription.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hdb.createPrescription();
+            }
+        });
+        btnCreatePrescription.setText("Create New Prescription");
+        panelDoctorActions.add(btnCreatePrescription);
+
+        JButton btnRenewPrescription = new JButton();
+        btnRenewPrescription.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hdb.renewPrescription();
+            }
+        });
+        btnRenewPrescription.setText("Renew Prescription");
+        panelDoctorActions.add(btnRenewPrescription);
+
+        JButton btnCreateTest= new JButton();
+        btnCreateTest.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hdb.createTest();
+            }
+        });
+        btnCreateTest.setText("Create New Test");
+        panelDoctorActions.add(btnCreateTest);
+
+        JButton btnCreateReferral = new JButton();
+        btnCreateReferral.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hdb.createReferral();
+            }
+        });
+        btnCreateReferral.setText("Create New Referral");
+        panelDoctorActions.add(btnCreateReferral);
 
     }
 

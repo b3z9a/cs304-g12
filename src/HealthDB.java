@@ -111,4 +111,73 @@ public class HealthDB {
 
 		return doctor;
 	}
+
+	/**
+	 * Creates a prescription
+	 */
+	public void createPrescription() {
+
+		/* TODO Create a prescription */
+		System.out.println("Create a Prescription");
+	}
+
+	/**
+	 * Renews a prescription
+	 */
+	public void renewPrescription() {
+
+		/* TODO Renew a prescription */
+		System.out.println("Renew a Prescription");
+	}
+
+	/**
+	 * Creates a test
+	 */
+	public void createTest() {
+
+		/* TODO Create a test */
+		System.out.println("Create a Test");
+	}
+
+	/**
+	 * Creates a referral
+	 */
+	public void createReferral() {
+
+		/* TODO Create a referral */
+		System.out.println("Create a Referral");
+	}
+
+	/**
+	 * Returns the prescriptions of the specified doctor
+	 *
+	 * @param pid- the PID of the selected Doctor
+	 * @return prescription data
+	 */
+	public void getPrescriptions(String pid) {
+
+		/* TODO Return the prescriptions of the specified doctor */
+	}
+
+	/**
+	 * Returns the tests of the specified doctor
+	 *
+	 * @param pid - the PID of the selected Doctor
+	 * @return test data
+	 */
+	public void getTests(String pid) {
+
+		/* TODO Return the tests of the specified doctor */
+	}
+
+	/**
+	 * Returns the referrals of the specified doctor
+	 *
+	 * @param pid - the PID of the selected Doctor
+	 * @return referral data
+	 */
+	public void getReferrals(String pid) {
+
+		/* TODO Return the referrals of the specified doctor */
+	}
 }
