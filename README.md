@@ -27,9 +27,9 @@ Our database will model an integrated healthcare database that would be used by 
 
 2. Navigate to the `\cs304-g12\src\` folder
 
-3. Compile the source code by running `javac HealthDBApp.java HealthDB.java` [Note: compile any other classes here as well.]
+3. Compile the source code by running `javac HealthDBUI.java HealthDB.java` [Note: compile any other classes here as well.]
 
-4. Run the application by running `java HealthDBApp`
+4. Run the application by running `java HealthDBUI`
 
 ### Running the Application in SSH and a Command Line Interface
 
@@ -39,9 +39,9 @@ Our database will model an integrated healthcare database that would be used by 
 
 3. Navigate to `Your_Folder\cs304-g12\src`
 
-4. Compile the .java files by running `javac HealthDBApp.java HealthDB.java`
+4. Compile the .java files by running `javac HealthDBUI.java HealthDB.java`
 
-5. Run the app by running `java HealthDBApp`
+5. Run the app by running `java HealthDBUI`
 
 6. Use your Oracle DB credentials as provided in Tutorial 4 to log into the database and use the app.
 
