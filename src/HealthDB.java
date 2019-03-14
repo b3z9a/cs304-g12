@@ -1,17 +1,17 @@
 import java.util.HashMap;
 
 /**
- * <h2>HealthDB</h2> 
+ * <h2>HealthDB</h2>
  * Handles the back end logic of the Healthcare Database, including communication
  * with the Oracle database
  * <br>
  * CPSC 304 Group 12
- * 
+ *
  * @author Jenna Bains
  * @author Laura Green
  * @author Michelle Kong
  * @author Jan Louis Evangelista
- * 
+ *
  *         <br>
  *         Note: The Oracle DB + JDBC example provided by the CS department,
  *         branch.java has been used as a reference for building this
@@ -20,7 +20,7 @@ import java.util.HashMap;
 public class HealthDB {
 	private String username;
 	private String password;
-	
+
 	private Integer userClass;
 
 	/**
@@ -28,14 +28,20 @@ public class HealthDB {
 	 */
 	public HealthDB() {
 		System.out.println("HealthDB App Started");
-
+		try
+		{ // Load the Oracle JDBC driver
+			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());}
+			System.out.println("Oracle driver loaded.");
+		catch (SQLException ex){
+				System.out.println("Error loading Oracle driver: " + ex.getMessage());
+				System.exit(-1);}
 		/* TODO Initialize stuff here */
 	}
 
 	/**
 	 * setOracleCredentials Sets the username and password to be used to log into
 	 * the Oracle database
-	 * 
+	 *
 	 * @param username - the username to log into the Oracle DB
 	 * @param password - the password to log into the Oracle DB
 	 */
@@ -48,18 +54,25 @@ public class HealthDB {
 
 	/**
 	 * connectToDB Connects to the Oracle DB using credentials
-	 * 
+	 *
 	 * @param username - the username to log into the Oracle DB
 	 * @param password - the password to log into the Oracle DB
-	 * 
+	 *
 	 * @return true - if Oracle database is connected to the app, false otherwise
 	 */
 	public Boolean connectToDB(String username, String password) {
 		/* TODO Connect to the Oracle DB */
+		String connectURL = "jdbc:oracle:thin:@dbhost.ugrad.cs.ubc.ca:1522:ug";
 
-		return true;
+		try {
+			con = DriverManager.getConnection(connectURL,username,password);
+			System.out.println("\nConnected to Oracle!");
+			return true;}
+		catch (SQLException ex){
+			System.out.println("Error connecting to Oracle: " + ex.getMessage());
+			return false;}
 	}
-	
+
 	/**
 	 * setUserClass
 	 * Sets the user class as selected by the user
@@ -78,9 +91,9 @@ public class HealthDB {
 			case "Doctor":
 				this.userClass = 2;
 				break;
-				
+
 			/* TODO Complete the cases for the other user classes */
-				
+
 			default:
 				this.userClass = 1;
 				break;
