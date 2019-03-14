@@ -212,7 +212,7 @@ public class HealthDBUI extends JFrame {
                     JOptionPane.showMessageDialog(frame, "Login Failed: Username or Password missing!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
                 }
                 else {
-                    System.out.println("Login credentials: " + username + " " + password);
+                    //System.out.println("Login credentials: " + username + " " + password);
 
                     hdb.setOracleCredentials(username, password);
 

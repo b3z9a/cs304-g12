@@ -1,3 +1,4 @@
+import java.sql.*;
 import java.util.HashMap;
 
 /**
@@ -22,20 +23,19 @@ public class HealthDB {
 	private String password;
 
 	private Integer userClass;
+	private Connection con;
 
 	/**
 	 * HealthDB Constructor
 	 */
 	public HealthDB() {
 		System.out.println("HealthDB App Started");
-		try
-		{ // Load the Oracle JDBC driver
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());}
-			System.out.println("Oracle driver loaded.");
+		try{ // Load the Oracle JDBC driver
+			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+			System.out.println("Oracle driver loaded.");}
 		catch (SQLException ex){
 				System.out.println("Error loading Oracle driver: " + ex.getMessage());
 				System.exit(-1);}
-		/* TODO Initialize stuff here */
 	}
 
 	/**
@@ -61,9 +61,7 @@ public class HealthDB {
 	 * @return true - if Oracle database is connected to the app, false otherwise
 	 */
 	public Boolean connectToDB(String username, String password) {
-		/* TODO Connect to the Oracle DB */
 		String connectURL = "jdbc:oracle:thin:@dbhost.ugrad.cs.ubc.ca:1522:ug";
-
 		try {
 			con = DriverManager.getConnection(connectURL,username,password);
 			System.out.println("\nConnected to Oracle!");
@@ -71,6 +69,7 @@ public class HealthDB {
 		catch (SQLException ex){
 			System.out.println("Error connecting to Oracle: " + ex.getMessage());
 			return false;}
+			/* TODO Initialize tables */
 	}
 
 	/**
