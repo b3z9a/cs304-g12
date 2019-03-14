@@ -58,6 +58,14 @@ public class HealthDBUI extends JFrame {
     private JPanel panelDoctorReferrals;
     private JPanel panelDoctorActions;
 
+    private JPanel panelPharmacistFinder;
+    private JPanel panelPharmacistInfo;
+    private JPanel panelPharmacistPrescriptions;
+
+    private JPanel panelLabFinder;
+    private JPanel panelLabInfo;
+    private JPanel panelLabTests;
+
     JTextField txtDocName;
     JTextField txtDocPID;
     JTextField txtDocAddr;
@@ -66,6 +74,17 @@ public class HealthDBUI extends JFrame {
 
     private HashMap<String, String> doctorMap;
 
+    private JTextField txtPharmName;
+    private JTextField txtPharmPID;
+    private JTextField txtPharmAddr;
+    private JTextField txtPharmHomeNum;
+    private JTextField txtPharmMobileNum;
+
+    private JTextField txtLabName;
+    private JTextField txtLabPID;
+    private JTextField txtLabAddr;
+    private JTextField txtLabHomeNum;
+    private JTextField txtLabMobileNum;
 
     public static void main(String args[]) {
         hdb = new HealthDB();
@@ -93,6 +112,16 @@ public class HealthDBUI extends JFrame {
         setPanelDoctorTests();
         setPanelDoctorReferrals();
         setPanelDoctorActions();
+
+        setPanelPharmacist();
+        setPanelPharmacistFinder();
+        setPanelPharmacistInfo();
+        setPanelPharmacistPrescriptions();
+
+        setPanelLabTech();
+        setPanelLabFinder();
+        setPanelLabInfo();
+        setPanelLabTests();
     }
 
     /**
@@ -120,8 +149,6 @@ public class HealthDBUI extends JFrame {
         panelOracleLogin.setLayout(new GridBagLayout());
         panelOracleLogin.setEnabled(true);
         panelRoot.add(panelOracleLogin, "Card1");
-
-
 
         lblOracleLogin = new JLabel();
         lblOracleLogin.setHorizontalAlignment(0);
@@ -382,16 +409,12 @@ public class HealthDBUI extends JFrame {
         panelUserClassInfo.add(panelDoctor, "Card2");
 
         panelPharmacist = new JPanel();
+        panelPharmacist.setLayout(new GridBagLayout());
         panelUserClassInfo.add(panelPharmacist, "Card3");
-        lblPharmacist = new JLabel();
-        lblPharmacist.setText("Pharmacist");
-        panelPharmacist.add(lblPharmacist);
 
         panelLabTech = new JPanel();
+        panelLabTech.setLayout(new GridBagLayout());
         panelUserClassInfo.add(panelLabTech, "Card4");
-        lblLabTech = new JLabel();
-        lblLabTech.setText("Lab Technician");
-        panelLabTech.add(lblLabTech);
 
         panelPatient = new JPanel();
         panelUserClassInfo.add(panelPatient, "Card5");
@@ -693,4 +716,347 @@ public class HealthDBUI extends JFrame {
 
     }
 
+    private void setPanelPharmacist() {
+        JLabel lbl = new JLabel("Pharmacist");
+        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setHorizontalAlignment(SwingConstants.LEADING);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 0; gbc.gridy = 0;
+        panelPharmacist.add(lbl, gbc);
+
+        /* Row 1 */
+        panelPharmacistFinder = new JPanel();
+        panelPharmacistFinder.setLayout(new FlowLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 1;
+        panelPharmacist.add(panelPharmacistFinder, gbc);
+
+        /* Row 2 */
+        lbl = new JLabel("Personal Information", SwingConstants.LEADING);
+        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(10,0,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 2;
+        panelPharmacist.add(lbl, gbc);
+
+        /* Row 3 */
+        panelPharmacistInfo = new JPanel();
+        panelPharmacistInfo.setLayout(new GridBagLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 3;
+        panelPharmacist.add(panelPharmacistInfo, gbc);
+
+        /* Row 4 */
+        lbl = new JLabel("Prescriptions", SwingConstants.LEADING);
+        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(10,0,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 4;
+        panelPharmacist.add(lbl, gbc);
+
+
+        /* Row 5 */
+        panelPharmacistPrescriptions = new JPanel();
+        panelPharmacistPrescriptions.setLayout(new BorderLayout());
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0; gbc.weighty = 1.0;
+        gbc.gridx = 0; gbc.gridy = 5;
+        panelPharmacist.add(panelPharmacistPrescriptions, gbc);
+    }
+
+    private void setPanelPharmacistFinder() {
+        JLabel lbl = new JLabel("Prescription #:", SwingConstants.LEADING);
+        panelPharmacistFinder.add(lbl);
+
+        JTextField txtPrescription = new JTextField(10);
+        panelPharmacistFinder.add(txtPrescription);
+
+        lbl = new JLabel("PID:", SwingConstants.LEADING);
+        panelPharmacistFinder.add(lbl);
+
+        JTextField txtPID = new JTextField(8);
+        panelPharmacistFinder.add(txtPID);
+
+        lbl = new JLabel("Name:", SwingConstants.LEADING);
+        panelPharmacistFinder.add(lbl);
+
+        JTextField txtName = new JTextField(12);
+        panelPharmacistFinder.add(txtName);
+
+        JButton btnFindPrescription = new JButton();
+        btnFindPrescription.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object obj = hdb.findPrescription(txtPrescription.getText(), txtPID.getText(), txtName.getText());
+
+                /* TODO get prescriptions */
+            }
+        });
+        btnFindPrescription.setText("Find Prescription");
+        panelPharmacistFinder.add(btnFindPrescription);
+    }
+
+    private void setPanelPharmacistInfo() {
+        JLabel lbl = new JLabel("Name");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 0; gbc.gridy = 3;
+        panelPharmacistInfo.add(lbl, gbc);
+
+        txtPharmName = new JTextField(12);
+        txtPharmName.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 1; gbc.gridy = 3;
+        panelPharmacistInfo.add(txtPharmName, gbc);
+
+        lbl = new JLabel("PID");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 2; gbc.gridy = 3;
+        panelPharmacistInfo.add(lbl, gbc);
+
+        txtPharmPID = new JTextField(10);
+        txtPharmPID.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 3; gbc.gridy = 3;
+        panelPharmacistInfo.add(txtPharmPID, gbc);
+
+        lbl = new JLabel("Address");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 0; gbc.gridy = 4;
+        panelPharmacistInfo.add(lbl, gbc);
+
+        txtPharmAddr = new JTextField(26);
+        txtPharmAddr.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 1; gbc.gridy = 4;
+        panelPharmacistInfo.add(txtPharmAddr, gbc);
+
+        lbl = new JLabel("Mobile Num");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 0; gbc.gridy = 6;
+        panelPharmacistInfo.add(lbl, gbc);
+
+        txtPharmMobileNum = new JTextField(10);
+        txtPharmMobileNum.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 1; gbc.gridy = 6;
+        panelPharmacistInfo.add(txtPharmMobileNum, gbc);
+
+        lbl = new JLabel("Home Num");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 2; gbc.gridy = 6;
+        panelPharmacistInfo.add(lbl, gbc);
+
+        txtPharmHomeNum = new JTextField(10);
+        txtPharmHomeNum.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 3; gbc.gridy = 6;
+        panelPharmacistInfo.add(txtPharmHomeNum, gbc);
+
+    }
+
+    private void setPanelPharmacistPrescriptions() {
+        String cols[] = {"ID", "Date", "Medication", "Dosage", "Quantity", "Status", "Fill"};
+        String data[][] = {};
+        JTable presTable = new JTable(data, cols);
+        panelPharmacistPrescriptions.add(presTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelPharmacistPrescriptions.add(presTable, BorderLayout.CENTER);
+    }
+
+    private void setPanelLabTech() {
+        JLabel lbl = new JLabel("Lab Technician");
+        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setHorizontalAlignment(SwingConstants.LEADING);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 0; gbc.gridy = 0;
+        panelLabTech.add(lbl, gbc);
+
+        /* Row 1 */
+        panelLabFinder = new JPanel();
+        panelLabFinder.setLayout(new FlowLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 1;
+        panelLabTech.add(panelLabFinder, gbc);
+
+        /* Row 2 */
+        lbl = new JLabel("Personal Information", SwingConstants.LEADING);
+        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(10,0,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 2;
+        panelLabTech.add(lbl, gbc);
+
+        /* Row 3 */
+        panelLabInfo = new JPanel();
+        panelLabInfo.setLayout(new GridBagLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 3;
+        panelLabTech.add(panelLabInfo, gbc);
+
+        /* Row 4 */
+        lbl = new JLabel("Prescriptions", SwingConstants.LEADING);
+        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(10,0,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 4;
+        panelLabTech.add(lbl, gbc);
+
+
+        /* Row 5 */
+        panelLabTests = new JPanel();
+        panelLabTests.setLayout(new BorderLayout());
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0; gbc.weighty = 1.0;
+        gbc.gridx = 0; gbc.gridy = 5;
+        panelLabTech.add(panelLabTests, gbc);
+    }
+
+    private void setPanelLabFinder() {
+        JLabel lbl = new JLabel("Test #:", SwingConstants.LEADING);
+        panelLabFinder.add(lbl);
+
+        JTextField txtTest = new JTextField(10);
+        panelLabFinder.add(txtTest);
+
+        lbl = new JLabel("PID:", SwingConstants.LEADING);
+        panelLabFinder.add(lbl);
+
+        JTextField txtPID = new JTextField(8);
+        panelLabFinder.add(txtPID);
+
+        lbl = new JLabel("Name:", SwingConstants.LEADING);
+        panelLabFinder.add(lbl);
+
+        JTextField txtName = new JTextField(12);
+        panelLabFinder.add(txtName);
+
+        JButton btnFindTests = new JButton();
+        btnFindTests.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object obj = hdb.findTest(txtTest.getText(), txtPID.getText(), txtName.getText());
+
+                /* TODO get tests */
+            }
+        });
+        btnFindTests.setText("Find Tests");
+        panelLabFinder.add(btnFindTests);
+    }
+
+    private void setPanelLabInfo() {
+        JLabel lbl = new JLabel("Name");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 0; gbc.gridy = 3;
+        panelLabInfo.add(lbl, gbc);
+
+        txtLabName = new JTextField(12);
+        txtLabName.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 1; gbc.gridy = 3;
+        panelLabInfo.add(txtLabName, gbc);
+
+        lbl = new JLabel("PID");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 2; gbc.gridy = 3;
+        panelLabInfo.add(lbl, gbc);
+
+        txtLabPID = new JTextField(10);
+        txtLabPID.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 3; gbc.gridy = 3;
+        panelLabInfo.add(txtLabPID, gbc);
+
+        lbl = new JLabel("Address");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 0; gbc.gridy = 4;
+        panelLabInfo.add(lbl, gbc);
+
+        txtLabAddr = new JTextField(26);
+        txtLabAddr.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 1; gbc.gridy = 4;
+        panelLabInfo.add(txtLabAddr, gbc);
+
+        lbl = new JLabel("Mobile Num");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 0; gbc.gridy = 6;
+        panelLabInfo.add(lbl, gbc);
+
+        txtLabMobileNum = new JTextField(10);
+        txtLabMobileNum.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 1; gbc.gridy = 6;
+        panelLabInfo.add(txtLabMobileNum, gbc);
+
+        lbl = new JLabel("Home Num");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 2; gbc.gridy = 6;
+        panelLabInfo.add(lbl, gbc);
+
+        txtLabHomeNum = new JTextField(10);
+        txtLabHomeNum.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 3; gbc.gridy = 6;
+        panelLabInfo.add(txtLabHomeNum, gbc);
+
+    }
+
+    private void setPanelLabTests() {
+        String cols[] = {"ID", "Date", "Medication", "Dosage", "Quantity", "Status", "Fill"};
+        String data[][] = {};
+        JTable presTable = new JTable(data, cols);
+        panelLabTests.add(presTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelLabTests.add(presTable, BorderLayout.CENTER);
+    }
 }
