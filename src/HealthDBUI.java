@@ -66,6 +66,19 @@ public class HealthDBUI extends JFrame {
     private JPanel panelLabInfo;
     private JPanel panelLabTests;
 
+    private JPanel panelInvoiceFinder;
+    private JPanel panelInvoiceInfo;
+    private JPanel panelInvoiceSubmit;
+
+    JTextField txtInvoiceID;
+    JTextField txtInvoicePID;
+    JTextField txtInvoicePlanID;
+    JTextField txtInvoicePatientName;
+
+
+
+    // private HashMap<String, String> invoiceMap;
+
     JTextField txtDocName;
     JTextField txtDocPID;
     JTextField txtDocAddr;
@@ -122,6 +135,11 @@ public class HealthDBUI extends JFrame {
         setPanelLabFinder();
         setPanelLabInfo();
         setPanelLabTests();
+
+        setPanelInvoice();
+        setPanelInvoiceFinder();
+        setPanelInvoiceInfo();
+        setPanelInvoiceSubmit();
     }
 
     /**
@@ -423,10 +441,14 @@ public class HealthDBUI extends JFrame {
         panelPatient.add(lblPatient);
 
         panelInvoice = new JPanel();
+        panelInvoice.setLayout(new GridBagLayout());
         panelUserClassInfo.add(panelInvoice, "Card6");
-        lblInvoice = new JLabel();
-        lblInvoice.setText("Invoice");
-        panelInvoice.add(lblInvoice);
+
+        // panelInvoice = new JPanel();
+        // panelUserClassInfo.add(panelInvoice, "Card6");
+        //  lblInvoice = new JLabel();
+        // lblInvoice.setText("Invoice");
+        //panelInvoice.add(lblInvoice);
 
         panelEmpty = new JPanel();
         panelUserClassInfo.add(panelEmpty, "Card7");
@@ -1059,4 +1081,258 @@ public class HealthDBUI extends JFrame {
         panelLabTests.add(presTable.getTableHeader(), BorderLayout.PAGE_START);
         panelLabTests.add(presTable, BorderLayout.CENTER);
     }
+
+
+    private void setPanelInvoice() {
+        lblInvoice = new JLabel("Invoice");
+        lblInvoice.setFont(new Font("Arial", Font.BOLD, 20));
+        lblInvoice.setHorizontalAlignment(SwingConstants.LEADING);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 0; gbc.gridy = 0;
+        panelInvoice.add(lblInvoice, gbc);
+
+        /* Row 1 */
+        panelInvoiceFinder = new JPanel();
+        panelInvoiceFinder.setLayout(new FlowLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 1;
+        panelInvoice.add(panelInvoiceFinder, gbc);
+
+        /* Row 2 */
+        JLabel lblInvoiceInfo = new JLabel("Invoice Information", SwingConstants.LEADING);
+        lblInvoiceInfo.setFont(new Font("Arial", Font.BOLD, 20));
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(10,0,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 2;
+        panelInvoice.add(lblInvoiceInfo, gbc);
+
+        /* Row 3 */
+        panelInvoiceInfo = new JPanel();
+        panelInvoiceInfo.setLayout(new GridBagLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 3;
+        panelInvoice.add(panelInvoiceInfo, gbc);
+
+        /* Row 4 */
+        JLabel lblSubmitInvoiceInfo = new JLabel("Submit Information", SwingConstants.LEADING);
+        lblSubmitInvoiceInfo.setFont(new Font("Arial", Font.BOLD, 20));
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(10,0,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 20;
+        panelInvoice.add(lblSubmitInvoiceInfo, gbc);
+
+        /* Row 5 */
+        panelInvoiceSubmit = new JPanel();
+        panelInvoiceSubmit.setLayout(new FlowLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 5;
+        panelInvoice.add(panelInvoiceSubmit, gbc);
+
+    }
+
+    // private JPanel panelInvoiceFinder;
+    // private JPanel panelInvoiceInfo;
+    private void setPanelInvoiceFinder() {
+        JLabel lbl = new JLabel("HID:", SwingConstants.LEADING);
+        panelInvoiceFinder.add(lbl);
+
+        JTextField txtITest = new JTextField(10);
+        panelInvoiceFinder.add(txtITest);
+
+        lbl = new JLabel("Staff Name:", SwingConstants.LEADING);
+        panelInvoiceFinder.add(lbl);
+
+        JTextField txtPID = new JTextField(8);
+        panelInvoiceFinder.add(txtPID);
+
+        lbl = new JLabel("Invoice #:", SwingConstants.LEADING);
+        panelInvoiceFinder.add(lbl);
+
+        JTextField txtName = new JTextField(12);
+        panelInvoiceFinder.add(txtName);
+
+        JLabel lbl2 = new JLabel("PID:", SwingConstants.LEADING);
+        panelInvoiceFinder.add(lbl2);
+
+        JTextField txtITest2 = new JTextField(10);
+        panelInvoiceFinder.add(txtITest2);
+
+        JLabel lbl3 = new JLabel("Patient Name:", SwingConstants.LEADING);
+        panelInvoiceFinder.add(lbl3);
+
+        final JTextField txtITest3 = new JTextField(10);
+        panelInvoiceFinder.add(txtITest3);
+
+        JLabel lbl4 = new JLabel("Plan #:", SwingConstants.LEADING);
+        panelInvoiceFinder.add(lbl4);
+
+        final JTextField txtITest4 = new JTextField(10);
+        panelInvoiceFinder.add(txtITest4);
+
+        JButton btnFindInvoice = new JButton();
+        btnFindInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object obj = hdb.findInvoice(txtITest.getText(), txtPID.getText(), txtName.getText(),
+                        txtITest2.getText(), txtITest3.getText(), txtITest4.getText());
+
+                /* TODO get tests */
+            }
+        });
+        btnFindInvoice.setText("Find Invoices");
+        panelInvoiceFinder.add(btnFindInvoice);
+    }
+
+    // JTextField txtInvoiceID;
+    // JTextField txtInvoicePID;
+    // JTextField txtInvoicePlanID;
+    // JTextField txtInvoicePatientName;
+
+    private void setPanelInvoiceInfo() {
+        JLabel lbl = new JLabel("Invoice ID:");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 0; gbc.gridy = 3;
+        panelInvoiceInfo.add(lbl, gbc);
+
+        txtInvoiceID = new JTextField(12);
+        txtInvoiceID.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 1; gbc.gridy = 3;
+        panelInvoiceInfo.add(txtInvoiceID, gbc);
+
+        lbl = new JLabel("Plan ID:");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 2; gbc.gridy = 3;
+        panelInvoiceInfo.add(lbl, gbc);
+
+        txtInvoicePlanID = new JTextField(12);
+        txtInvoicePlanID.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 3; gbc.gridy = 3;
+        panelInvoiceInfo.add(txtInvoicePlanID, gbc);
+
+        lbl = new JLabel("Patient ID:");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 0; gbc.gridy = 4;
+        panelInvoiceInfo.add(lbl, gbc);
+
+        txtInvoicePlanID = new JTextField(12);
+        txtInvoicePlanID.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 1; gbc.gridy = 4;
+        panelInvoiceInfo.add(txtInvoicePlanID, gbc);
+
+        lbl = new JLabel("Patient Name:");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 2; gbc.gridy = 4;
+        panelInvoiceInfo.add(lbl, gbc);
+
+        txtInvoicePatientName = new JTextField(12);
+        txtInvoicePatientName.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 3; gbc.gridy = 4;
+        panelInvoiceInfo.add(txtInvoicePatientName, gbc);
+
+
+/*
+        lbl = new JLabel("Creation Date:");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 0; gbc.gridy = 10;
+        panelInvoiceInfo.add(lbl, gbc);
+
+        txtInvoiceCreationDate = new JTextField(10);
+        txtInvoiceCreationDate.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 1; gbc.gridy = 10;
+        panelInvoiceInfo.add(txtInvoiceCreationDate, gbc);*/
+
+    }
+
+    private void setPanelInvoiceSubmit() {
+        JLabel lbl1 = new JLabel("Creation Date:", SwingConstants.LEADING);
+        lbl1.set
+        panelInvoiceFinder.add(lbl1);
+
+        final JTextField txtCreationDate = new JTextField(10);
+        panelInvoiceFinder.add(txtCreationDate);
+
+        JLabel lbl2 = new JLabel("Due Date:", SwingConstants.LEADING);
+        panelInvoiceFinder.add(lbl2);
+
+        final JTextField txtDueDate = new JTextField(8);
+        panelInvoiceFinder.add(txtDueDate);
+
+        JLabel lbl3 = new JLabel("Invoice item:", SwingConstants.LEADING);
+        panelInvoiceFinder.add(lbl3);
+
+        final JTextField txtInvoiceItem = new JTextField(12);
+        panelInvoiceFinder.add(txtInvoiceItem);
+
+        JLabel lbl4 = new JLabel("Payment Status:", SwingConstants.LEADING);
+        panelInvoiceFinder.add(lbl4);
+
+        final JTextField txtPaymentStatus = new JTextField(10);
+        panelInvoiceFinder.add(txtPaymentStatus);
+
+        JLabel lbl5 = new JLabel("Patient Date:", SwingConstants.LEADING);
+        panelInvoiceFinder.add(lbl5);
+
+        JTextField txtPaymentDate = new JTextField(10);
+        panelInvoiceFinder.add(txtPaymentDate);
+
+        JLabel lbl6 = new JLabel("Payment Method:", SwingConstants.LEADING);
+        panelInvoiceFinder.add(lbl6);
+
+        final JTextField txtPaymentMethod = new JTextField(10);
+        panelInvoiceFinder.add(txtPaymentMethod);
+
+        JLabel lbl7 = new JLabel("Amount Owing:", SwingConstants.LEADING);
+        panelInvoiceFinder.add(lbl7);
+
+        final JTextField txtAmountOwing = new JTextField(10);
+        panelInvoiceFinder.add(txtAmountOwing);
+
+        JButton btnSubmitInvoice = new JButton();
+        btnSubmitInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object obj = hdb.submitInvoice(txtCreationDate.getText(), txtDueDate.getText(), txtInvoiceItem.getText(),
+                        txtPaymentStatus.getText(), txtPaymentDate.getText(), txtPaymentMethod.getText(),
+                        txtAmountOwing.getText());
+
+                // submitInvoice(String creationDate, String dueDate, String invoiceItem,
+                //                              String paymentStatus, String paymentDate, String paymentMethod, String amountOwing)
+
+                /* TODO get tests */
+            }
+        });
+        btnSubmitInvoice.setText("Submit Invoices");
+        panelInvoiceFinder.add(btnSubmitInvoice);
+    }
+
 }
