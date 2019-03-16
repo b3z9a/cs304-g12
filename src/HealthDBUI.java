@@ -229,6 +229,11 @@ public class HealthDBUI extends JFrame {
 
                     JOptionPane.showMessageDialog(frame, "Login Failed: Username or Password missing!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
                 }
+                else if (username.equals("admin") || password.equals("admin")) {
+
+                    /* Bypass Oracle DB connection for local testing */
+                    switchToUserSelectPanel();
+                }
                 else {
                     //System.out.println("Login credentials: " + username + " " + password);
 
@@ -236,16 +241,9 @@ public class HealthDBUI extends JFrame {
 
                     /* Switch to next view only if database connection is made */
                     if (hdb.connectToDB(username, password)) {
+
                         /* Switch to User Class panel when login achieved */
-                        panelOracleLogin.setVisible(false);
-                        panelUserClass.setVisible(true);
-                        panelEmpty.setVisible(true);
-                        panelAdministrator.setVisible(false);
-                        panelDoctor.setVisible(false);
-                        panelPharmacist.setVisible(false);
-                        panelLabTech.setVisible(false);
-                        panelPatient.setVisible(false);
-                        panelInvoice.setVisible(false);
+                        switchToUserSelectPanel();
                     }
                     else {
                         System.out.println("Login Failed!");
@@ -1275,7 +1273,6 @@ public class HealthDBUI extends JFrame {
 
     private void setPanelInvoiceSubmit() {
         JLabel lbl1 = new JLabel("Creation Date:", SwingConstants.LEADING);
-        lbl1.set
         panelInvoiceFinder.add(lbl1);
 
         final JTextField txtCreationDate = new JTextField(10);
@@ -1333,6 +1330,19 @@ public class HealthDBUI extends JFrame {
         });
         btnSubmitInvoice.setText("Submit Invoices");
         panelInvoiceFinder.add(btnSubmitInvoice);
+    }
+
+    private void switchToUserSelectPanel() {
+        /* Switch to User Class panel when login achieved */
+        panelOracleLogin.setVisible(false);
+        panelUserClass.setVisible(true);
+        panelEmpty.setVisible(true);
+        panelAdministrator.setVisible(false);
+        panelDoctor.setVisible(false);
+        panelPharmacist.setVisible(false);
+        panelLabTech.setVisible(false);
+        panelPatient.setVisible(false);
+        panelInvoice.setVisible(false);
     }
 
 }
