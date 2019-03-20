@@ -1,5 +1,5 @@
 import java.sql.*;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * <h2>HealthDB</h2>
@@ -161,31 +161,59 @@ public class HealthDB {
 	}
 
 	/**
-	 * Returns the prescriptions of the specified doctor
+	 * Returns the prescriptions of the specified patient
 	 *
-	 * @param pid- the PID of the selected Doctor
+	 * @param pid- the PID of the selected Patient
 	 * @return prescription data
 	 */
-	public void getPrescriptions(String pid) {
+	public ArrayList<ArrayList<String>> getPrescriptions(String pid) {
+		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
+		try{
+			String query = "select pr.prescriptionID, pr.prescribedDate, m.medication, pr.dosage, m.dosageMeasure, pr.quantity, pr.filledDate from prescription pr, medication m where pr.medication = m.medication and pr.patientID = "+ pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
 
-		/* TODO Return the prescriptions of the specified doctor */
+			// Get the number of columns
+			int numCols = rsmd.getColumnCount();
+
+			while(rs.next()){
+				ArrayList tuple = new ArrayList<String>();
+				tuple.add(rs.getString("prescriptionID"));
+				tuple.add(rs.getString("prescribedDate"));
+				tuple.add(rs.getString("medication"));
+				tuple.add(rs.getString("dosage"));
+				tuple.add(rs.getString("dosageMeasure"));
+				tuple.add(rs.getString("quantity"));
+				tuple.add(rs.getString("filledDate"));
+				tuples.add(tuple);
+			}
+
+			// Close the stament, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get prescriptions. " + ex.getMessage());
+		}
+		return tuples;
 	}
 
 	/**
 	 * Returns the tests of the specified doctor
 	 *
-	 * @param pid - the PID of the selected Doctor
+	 * @param pid - the PID of the selected Patient
 	 * @return test data
 	 */
 	public void getTests(String pid) {
 
-		/* TODO Return the tests of the specified doctor */
+		/* TODO Return the tests of the specified patient */
 	}
 
 	/**
-	 * Returns the referrals of the specified doctor
-	 *
-	 * @param pid - the PID of the selected Doctor
+	 * Returns the referrals of the specified patient
+	 	 *
+	 * @param pid - the PID of the selected Patient
 	 * @return referral data
 	 */
 	public void getReferrals(String pid) {
