@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.util.*;
 
 public class HealthDBUI extends JFrame {
 
@@ -579,13 +579,25 @@ public class HealthDBUI extends JFrame {
                 txtDocMobileNum.setText(doctorMap.get("MobileNum"));
 
                 /* TODO Update prescription, test and referral panels */
-                hdb.getPrescriptions(doctorMap.get("PID"));
+                ArrayList<ArrayList<String>> prescriptions = hdb.getPrescriptions(doctorMap.get("PID"));
+                printTuples(prescriptions);
                 hdb.getTests(doctorMap.get("PID"));
                 hdb.getReferrals(doctorMap.get("PID"));
             }
         });
         btnFindDoctor.setText("Find Doctor");
         panelDoctorFinder.add(btnFindDoctor);
+    }
+
+    private void printTuples(ArrayList<ArrayList<String>> tuples){
+      StringBuilder sb = new StringBuilder();
+      for (ArrayList<String> list : tuples){
+        for (String s : list){
+          sb.append(s);
+        }
+        sb.append("\n");
+      }
+      System.out.println(sb.toString());
     }
 
     private void setPanelDoctorInfo() {
