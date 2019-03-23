@@ -272,6 +272,83 @@ public class HealthDB {
 		}
 		return tuples;
 	}
+	
+	/**
+	 * Returns provincial plan information for specified patient
+	 	 *
+	 * @param pid - the PID of the selected Patient
+	 * @return provincial plan information
+	 */
+	public ArrayList<ArrayList<String>> getProvincialPlan(String pid) {
+		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
+		try{
+			String query = "select planID, planType, startDate, endDate from ProvincialHealthPlan where patientID = " + pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				ArrayList<String> tuple = new ArrayList<String>();
+				tuple.add(rs.getString("planID"));
+				tuple.add(rs.getString("planType"));
+				tuple.add(rs.getString("startDate"));
+				tuple.add(rs.getString("endDate"));
+				tuples.add(tuple);
+			}
+
+			// Close the stament, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get provincial plan information " + ex.getMessage());
+		}
+		return tuples;
+	}
+	
+	/**
+	 * Returns extended benefits information for specified patient
+	 	 *
+	 * @param pid - the PID of the selected Patient
+	 * @return extended benefits information
+	 */
+	public ArrayList<ArrayList<String>> getExtendedBenefits(String pid) {
+		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
+		try{
+			String query = "select chiropractic, chiroracticAnnualLimit, chiropracticYTD, physiotherapy, physiotherapyAnnualLimit, physiotherapyYTD, nonSurgicalPodiatry, nonSurgicalPodiatryAnnualLimit, nonSurgicalPodiatryYTD, acupuncture, acupunctureAnnualLimit, acupunctureYTD, medication, medicationAnnualLimit, medicationYTD from ExtendedBenefitsPlan where patientID = "+ pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				ArrayList<String> tuple = new ArrayList<String>();
+				tuple.add(rs.getString("chiropractic"));
+				tuple.add(rs.getString("chiroracticAnnualLimit"));
+				tuple.add(rs.getString("chiropracticYTD"));
+				tuple.add(rs.getString("physiotherapy"));
+				tuple.add(rs.getString("physiotherapyAnnualLimit"));
+				tuple.add(rs.getString("physiotherapyYTD"));
+				tuple.add(rs.getString("nonSurgicalPodiatry"));
+				tuple.add(rs.getString("nonSurgicalPodiatryAnnualLimit"));
+				tuple.add(rs.getString("nonSurgicalPodiatryYTD"));
+				tuple.add(rs.getString("acupuncture"));
+				tuple.add(rs.getString("acupunctureAnnualLimit"));
+				tuple.add(rs.getString("acupunctureYTD"));
+				tuple.add(rs.getString("medication"));
+				tuple.add(rs.getString("medicationAnnualLimit"));
+				tuple.add(rs.getString("medicationYTD"));
+				tuples.add(tuple);
+			}
+
+			// Close the stament, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get extended benefits information " + ex.getMessage());
+		}
+		return tuples;
+	}
 
 	/**
 	 * Finds a prescription and returns it
