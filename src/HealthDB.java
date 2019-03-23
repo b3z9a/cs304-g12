@@ -370,7 +370,7 @@ public class HealthDB {
 	 * @param pid - the PID of the selected Patient
 	 * @return plan data
 	 */
-	pulic ArrayList<String> getPlan(String pid){
+	public ArrayList<String> getPlan(String pid){
 		ArrayList<String> tuple = new ArrayList<String>();
 		try{
 			String query = "select planID, planType, startDate, endDate from ProvincialHealthPlan where patientID = " + pid;

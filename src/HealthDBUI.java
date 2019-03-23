@@ -86,6 +86,9 @@ public class HealthDBUI extends JFrame {
     JTextField txtDocHomeNum;
 
     private ArrayList<String> doctorArr;
+    private ArrayList<ArrayList<String>> prescriptions;
+    private ArrayList<ArrayList<String>> tests;
+    private ArrayList<ArrayList<String>> referrals;
 
     private JTextField txtPharmName;
     private JTextField txtPharmPID;
@@ -581,16 +584,16 @@ public class HealthDBUI extends JFrame {
                 txtDocMobileNum.setText(doctorArr.get(8));
 
                 /* TODO Update prescription, test and referral panels */
-                ArrayList<ArrayList<String>> prescriptions = hdb.getPrescriptions(doctorArr.get(2));
+                prescriptions = hdb.getPrescriptions(doctorArr.get(2));
                 System.out.println("Prescriptions:");
                 printTuples(prescriptions);
 
                 System.out.println("Tests:");
-                ArrayList<ArrayList<String>> tests = hdb.getTests(doctorArr.get(2));
+                tests = hdb.getTests(doctorArr.get(2));
                 printTuples(tests);
 
                 System.out.println("Referrals:");
-                ArrayList<ArrayList<String>> referrals = hdb.getTests(doctorArr.get(2));
+                referrals = hdb.getTests(doctorArr.get(2));
                 printTuples(referrals);
             }
         });
