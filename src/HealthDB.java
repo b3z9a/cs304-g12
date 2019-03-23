@@ -175,6 +175,8 @@ public class HealthDB {
 	/**
 	 * Returns the prescriptions of the specified patient
 	 *
+	 * tuple = {0 presID, 1 presDate, 2 medication, 3 dosage, 4 doseMeasure, 5 qty, 6 filledDate}
+	 *
 	 * @param pid- the PID of the selected Patient
 	 * @return prescription data
 	 */
@@ -211,6 +213,8 @@ public class HealthDB {
 	/**
 	 * Returns the tests of the specified doctor
 	 *
+	 * tuple = {0 testID, 1 orderedDate, 2 performedDate}
+	 *
 	 * @param pid - the PID of the selected Patient
 	 * @return test data
 	 */
@@ -242,7 +246,9 @@ public class HealthDB {
 
 	/**
 	 * Returns the referrals of the specified patient
-	 	 *
+	 *
+	 * tuple = {0 firstName, 1 lastName, 2 specialization, 3 referredDate}
+	 *
 	 * @param pid - the PID of the selected Patient
 	 * @return referral data
 	 */
@@ -275,7 +281,9 @@ public class HealthDB {
 
 	/**
 	 * Returns provincial plan information for specified patient
-	 	 *
+	 *
+	 * tuple = {0 planID, 1 planType, 2 startDate, 3 endDate}
+	 *
 	 * @param pid - the PID of the selected Patient
 	 * @return provincial plan information
 	 */
@@ -306,7 +314,9 @@ public class HealthDB {
 
 	/**
 	 * Returns extended benefits information for specified patient
-	 	 *
+	 *
+	 * tuple = {0 chiropractic}
+	 *
 	 * @param pid - the PID of the selected Patient
 	 * @return extended benefits information
 	 */

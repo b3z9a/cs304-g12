@@ -10,7 +10,7 @@ public class HealthDBUI extends JFrame {
     String username;
     String password;
 
-    private String userClass[] = {"Administrator", "Doctor", "Pharmacist", "LabTechnician", "Patient", "Invoice"};
+    private String userClass[] = {"Patient Summary", "Prescriptions", "Tests", "Patient", "Invoice"};
 
     private static JFrame frame;
     private static int width = 720;
@@ -597,7 +597,7 @@ public class HealthDBUI extends JFrame {
                 printTuples(referrals);
             }
         });
-        btnFindDoctor.setText("Find Doctor");
+        btnFindDoctor.setText("Find Patient");
         panelDoctorFinder.add(btnFindDoctor);
     }
 
