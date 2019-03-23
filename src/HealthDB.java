@@ -108,20 +108,33 @@ public class HealthDB {
 	 * @param name
 	 * @return
 	 */
-	public HashMap<String, String> findDoctor(String PID, String name) {
-		HashMap<String, String> doctor = new HashMap<String, String>();
+	public ArrayList<ArrayList<String>> findDoctor(String PID, String name) {
+		ArrayList<String> tuple = new ArrayList<String>();
+		try{
+			String query = "select p.firstName, p.lastName, p.patientID, p.street, pc.city, pc.province, pc.postalcode, pc.country, p.homePhone, p.mobilePhone from patient p, postalcode pc where p.postalcode = pc.postalcode and p.patientID = " + pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
 
-		/* TODO Find a doctor in the database */
+			while(rs.next()){
+				tuple.add(rs.getString("firstName"));
+				tuple.add(rs.getString("lastName"));
+				tuple.add(rs.getString("patientID"));
+				tuple.add(rs.getString("street"));
+				tuple.add(rs.getString("city"));
+				tuple.add(rs.getString("postalcode"));
+				tuple.add(rs.getString("country"));
+				tuple.add(rs.getString("homePhone"));
+				tuple.add(rs.getString("mobilePhone"));
+			}
 
-		/* TEST ONLY - Add proper implementation */
-		doctor.put("PID", PID);
-		doctor.put("Name", name);
-		doctor.put("Addr", "123 Driveby Road, Surrey");
-		doctor.put("MobileNum", "604 - 999 - 9999");
-		doctor.put("HomeNum", "778 - 898 - 6969");
-
-		return doctor;
+	} catch (SQLException ex){
+		System.out.println("Failed to get prescriptions. " + ex.getMessage());
 	}
+	return tuple;
+}
 
 	/**
 	 * Creates a prescription
@@ -245,10 +258,10 @@ public class HealthDB {
 
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
-				tuple.add(rs.getString("h.firstName"));
-				tuple.add(rs.getString("h.lastName"));
-				tuple.add(rs.getString("d.specialization"));
-				tuple.add(rs.getString("d.referredDate"));
+				tuple.add(rs.getString("firstName"));
+				tuple.add(rs.getString("lastName"));
+				tuple.add(rs.getString("specialization"));
+				tuple.add(rs.getString("referredDate"));
 				tuples.add(tuple);
 			}
 

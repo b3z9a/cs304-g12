@@ -580,9 +580,14 @@ public class HealthDBUI extends JFrame {
 
                 /* TODO Update prescription, test and referral panels */
                 ArrayList<ArrayList<String>> prescriptions = hdb.getPrescriptions(doctorMap.get("PID"));
+                System.out.println("Prescriptions:");
                 printTuples(prescriptions);
-                hdb.getTests(doctorMap.get("PID"));
-                hdb.getReferrals(doctorMap.get("PID"));
+                ArrayList<ArrayList<String>> tests = hdb.getTests(doctorMap.get("PID"));
+                System.out.println("Tests:");
+                printTuples(tests);
+                ArrayList<ArrayList<String>> referrals = hdb.getReferrals(doctorMap.get("PID"));
+                System.out.println("Referrals:");
+                printTuples(referrals);
             }
         });
         btnFindDoctor.setText("Find Doctor");
