@@ -14,7 +14,7 @@ public class HealthDBUI extends JFrame {
 
     private static JFrame frame;
     private static int width = 720;
-    private static int height = 900;
+    private static int height = 720;
 
     GridBagConstraints gbc;
 
