@@ -294,7 +294,6 @@ public class HealthDB {
 				tuple.add(rs.getString("planType"));
 				tuple.add(rs.getString("startDate"));
 				tuple.add(rs.getString("endDate"));
-				tuples.add(tuple);
 			}
 
 			// Close the stament, the result set will be closed in the process.
@@ -360,36 +359,6 @@ public class HealthDB {
 
 		/* TODO Return prescriptions */
 		return new Object();
-	}
-
-	/**
-	 * Returns a single tuple containing provincial healthcare plan info for
-	 * the specified patient
-	 *
-	 * @param pid - the PID of the selected Patient
-	 * @return plan data
-	 */
-	public ArrayList<String> getPlan(String pid){
-		ArrayList<String> tuple = new ArrayList<String>();
-		try{
-			String query = "select planID, planType, startDate, endDate from ProvincialHealthPlan where patientID = " + pid;
-			// Create a statement
-			Statement stmt = con.createStatement();
-			// Execute the query.
-			ResultSet rs = stmt.executeQuery(query);
-			ResultSetMetaData rsmd = rs.getMetaData();
-
-			while(rs.next()){
-				tuple.add(rs.getString("planID"));
-				tuple.add(rs.getString("policyType"));
-				tuple.add(rs.getString("startDate"));
-				tuple.add(rs.getString("endDate"));
-			}
-
-	} catch (SQLException ex){
-		System.out.println("Failed to get plan information. " + ex.getMessage());
-	}
-	return tuple;
 	}
 
 	/**

@@ -30,6 +30,7 @@ select planID, planType, startDate, endDate
 from ProvincialHealthPlan
 where patientID = 'PASSED PARAMETER';
 
+/* ----- IMPLEMENTED -----*/
 /* SQL query for extended benefits plan info for admin view. */
 select chiropractic, chiroracticAnnualLimit, chiropracticYTD,
        physiotherapy, physiotherapyAnnualLimit, physiotherapyYTD,
