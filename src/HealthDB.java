@@ -102,26 +102,39 @@ public class HealthDB {
 	 * findDoctor
 	 * Finds a doctor in the database, stores tuple information in a data structure
 	 *
-	 * Note: If you're not using HashMap, feel free to change the return type to whatever data structure you use
+	 * tuple[] = {0 firstname, 1 lastname, 2 pid, 3 street, 4 city, 5 postalcode, 6 country, 7 homephone, 8 mobilephone}
 	 *
 	 * @param PID
 	 * @param name
 	 * @return
 	 */
-	public HashMap<String, String> findDoctor(String PID, String name) {
-		HashMap<String, String> doctor = new HashMap<String, String>();
+	public ArrayList<String> findDoctor(String PID, String name) {
+		ArrayList<String> tuple = new ArrayList<String>();
+		try{
+			String query = "select p.firstName, p.lastName, p.patientID, p.street, pc.city, pc.province, pc.postalcode, pc.country, p.homePhone, p.mobilePhone from patient p, postalcode pc where p.postalcode = pc.postalcode and p.patientID = " + PID;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
 
-		/* TODO Find a doctor in the database */
+			while(rs.next()){
+				tuple.add(rs.getString("firstName"));
+				tuple.add(rs.getString("lastName"));
+				tuple.add(rs.getString("patientID"));
+				tuple.add(rs.getString("street"));
+				tuple.add(rs.getString("city"));
+				tuple.add(rs.getString("postalcode"));
+				tuple.add(rs.getString("country"));
+				tuple.add(rs.getString("homePhone"));
+				tuple.add(rs.getString("mobilePhone"));
+			}
 
-		/* TEST ONLY - Add proper implementation */
-		doctor.put("PID", PID);
-		doctor.put("Name", name);
-		doctor.put("Addr", "123 Driveby Road, Surrey");
-		doctor.put("MobileNum", "604 - 999 - 9999");
-		doctor.put("HomeNum", "778 - 898 - 6969");
-
-		return doctor;
+	} catch (SQLException ex){
+		System.out.println("Failed to get patient personal info. " + ex.getMessage());
 	}
+	return tuple;
+}
 
 	/**
 	 * Creates a prescription
@@ -245,10 +258,10 @@ public class HealthDB {
 
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
-				tuple.add(rs.getString("h.firstName"));
-				tuple.add(rs.getString("h.lastName"));
-				tuple.add(rs.getString("d.specialization"));
-				tuple.add(rs.getString("d.referredDate"));
+				tuple.add(rs.getString("firstName"));
+				tuple.add(rs.getString("lastName"));
+				tuple.add(rs.getString("specialization"));
+				tuple.add(rs.getString("referredDate"));
 				tuples.add(tuple);
 			}
 
@@ -256,6 +269,173 @@ public class HealthDB {
 			stmt.close();
 		} catch (SQLException ex){
 			System.out.println("Failed to get referrals. " + ex.getMessage());
+		}
+		return tuples;
+	}
+
+	/**
+	 * Returns provincial plan information for specified patient
+	 	 *
+	 * @param pid - the PID of the selected Patient
+	 * @return provincial plan information
+	 */
+	public ArrayList<String> getPlan(String pid) {
+		ArrayList<String> tuple = new ArrayList<String>();
+		try{
+			String query = "select planID, planType, startDate, endDate from ProvincialHealthPlan where patientID = " + pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				tuple.add(rs.getString("planID"));
+				tuple.add(rs.getString("planType"));
+				tuple.add(rs.getString("startDate"));
+				tuple.add(rs.getString("endDate"));
+			}
+
+			// Close the stament, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get provincial plan information " + ex.getMessage());
+		}
+		return tuple;
+	}
+
+	/**
+	 * Returns extended benefits information for specified patient
+	 	 *
+	 * @param pid - the PID of the selected Patient
+	 * @return extended benefits information
+	 */
+	public ArrayList<ArrayList<String>> getExtendedBenefits(String pid) {
+		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
+		try{
+			String query = "select chiropractic, chiroracticAnnualLimit, chiropracticYTD, physiotherapy, physiotherapyAnnualLimit, physiotherapyYTD, nonSurgicalPodiatry, nonSurgicalPodiatryAnnualLimit, nonSurgicalPodiatryYTD, acupuncture, acupunctureAnnualLimit, acupunctureYTD, medication, medicationAnnualLimit, medicationYTD from ExtendedBenefitsPlan where patientID = "+ pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				ArrayList<String> tuple = new ArrayList<String>();
+				tuple.add(rs.getString("chiropractic"));
+				tuple.add(rs.getString("chiroracticAnnualLimit"));
+				tuple.add(rs.getString("chiropracticYTD"));
+				tuple.add(rs.getString("physiotherapy"));
+				tuple.add(rs.getString("physiotherapyAnnualLimit"));
+				tuple.add(rs.getString("physiotherapyYTD"));
+				tuple.add(rs.getString("nonSurgicalPodiatry"));
+				tuple.add(rs.getString("nonSurgicalPodiatryAnnualLimit"));
+				tuple.add(rs.getString("nonSurgicalPodiatryYTD"));
+				tuple.add(rs.getString("acupuncture"));
+				tuple.add(rs.getString("acupunctureAnnualLimit"));
+				tuple.add(rs.getString("acupunctureYTD"));
+				tuple.add(rs.getString("medication"));
+				tuple.add(rs.getString("medicationAnnualLimit"));
+				tuple.add(rs.getString("medicationYTD"));
+				tuples.add(tuple);
+			}
+
+			// Close the stament, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get extended benefits information " + ex.getMessage());
+		}
+		return tuples;
+	}
+	
+	/**
+	 * Returns total unpaid amount owing for specified patient
+	 	 *
+	 * @param pid - the PID of the selected Patient
+	 * @return total unpaid amount owing
+	 */
+	public ArrayList<String> getAmountOwing(String pid) {
+		ArrayList<String> tuple = new ArrayList<String>();
+		try{
+			String query = "select sum(amountOwing) as amountOwing from Invoice where patientID = " + pid + " and paymentStatus = 'Unpaid";
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				tuple.add(rs.getString("amountOwing"));
+			}
+
+			// Close the stament, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get amount owing " + ex.getMessage());
+		}
+		return tuple;
+	}
+	
+	/**
+	 * Returns OVERDUE total unpaid amount owing for specified patient
+	 	 *
+	 * @param pid - the PID of the selected Patient
+	 * @return total OVERDUE unpaid amount owing
+	 */
+	public ArrayList<String> getOverdueAmountOwing(String pid) {
+		ArrayList<String> tuple = new ArrayList<String>();
+		try{
+			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+			String query = "select sum(amountOwing) as overdueAmountOwing from Invoice where patientID = " + pid + "and paymentStatus = 'Unpaid and dueDate < " + today;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				tuple.add(rs.getString("overdueAmountOwing"));
+			}
+
+			// Close the stament, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get overdue amount owing " + ex.getMessage());
+		}
+		return tuple;
+	}
+	
+	/**
+	 * Returns invoices for specified patient
+	 	 *
+	 * @param pid - the PID of the selected Patient
+	 * @return invoices for specified patient
+	 */
+	public ArrayList<ArrayList<String>> getInvoices(String pid) {
+		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
+		try{
+			String query = "select invoiceID, invoiceItem, creationDate, dueDate, paymentStatus, amountOwing from Invoice where patientID = " + pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute each query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			
+			while(rs.next()){
+				ArrayList<String> tuple = new ArrayList<String>();
+				tuple.add(rs.getString("invoiceID"));
+				tuple.add(rs.getString("invoiceItem"));
+				tuple.add(rs.getString("creationDate"));
+				tuple.add(rs.getString("dueDate"));
+				tuple.add(rs.getString("paymentStatus"));
+				tuple.add(rs.getString("amountOwing"));
+				tuples.add(tuple);
+			}
+			
+			// Close the stament, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get provincial plan information " + ex.getMessage());
 		}
 		return tuples;
 	}
