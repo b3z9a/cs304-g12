@@ -347,7 +347,7 @@ public class HealthDB {
 		}
 		return tuples;
 	}
-	
+
 	/**
 	 * Returns total unpaid amount owing for specified patient
 	 	 *
@@ -375,7 +375,7 @@ public class HealthDB {
 		}
 		return tuple;
 	}
-	
+
 	/**
 	 * Returns OVERDUE total unpaid amount owing for specified patient
 	 	 *
@@ -404,7 +404,7 @@ public class HealthDB {
 		}
 		return tuple;
 	}
-	
+
 	/**
 	 * Returns invoices for specified patient
 	 	 *
@@ -420,7 +420,7 @@ public class HealthDB {
 			// Execute each query.
 			ResultSet rs = stmt.executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
-			
+
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
 				tuple.add(rs.getString("invoiceID"));
@@ -431,7 +431,7 @@ public class HealthDB {
 				tuple.add(rs.getString("amountOwing"));
 				tuples.add(tuple);
 			}
-			
+
 			// Close the stament, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
@@ -489,7 +489,7 @@ public class HealthDB {
         /* TODO Return tests */
         return new Object();
     }
-    
+
 	/**
      * Finds patient and returns it
      * @param hid
