@@ -19,7 +19,6 @@ import java.util.*;
  *         application.
  */
 public class HealthDB {
-<<<<<<< HEAD
 	private String username;
 	private String password;
 
@@ -70,7 +69,6 @@ public class HealthDB {
 		catch (SQLException ex){
 			System.out.println("Error connecting to Oracle: " + ex.getMessage());
 			return false;}
-			/* TODO Initialize tables */
 	}
 
 	/**
@@ -177,9 +175,6 @@ public class HealthDB {
 			ResultSet rs = stmt.executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
 
-			// Get the number of columns
-			int numCols = rsmd.getColumnCount();
-
 			while(rs.next()){
 				ArrayList tuple = new ArrayList<String>();
 				tuple.add(rs.getString("prescriptionID"));
@@ -207,8 +202,29 @@ public class HealthDB {
 	 * @return test data
 	 */
 	public void getTests(String pid) {
+		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
+		try{
+			String query = "select testID, orderedDate, performedDate from LabTest where patientID = " + pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
 
-		/* TODO Return the tests of the specified patient */
+			while(rs.next()){
+				ArrayList tuple = new ArrayList<String>();
+				tuple.add(rs.getString("testID"));
+				tuple.add(rs.getString("orderedDate"));
+				tuple.add(rs.getString("performedDate"));
+				tuples.add(tuple);
+			}
+
+			// Close the stament, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get test summary. " + ex.getMessage());
+		}
+		return tuples;
 	}
 
 	/**
@@ -218,8 +234,31 @@ public class HealthDB {
 	 * @return referral data
 	 */
 	public void getReferrals(String pid) {
+		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
+		try{
+			String query = "select h.firstName, h.lastName, d.specialization, r.referredDate from Referral r, HealthcareProfessional h, Doctor d where r.referreeHID = h.HID and d.HID = h.hid and r.patientID = " + pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
 
-		/* TODO Return the referrals of the specified doctor */
+			while(rs.next()){
+				ArrayList tuple = new ArrayList<String>();
+				tuple.add(rs.getString("h.firstName"));
+				tuple.add(rs.getString("h.lastName"));
+				tuple.add(rs.getString("d.specialization"));
+				tuple.add(rs.getString("d.referredDate"));
+				tuples.add(tuple);
+			}
+
+			// Close the stament, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get referrals. " + ex.getMessage());
+		}
+		return tuples;
+
 	}
 
 	/**
