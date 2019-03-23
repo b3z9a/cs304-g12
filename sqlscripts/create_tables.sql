@@ -59,7 +59,7 @@ CREATE TABLE Referral (
     referreeHID			integer,
     referredDate		date not null,
     PRIMARY KEY (patientID, referrerHID, referreeHID),
-    FOREIGN KEY (patientID) REFERENCES Patient,
+    FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE,
     FOREIGN KEY (referrerHID) REFERENCES Doctor,
     FOREIGN KEY (referreeHID) REFERENCES Doctor
 );
@@ -82,7 +82,7 @@ CREATE TABLE Prescription (
     filledDate		date,
     PRIMARY KEY (prescriptionID),
     FOREIGN KEY (medication) REFERENCES Medication,
-    FOREIGN KEY (patientID) REFERENCES Patient,
+    FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE,
     FOREIGN KEY (drHID) REFERENCES Doctor,
     FOREIGN KEY (pharmHID) REFERENCES Pharmacist
 );
@@ -108,7 +108,7 @@ CREATE TABLE LabTest (
     orderedDate		date not null,
     performedDate	date,
     PRIMARY KEY(testID),
-    FOREIGN KEY (patientID) REFERENCES Patient,
+    FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE,
     FOREIGN KEY (drHID) REFERENCES Doctor,
     FOREIGN KEY (labTechHID) REFERENCES LabTechnician
 );
@@ -120,7 +120,7 @@ CREATE TABLE ProvincialHealthPlan (
     endDate		date not null,
     patientID	integer not null,
     PRIMARY KEY(planID),
-    FOREIGN KEY (patientID) REFERENCES Patient
+    FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE
 );
 
 CREATE TABLE ExtendedBenefitsPlan (
@@ -147,7 +147,7 @@ CREATE TABLE ExtendedBenefitsPlan (
     medicationAnnualLimit 	decimal,
     medicationYTD			decimal,
     PRIMARY KEY(EBPID),
-    FOREIGN KEY (planID) REFERENCES ProvincialHealthPlan
+    FOREIGN KEY (planID) REFERENCES ProvincialHealthPlan ON DELETE CASCADE
 );
 
 CREATE TABLE Invoice (
@@ -163,6 +163,6 @@ CREATE TABLE Invoice (
     paymentID			integer,
     planID				integer not null,
     PRIMARY KEY(invoiceID),
-    FOREIGN KEY (patientID) REFERENCES Patient,
+    FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE,
     FOREIGN KEY (planID) REFERENCES ProvincialHealthPlan
 );
