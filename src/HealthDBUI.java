@@ -85,7 +85,7 @@ public class HealthDBUI extends JFrame {
     JTextField txtDocMobileNum;
     JTextField txtDocHomeNum;
 
-    private HashMap<String, String> doctorMap;
+    private ArrayList<String> doctorArr;
 
     private JTextField txtPharmName;
     private JTextField txtPharmPID;
@@ -156,7 +156,7 @@ public class HealthDBUI extends JFrame {
 
         cboxUserClass = new JComboBox(userClass);
 
-        doctorMap = new HashMap<String, String>();
+        doctorArr = new ArrayList<String>();
     }
 
     /**
@@ -568,35 +568,29 @@ public class HealthDBUI extends JFrame {
         btnFindDoctor.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                doctorMap = hdb.findDoctor(txtPID.getText(), txtName.getText());
+                doctorArr = hdb.findDoctor(txtPID.getText(), txtName.getText());
+                String name = doctorArr.get(0) + " " + doctorArr.get(1);
+                String addr = doctorArr.get(3) + " " + doctorArr.get(4) + " " + doctorArr.get(6) + " " + doctorArr.get(5);
 
-                System.out.println(doctorMap.get("docPID") + ", " + doctorMap.get("docName"));
+                System.out.println(doctorArr.get(2) + ", " + name);
 
-                txtDocName.setText(doctorMap.get("Name"));
-                txtDocPID.setText(doctorMap.get("PID"));
-                txtDocAddr.setText(doctorMap.get("Addr"));
-                txtDocHomeNum.setText(doctorMap.get("HomeNum"));
-                txtDocMobileNum.setText(doctorMap.get("MobileNum"));
+                txtDocName.setText(name);
+                txtDocPID.setText(doctorArr.get(2));
+                txtDocAddr.setText(addr);
+                txtDocHomeNum.setText(doctorArr.get(7));
+                txtDocMobileNum.setText(doctorArr.get(8));
 
                 /* TODO Update prescription, test and referral panels */
-                ArrayList<ArrayList<String>> prescriptions = hdb.getPrescriptions(doctorMap.get("PID"));
-<<<<<<< HEAD
+                ArrayList<ArrayList<String>> prescriptions = hdb.getPrescriptions(doctorArr.get(2));
                 System.out.println("Prescriptions:");
                 printTuples(prescriptions);
-                ArrayList<ArrayList<String>> tests = hdb.getTests(doctorMap.get("PID"));
+
                 System.out.println("Tests:");
+                ArrayList<ArrayList<String>> tests = hdb.getTests(doctorArr.get(2));
                 printTuples(tests);
-                ArrayList<ArrayList<String>> referrals = hdb.getReferrals(doctorMap.get("PID"));
+
                 System.out.println("Referrals:");
-=======
-                system.out.println("Prescriptions:")
-                printTuples(prescriptions);
-                hdb.getTests(doctorMap.get("PID"));
-                system.out.println("Tests:")
-                printTuples(tests);
-                hdb.getReferrals(doctorMap.get("PID"));
-                system.out.println("Referrals:")
->>>>>>> 5bc452afbb9ff2aed7a6082868648a612ecac00e
+                ArrayList<ArrayList<String>> referrals = hdb.getTests(doctorArr.get(2));
                 printTuples(referrals);
             }
         });
