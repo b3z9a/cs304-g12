@@ -108,7 +108,7 @@ public class HealthDB {
 	 * @param name
 	 * @return
 	 */
-	public ArrayList<ArrayList<String>> findDoctor(String PID, String name) {
+	public ArrayList<String> findDoctor(String PID, String name) {
 		ArrayList<String> tuple = new ArrayList<String>();
 		try{
 			String query = "select p.firstName, p.lastName, p.patientID, p.street, pc.city, pc.province, pc.postalcode, pc.country, p.homePhone, p.mobilePhone from patient p, postalcode pc where p.postalcode = pc.postalcode and p.patientID = " + pid;
