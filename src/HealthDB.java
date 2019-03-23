@@ -102,7 +102,7 @@ public class HealthDB {
 	 * findDoctor
 	 * Finds a doctor in the database, stores tuple information in a data structure
 	 *
-	 * Note: If you're not using HashMap, feel free to change the return type to whatever data structure you use
+	 * tuple[] = {0 firstname, 1 lastname, 2 pid, 3 street, 4 city, 5 postalcode, 6 country, 7 homephone, 8 mobilephone}
 	 *
 	 * @param PID
 	 * @param name
@@ -111,7 +111,7 @@ public class HealthDB {
 	public ArrayList<String> findDoctor(String PID, String name) {
 		ArrayList<String> tuple = new ArrayList<String>();
 		try{
-			String query = "select p.firstName, p.lastName, p.patientID, p.street, pc.city, pc.province, pc.postalcode, pc.country, p.homePhone, p.mobilePhone from patient p, postalcode pc where p.postalcode = pc.postalcode and p.patientID = " + pid;
+			String query = "select p.firstName, p.lastName, p.patientID, p.street, pc.city, pc.province, pc.postalcode, pc.country, p.homePhone, p.mobilePhone from patient p, postalcode pc where p.postalcode = pc.postalcode and p.patientID = " + PID;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
