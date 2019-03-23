@@ -309,4 +309,20 @@ public class HealthDB {
         /* TODO Return tests */
         return new Object();
     }
+    
+	/**
+     * Finds patient and returns it
+     * @param hid
+     * @param staffName
+     * @param invoiceNumber
+     * @param pid
+     * @param name
+     * @param planNumber
+     * @return
+     */
+	public Object findPatient(String hid, String staffName, String invoiceNumber,
+            String pid, String name, String planNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
