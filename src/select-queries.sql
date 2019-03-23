@@ -24,7 +24,7 @@ select h.firstName, h.lastName, d.specialization, r.referredDate
 from Referral r, HealthcareProfessional h, Doctor d
 where r.patientID = 'PASSED PARAMETER' and r.referreeHID = h.HID and d.HID = h.hid;
 
-
+/* ----- IMPLEMENTED -----*/
 /* SQL query for provincial plan info for admin view. */
 select planID, planType, startDate, endDate
 from ProvincialHealthPlan
