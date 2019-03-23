@@ -40,6 +40,7 @@ select chiropractic, chiroracticAnnualLimit, chiropracticYTD,
 from ExtendedBenefitsPlan
 where patientID = 'PASSED PARAMETER';
 
+/* ----- IMPLEMENTED -----*/
 /* SQL query for patient invoices info for admin view. */
 /* First find total unpaid and total overdue*/
 select sum(amountOwing)
