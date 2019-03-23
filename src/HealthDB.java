@@ -363,6 +363,69 @@ public class HealthDB {
 	}
 
 	/**
+	 * Returns a single tuple containing provincial healthcare plan info for
+	 * the specified patient
+	 *
+	 * @param pid - the PID of the selected Patient
+	 * @return plan data
+	 */
+	public ArrayList<String> getPlan(String pid){
+		ArrayList<String> tuple = new ArrayList<String>();
+		try{
+			String query = "select planID, planType, startDate, endDate from ProvincialHealthPlan where patientID = " + pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				tuple.add(rs.getString("planID"));
+				tuple.add(rs.getString("policyType"));
+				tuple.add(rs.getString("startDate"));
+				tuple.add(rs.getString("endDate"));
+			}
+
+	} catch (SQLException ex){
+		System.out.println("Failed to get plan information. " + ex.getMessage());
+	}
+	return tuple;
+	}
+
+	/**
+	 * Returns tuples containing extended benefit plan info for the specified patient
+	 *
+	 * @param pid - the PID of the selected Patient
+	 * @return EPB data
+	 */
+	public ArrayList<ArrayList<String>> getEBPs(String pid){
+		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
+		try{
+			String query = "select h.firstName, h.lastName, d.specialization, r.referredDate from Referral r, HealthcareProfessional h, Doctor d where r.referreeHID = h.HID and d.HID = h.hid and r.patientID = " + pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				ArrayList<String> tuple = new ArrayList<String>();
+				tuple.add(rs.getString("firstName"));
+				tuple.add(rs.getString("lastName"));
+				tuple.add(rs.getString("specialization"));
+				tuple.add(rs.getString("referredDate"));
+				tuples.add(tuple);
+			}
+
+			// Close the stament, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get extended benefits plan(s). " + ex.getMessage());
+		}
+		return tuples;
+	}
+
+	/**
 	 * Finds tests and returns it
 	 * @param testNum
 	 * @param pid
