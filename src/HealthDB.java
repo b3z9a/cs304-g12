@@ -272,15 +272,15 @@ public class HealthDB {
 		}
 		return tuples;
 	}
-	
+
 	/**
 	 * Returns provincial plan information for specified patient
 	 	 *
 	 * @param pid - the PID of the selected Patient
 	 * @return provincial plan information
 	 */
-	public ArrayList<ArrayList<String>> getProvincialPlan(String pid) {
-		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
+	public ArrayList<String> getPlan(String pid) {
+		ArrayList<String> tuple = new ArrayList<String>();
 		try{
 			String query = "select planID, planType, startDate, endDate from ProvincialHealthPlan where patientID = " + pid;
 			// Create a statement
@@ -290,7 +290,6 @@ public class HealthDB {
 			ResultSetMetaData rsmd = rs.getMetaData();
 
 			while(rs.next()){
-				ArrayList<String> tuple = new ArrayList<String>();
 				tuple.add(rs.getString("planID"));
 				tuple.add(rs.getString("planType"));
 				tuple.add(rs.getString("startDate"));
@@ -303,9 +302,9 @@ public class HealthDB {
 		} catch (SQLException ex){
 			System.out.println("Failed to get provincial plan information " + ex.getMessage());
 		}
-		return tuples;
+		return tuple;
 	}
-	
+
 	/**
 	 * Returns extended benefits information for specified patient
 	 	 *
