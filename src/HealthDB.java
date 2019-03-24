@@ -24,6 +24,18 @@ public class HealthDB {
 
 	private Integer userClass;
 	private Connection con;
+	
+	/**
+	 * Primary key constants
+	 * Increment on creating the corresponding tuple to generate unique primary keys
+	 * 
+	 * prescriptionID
+	 * testID
+	 * invoiceID
+	 */
+	private Integer prescriptionIDCounter = 0;
+	private Integer testIDCounter = 0;
+	private Integer invoiceIDCounter = 0;
 
 	/**
 	 * HealthDB Constructor
@@ -73,7 +85,11 @@ public class HealthDB {
 	
 	/**
 	 * Delete specified patient
-	 * Cascades delete to referral, prescription, labtest, provincialhealthplan, extendedbenefitsplan, invoice tables
+	 * 
+	 * @param pid
+	 * 
+	 * Deletes patient and cascades delete to 
+	 * referral, prescription, labtest, provincialhealthplan, extendedbenefitsplan, invoice tables
 	 */
 	public void deletePatient(String pid) {
 		try {
@@ -128,10 +144,21 @@ public class HealthDB {
 
 	/**
 	 * Creates a prescription
+	 * 
+	 * @param medication
+	 * @param dosage
+	 * @param quantity
+	 * @param patientID
+	 * @param drHID
+	 * 
+	 * Creates a prescription with current date as prescribedDate
 	 */
-	public void createPrescription(String prescriptionID, String medication, String dosage, String quantity, String patientID, String drHID, String pharmHID, String prescribedDate, String filledDate) {
+	public void createPrescription(String medication, String dosage, String quantity, String patientID, String drHID) {
 		try {
-			String query ="insert into prescription values (" + prescriptionID +", '" + medication +"', " + dosage +", " + quantity +", " + patientID +", " + drHID +", " + pharmHID +", " + prescribedDate +", " + filledDate + ")";
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+			// get date
+			// create pid
+			String query ="insert into prescription (medication, dosage, quantity, patientID, drHID, prescribedDate) values ('" + medication +"', " + dosage +", " + quantity +", " + patientID +", " + drHID +", " + date + ")";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -153,29 +180,58 @@ public class HealthDB {
 
 	/**
 	 * Creates a test
+	 * 
+	 * @param patientID
+	 * @param drHID
+	 * 
+	 * Creates a lab test with current date as ordered date
 	 */
-	public void createTest(String testID, String cholesterol, String HDLcholesterol, String LDLcholesterol, String triglycerides, String whiteBloodCellCount, String redBloodCellCount, String hematocrit, String plateletCount, String NRBCpercent, String NRBCabsolute, String sodium, String phosphorus, String glucose, String patientID, String drHID, String labTechHID, String orderedDate, String performedDate) {
-		try {
-			String query = "insert into labtest values (" + testID + ", " +  cholesterol +", " + HDLcholesterol +", " + LDLcholesterol +", " + triglycerides +", " + whiteBloodCellCount +", " + redBloodCellCount +", " + hematocrit +", " + plateletCount +", " + NRBCpercent +", " + NRBCabsolute +", " + sodium +", " + phosphorus +", " + glucose +", " + patientID +", " + drHID +", " + labTechHID +", " + orderedDate +", " + performedDate +")";
-			// Create a statement
-			Statement stmt = con.createStatement();
-			// Execute the query.
-			ResultSet rs = stmt.executeQuery(query);
-			System.out.println("Test successfully created");
-		} catch (SQLException ex){
-			System.out.println("Failed to create test" + ex.getMessage());
-		}
+	public void createTest(String patientID, String drHID) {
+
+		/* TODO Create a test */
+		System.out.println("Create a Test");
 	}
 
 	/**
 	 * Creates a referral
+	 * 
+	 * @param patientID
+	 * @param referrerHID - HID of doctor making the referral
+	 * @param referreeHID - HID of doctor being referred to  
+	 * 
+	 * Creates a referral with current date as referred date
 	 */
-	public void createReferral() {
+	public void createReferral(String patientID, String referrerHID, String referreeHID) {
 
 		/* TODO Create a referral */
 		System.out.println("Create a Referral");
 	}
+	
+	/**
+	 * Creates an invoice
+	 * 
+	 * Required on creating a new invoice
+	 * @param patientID
+	 * @param invoiceItem
+	 * @param dueDate
+	 * @param paymentStatus
+	 * @param amountOwing
+	 * 
+	 * Optional on creating a new invoice
+	 * @param paymentDate
+	 * @param paymentMethod
+	 * @param paymentID
+	 * @param planID
+	 * 
+	 * Creates an unpaid/partially paid/fully paid invoice with current date as creation date
+	 */
+	public void createInvoice(String patientID, String invoiceItem, String dueDate, String paymentStatus, String paymentDate, String paymentMethod, String amountOwing, String paymentID, String planID) {
 
+		/* TODO Create an invoice */
+		System.out.println("Create an Inovice");
+	}
+	
+	
 	/**
 	 * Returns the prescriptions of the specified patient
 	 *
@@ -364,7 +420,7 @@ public class HealthDB {
 
 	/**
 	 * Returns total unpaid amount owing for specified patient
-	 	 *
+	 *
 	 * @param pid - the PID of the selected Patient
 	 * @return total unpaid amount owing
 	 */
@@ -391,8 +447,8 @@ public class HealthDB {
 	}
 
 	/**
-	 * Returns OVERDUE total unpaid amount owing for specified patient
-	 	 *
+	 * Returns total OVERDUE unpaid amount owing for specified patient
+	 *
 	 * @param pid - the PID of the selected Patient
 	 * @return total OVERDUE unpaid amount owing
 	 */
@@ -421,7 +477,7 @@ public class HealthDB {
 
 	/**
 	 * Returns invoices for specified patient
-	 	 *
+	 *
 	 * @param pid - the PID of the selected Patient
 	 * @return invoices for specified patient
 	 */
