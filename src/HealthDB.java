@@ -130,6 +130,7 @@ public class HealthDB {
 				tuple.add(rs.getString("patientID"));
 				tuple.add(rs.getString("street"));
 				tuple.add(rs.getString("city"));
+				tuple.add(rs.getString("province"));
 				tuple.add(rs.getString("postalcode"));
 				tuple.add(rs.getString("country"));
 				tuple.add(rs.getString("homePhone"));
