@@ -142,6 +142,15 @@ public class HealthDB {
 	return tuple;
 }
 
+/** Finds all patients with a name containing the string provided.
+* @param name: the name of the patient to be searched for
+* @return tuples of all patients whose first or last name contains the string provided.
+*/
+public ArrayList<ArrayList<String>> getPatients(String name){
+	/* TODO: Find patients*/
+	return new ArrayList<ArrayList<String>>();
+}
+
 	/**
 	 * Creates a prescription
 	 *
@@ -271,22 +280,7 @@ public class HealthDB {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Returns the tests of the specified patient
-=======
-	 * Finds a prescription using prescription number and returns it
-	 * @param presNum - prescription number, cannot be null
-	 * @return
-	 */
-	public Object getPrescriptionWithNumber(String presNum) {
-
-		/* TODO Return prescriptions using prescription number*/
-		return new Object();
-	}
-
-	/**
 	 * Returns the tests of the specified doctor
->>>>>>> 558705fce812115a7d79408c73fddbc1c4b9248f
 	 *
 	 * tuple = {0 testID, 1 orderedDate, 2 performedDate}
 	 *
@@ -537,7 +531,6 @@ public class HealthDB {
 		return tuples;
 	}
 
-<<<<<<< HEAD
 	/**
 	 * Finds a prescription and returns it
 	 * @param prescriptionID: ID of the prescription
@@ -547,9 +540,6 @@ public class HealthDB {
 		/* TODO Return prescription */
 		return new ArrayList<String>();
 	}
-=======
-
->>>>>>> 558705fce812115a7d79408c73fddbc1c4b9248f
 
 	/**
 	* Updates a prescription in the database.
