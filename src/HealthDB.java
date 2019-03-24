@@ -234,10 +234,10 @@ public class HealthDB {
 	 *
 	 * tuple = {0 presID, 1 presDate, 2 medication, 3 dosage, 4 doseMeasure, 5 qty, 6 filledDate}
 	 *
-	 * @param pid- the PID of the selected Patient
+	 * @param pid- the PID of the selected Patient, cannot be null
 	 * @return prescription data
 	 */
-	public ArrayList<ArrayList<String>> getPrescriptions(String pid) {
+	public ArrayList<ArrayList<String>> getPrescriptionWithPIDName(String pid, String name) {
 		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
 		try{
 			String query = "select pr.prescriptionID, pr.prescribedDate, m.medication,"+
@@ -271,7 +271,22 @@ public class HealthDB {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Returns the tests of the specified patient
+=======
+	 * Finds a prescription using prescription number and returns it
+	 * @param presNum - prescription number, cannot be null
+	 * @return
+	 */
+	public Object getPrescriptionWithNumber(String presNum) {
+
+		/* TODO Return prescriptions using prescription number*/
+		return new Object();
+	}
+
+	/**
+	 * Returns the tests of the specified doctor
+>>>>>>> 558705fce812115a7d79408c73fddbc1c4b9248f
 	 *
 	 * tuple = {0 testID, 1 orderedDate, 2 performedDate}
 	 *
@@ -522,6 +537,7 @@ public class HealthDB {
 		return tuples;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Finds a prescription and returns it
 	 * @param prescriptionID: ID of the prescription
@@ -531,6 +547,9 @@ public class HealthDB {
 		/* TODO Return prescription */
 		return new ArrayList<String>();
 	}
+=======
+
+>>>>>>> 558705fce812115a7d79408c73fddbc1c4b9248f
 
 	/**
 	* Updates a prescription in the database.
