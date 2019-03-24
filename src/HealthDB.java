@@ -162,22 +162,23 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 	 *
 	 * Creates a prescription with current date as prescribedDate
 	 */
-	public void createPrescription(String medication, String dosage, String quantity,
+	public boolean createPrescription(String medication, String dosage, String quantity,
 																 String patientID, String drHID) {
 		try {
-			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
-			// get date
-			// create pid
-			String query ="insert into prescription (medication, dosage, quantity, patientID,"+
-										" drHID, prescribedDate) values ('" + medication +"', " + dosage +
-										", " + quantity +", " + patientID +", " + drHID +", " + date + ")";
+			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+			prescriptionIDCounter = prescriptionIDCounter++;
+			String query ="insert into prescription (prescriptionID, medication, dosage, quantity, patientID,"+
+										" drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication + "', " + dosage +
+										", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today + "', 'YYY-MM-DD'))";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
 			System.out.println("Prescription successfully created");
+			return true;
 		} catch (SQLException ex){
 			System.out.println("Failed to create prescription" + ex.getMessage());
+			return false;
 		}
 	}
 
@@ -189,10 +190,22 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 	 *
 	 * Creates a lab test with current date as ordered date
 	 */
-	public void createTest(String patientID, String drHID) {
-
-		/* TODO Create a test */
-		System.out.println("Create a Test");
+	public boolean createTest(String patientID, String drHID) {
+		try {
+			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+			testIDCounter = testIDCounter++;
+			String query = "insert into labtest (testID, patientID, drHID, orderedDate) values (" + testIDCounter + ", " 
+							+ patientID + ", " + drHID + ", " + "to_date('" + today + "', 'YYY-MM-DD'))";
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println("Test successfully created");
+			return true;
+		} catch (SQLException ex){
+			System.out.println("Failed to create test" + ex.getMessage());
+			return false;
+		}
 	}
 
 	/**
@@ -206,10 +219,21 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 	 * Creates a referral with current date as referred date
 	 */
 	public boolean createReferral(String patientID, String referrerHID, String referreeHID) {
-
-		/* TODO Create a referral */
-		System.out.println("Create a Referral");
-		return true;
+		try {
+			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+			testIDCounter = testIDCounter++;
+			String query = "insert into referral (patientID, referrerHID, referreeHID, referredDate) values (" + 
+							patientID + ", " + referrerHID + ", " + referreeHID + ", " + "to_date('" + today + "', 'YYY-MM-DD'))";
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println("Referral successfully created");
+			return true;
+		} catch (SQLException ex){
+			System.out.println("Failed to referral" + ex.getMessage());
+			return false;
+		}
 	}
 
 	/**
@@ -227,7 +251,7 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 	 * @param paymentMethod
 	 * @param planID
 	 *
-	 * Creates an unpaid/partially paid/fully paid invoice with current date as creation date
+	 * Creates an unpaid/fully paid invoice with current date as creation date
 	 */
 	public boolean createInvoice(String patientID, String invoiceItem, String dueDate, String paymentStatus,
 														String paymentDate, String paymentMethod, String amountOwing, String planID) {
