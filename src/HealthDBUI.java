@@ -550,17 +550,9 @@ public class HealthDBUI extends JFrame {
                 txtDocMobileNum.setText(doctorArr.get(8));
 
                 /* TODO Update prescription, test and referral panels */
-                prescriptions = hdb.getPrescription(doctorArr.get(2), name);
-                System.out.println("Prescriptions:");
-                printTuples(prescriptions);
-
-                System.out.println("Tests:");
+                prescriptions = hdb.getPrescriptions(doctorArr.get(2), name);
                 tests = hdb.getTests(doctorArr.get(2));
-                printTuples(tests);
-
-                System.out.println("Referrals:");
                 referrals = hdb.getTests(doctorArr.get(2));
-                printTuples(referrals);
             }
         });
         btnfindPatient.setText("Find Patient");
@@ -835,7 +827,7 @@ public class HealthDBUI extends JFrame {
         btnFindPrescPatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.getPrescription(txtPID.getText(), txtName.getText());
+                Object obj = hdb.getPrescriptions(txtPID.getText(), txtName.getText());
             }
         });
         btnFindPrescPatient.setText("Find by Patient ID");
