@@ -142,6 +142,15 @@ public class HealthDB {
 		}
 	}
 
+    /**
+     * Create an empty test for given doctor and patient ID
+     * @param drHID
+     * @param patientID
+     */
+    public void createEmptyTest(String drHID, String patientID) {
+        // TODO Create an empty test
+    }
+
 	/**
 	 * Creates a test
 	 */
@@ -510,4 +519,5 @@ public class HealthDB {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

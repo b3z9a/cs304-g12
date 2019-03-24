@@ -13,8 +13,11 @@ import java.util.*;
 public class HealthDBUI extends JFrame {
 
     static HealthDB hdb;
-    String username;
-    String password;
+    private String username;
+    private String password;
+
+    private final String drHID = "52731";   // Dr. Melissa Clark
+    private String patientID;
 
     private String userClass[] = {"Patient Summary", "Plan Summary", "Prescriptions", "Tests"};
 
@@ -554,6 +557,8 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 doctorArr = hdb.findDoctor(txtPID.getText(), txtName.getText());
+
+                patientID = doctorArr.get(2);
                 String name = doctorArr.get(0) + " " + doctorArr.get(1);
                 String addr = doctorArr.get(3) + " " + doctorArr.get(4) + " " + doctorArr.get(6) + " " + doctorArr.get(5);
 
@@ -688,27 +693,21 @@ public class HealthDBUI extends JFrame {
         btnCreatePrescription.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                hdb.createPrescription();
+                String medication = "";
+                String dosage = "";
+                String qty = "";
+                //hdb.createPrescription(patientID, drHID, medication, dosage, qty);
             }
         });
         btnCreatePrescription.setText("Create New Prescription");
         panelPatientSummaryActions.add(btnCreatePrescription);
 
-        JButton btnRenewPrescription = new JButton();
-        btnRenewPrescription.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                hdb.renewPrescription();
-            }
-        });
-        btnRenewPrescription.setText("Renew Prescription");
-        panelPatientSummaryActions.add(btnRenewPrescription);
-
         JButton btnCreateTest= new JButton();
         btnCreateTest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                hdb.createTest();
+
+                hdb.createEmptyTest(drHID, patientID);
             }
         });
         btnCreateTest.setText("Create New Test");
