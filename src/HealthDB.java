@@ -108,7 +108,6 @@ public class HealthDB {
 	 * Finds a patient in the database, stores tuple information in a data structure
 	 * tuple[] = {0 firstname, 1 lastname, 2 pid, 3 street, 4 city, 5 postalcode, 6 country, 7 homephone, 8 mobilephone}
 	 * @param PID
-	 * @param name
 	 * @return the single tuple for the patient with the given PID
 	 */
 	public ArrayList<String> findPatient(String PID) {
@@ -225,7 +224,6 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 	 * Optional on creating a new invoice
 	 * @param paymentDate
 	 * @param paymentMethod
-	 * @param paymentID
 	 * @param planID
 	 *
 	 * Creates an unpaid/partially paid/fully paid invoice with current date as creation date
@@ -246,7 +244,7 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 	 * @param pid- the PID of the selected Patient, cannot be null
 	 * @return prescription data
 	 */
-	public ArrayList<ArrayList<String>> getPrescriptionWithPIDName(String pid, String name) {
+	public ArrayList<ArrayList<String>> getPrescription(String pid, String name) {
 		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
 		try{
 			String query = "select pr.prescriptionID, pr.prescribedDate, m.medication,"+
@@ -584,12 +582,7 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 
 	/**
      * Finds an invoice and returns it
-     * @param hid
-     * @param staffName
-     * @param invoiceNumber
-     * @param pid
-     * @param name
-     * @param planNumber
+     * @param invoiceID
      * @return
      */
     public ArrayList<String> findInvoice(String invoiceID) {
@@ -600,7 +593,7 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 		/**
 		* Updates an existing invoice in the database.
 		* @param invoiceID: The ID of the invoice to be updated.
-		* @param duedate: Date the invoice is due.
+		* @param dueDate: Date the invoice is due.
 		* @param invoiceItem: Item the invoice is for.
 		* @param paymentStatus: Status of the invoice. One of: paid, unpaid
 		* @param paymentMethod: Payment method if invoice has been paid. One of: Credit/Debit, Cash, Cheque

@@ -533,7 +533,7 @@ public class HealthDBUI extends JFrame {
         btnfindPatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                doctorArr = hdb.findPatient(txtPID.getText(), txtName.getText());
+                doctorArr = hdb.findPatient(txtPID.getText());
 
                 patientID = doctorArr.get(2);
                 String name = doctorArr.get(0) + " " + doctorArr.get(1);
@@ -548,7 +548,7 @@ public class HealthDBUI extends JFrame {
                 txtDocMobileNum.setText(doctorArr.get(8));
 
                 /* TODO Update prescription, test and referral panels */
-                prescriptions = hdb.getPrescriptionWithPIDName(doctorArr.get(2), name);
+                prescriptions = hdb.getPrescription(doctorArr.get(2), name);
                 System.out.println("Prescriptions:");
                 printTuples(prescriptions);
 
@@ -788,7 +788,7 @@ public class HealthDBUI extends JFrame {
         btnFindPrescNum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.getPrescriptionWithNumber(txtPrescNum.getText());
+                Object obj = hdb.findPrescription(txtPrescNum.getText());
 
                 /* TODO get prescriptions */
             }
@@ -833,7 +833,7 @@ public class HealthDBUI extends JFrame {
         btnFindPrescPatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.findPrescription(txtPrescription.getText());
+                Object obj = hdb.getPrescription(txtPID.getText(), txtName.getText());
             }
         });
         btnFindPrescPatient.setText("Find by Patient ID");
@@ -1000,7 +1000,7 @@ public class HealthDBUI extends JFrame {
         btnFindTestNum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.getTests(txtTest.getText());
+                Object obj = hdb.findTest(txtTest.getText());
 
                 /* TODO get tests */
             }
@@ -1019,7 +1019,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 1;
         panelTestFinder.add(lbl, gbc);
 
-        JTextField txtPID = new JTextField(8);
+        JTextField txtPID = new JTextField(10);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(5,5,0,0);
@@ -1040,22 +1040,22 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 3; gbc.gridy = 1;
         panelTestFinder.add(txtName, gbc);
 
-        JButton btnFindTests = new JButton();
-        btnFindTests.addActionListener(new ActionListener() {
+        JButton btnFindTestPID = new JButton();
+        btnFindTestPID.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                Object obj = hdb.findTest(txtTest.getText());
+                Object obj = hdb.getTests(txtPID.getText());
 
                 /* TODO get tests */
             }
         });
-        btnFindTests.setText("Find by Patient ID");
+        btnFindTestPID.setText("Find by Patient ID");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(5,5,0,0);
         gbc.gridx = 4; gbc.gridy = 1;
-        panelTestFinder.add(btnFindTests, gbc);
+        panelTestFinder.add(btnFindTestPID, gbc);
     }
     private void setPanelTestInfo() {
         JLabel lbl = new JLabel("Name");
@@ -1650,8 +1650,7 @@ public class HealthDBUI extends JFrame {
         btnFindPatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.findPatient(txtHID.getText(), txtStaffName.getText(), txtInvoiceNum.getText(),
-                        txtPID.getText(), txtPatientName.getText(), txtPlanNum.getText());
+                Object obj = hdb.findPatient(txtPID.getText());
 
                 /* TODO get tests */
             }
