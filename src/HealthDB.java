@@ -72,33 +72,6 @@ public class HealthDB {
 	}
 
 	/**
-	 * setUserClass
-	 * Sets the user class as selected by the user
-	 * 1 - Administrator
-	 * 2 - Doctor
-	 * ... You get the idea. See MS4 document hahaha
-	 * @param userClass - the user class selected by the user
-	 */
-	public void setUserClass(String userClass)
-	{
-		switch (userClass)
-		{
-			case "Administrator":
-				this.userClass = 1;
-				break;
-			case "Doctor":
-				this.userClass = 2;
-				break;
-
-			/* TODO Complete the cases for the other user classes */
-
-			default:
-				this.userClass = 1;
-				break;
-		}
-	}
-
-	/**
 	 * findDoctor
 	 * Finds a doctor in the database, stores tuple information in a data structure
 	 *
