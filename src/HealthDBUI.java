@@ -548,7 +548,7 @@ public class HealthDBUI extends JFrame {
                 txtDocMobileNum.setText(doctorArr.get(8));
 
                 /* TODO Update prescription, test and referral panels */
-                prescriptions = hdb.getPrescriptions(doctorArr.get(2));
+                prescriptions = hdb.getPrescriptionWithPIDName(doctorArr.get(2), name);
                 System.out.println("Prescriptions:");
                 printTuples(prescriptions);
 
@@ -777,18 +777,18 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 0;
         panelPrescriptionFinder.add(lbl, gbc);
 
-        JTextField txtPrescription = new JTextField(10);
+        JTextField txtPrescNum = new JTextField(10);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(0,5,0,0);
         gbc.gridx = 1; gbc.gridy = 0;
-        panelPrescriptionFinder.add(txtPrescription, gbc);
+        panelPrescriptionFinder.add(txtPrescNum, gbc);
 
         JButton btnFindPrescNum = new JButton();
         btnFindPrescNum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.findPrescription(txtPrescription.getText(), null, null);
+                Object obj = hdb.getPrescriptionWithNumber(txtPrescNum.getText());
 
                 /* TODO get prescriptions */
             }
@@ -834,7 +834,7 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                Object obj = hdb.findPrescription(null, txtPID.getText(), txtName.getText());
+                Object obj = hdb.getPrescriptionWithPIDName(txtPID.getText(), txtName.getText());
             }
         });
         btnFindPrescPatient.setText("Find by Patient ID");
