@@ -1,3 +1,3 @@
 #!/bin/bash
-
-java src/HealthDBUI
+cd src
+java HealthDBUI

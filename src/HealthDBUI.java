@@ -21,6 +21,8 @@ public class HealthDBUI extends JFrame {
     private String patientID;
 
     private String userClass[] = {"Patient Summary", "Plan Summary", "Prescriptions", "Tests"};
+    private String paymentStatus[] = {"Paid", "Unpaid"};
+    private String paymentMethod[] = {"Cash", "Credit/Debit", "Cheque"};
 
     private static JFrame frame;
     private static int width = 720;
@@ -1405,11 +1407,11 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 2; gbc.gridy = 0;
         panelInvoiceSubmit.add(lbl, gbc);
 
-        final JTextField txtPaymentStatus = new JTextField(10);
+        JComboBox<String> cboxPaymentStatus = new JComboBox<>(paymentStatus);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
         gbc.gridx = 3; gbc.gridy = 0;
-        panelInvoiceSubmit.add(txtPaymentStatus, gbc);
+        panelInvoiceSubmit.add(cboxPaymentStatus, gbc);
 
         lbl = new JLabel("Payment Date:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
@@ -1431,11 +1433,11 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 2; gbc.gridy = 2;
         panelInvoiceSubmit.add(lbl, gbc);
 
-        final JTextField txtPaymentMethod = new JTextField(10);
+        JComboBox<String> cboxPaymentMethod = new JComboBox<String>(paymentMethod);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
         gbc.gridx = 3; gbc.gridy = 2;
-        panelInvoiceSubmit.add(txtPaymentMethod, gbc);
+        panelInvoiceSubmit.add(cboxPaymentMethod, gbc);
 
         lbl = new JLabel("Amount Owing:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
@@ -1455,7 +1457,7 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Object obj = hdb.updateInvoice(txtCreationDate.getText(), txtDueDate.getText(), txtInvoiceItem.getText(),
-                        txtPaymentStatus.getText(), txtPaymentDate.getText(), txtPaymentMethod.getText(),
+                        cboxPaymentStatus.getSelectedItem().toString(), txtPaymentDate.getText(), cboxPaymentMethod.getSelectedItem().toString(),
                         txtAmountOwing.getText());
 
                 // updateInvoice(String creationDate, String dueDate, String invoiceItem,
