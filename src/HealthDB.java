@@ -269,12 +269,12 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 	 * @param pid- the PID of the selected Patient, cannot be null
 	 * @return prescription data
 	 */
-	public ArrayList<ArrayList<String>> getPrescription(String pid, String name) {
+	public ArrayList<ArrayList<String>> getPrescriptions(String pid, String name) {
 		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
 		try{
 			String query = "select pr.prescriptionID, pr.prescribedDate, m.medication,"+
 										 " pr.dosage, m.dosageMeasure, pr.quantity, pr.filledDate"+
-										 "from prescription pr, medication m where pr.medication ="+
+										 " from prescription pr, medication m where pr.medication ="+
 										 " m.medication and pr.patientID = "+ pid;
 			// Create a statement
 			Statement stmt = con.createStatement();
