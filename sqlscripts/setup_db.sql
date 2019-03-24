@@ -10,8 +10,6 @@ DROP TABLE Pharmacist CASCADE constraints;
 
 DROP TABLE Doctor CASCADE constraints;
 
-DROP TABLE Patient CASCADE constraints;
-
 DROP TABLE Referral CASCADE constraints;
 
 DROP TABLE Medication CASCADE constraints;
@@ -25,6 +23,8 @@ DROP TABLE ProvincialHealthPlan CASCADE constraints;
 DROP TABLE ExtendedBenefitsPlan CASCADE constraints;
 
 DROP TABLE Invoice CASCADE constraints;
+
+DROP TABLE Patient CASCADE constraints;
 
 CREATE TABLE PostalCode (
     postalCode  varchar(6),

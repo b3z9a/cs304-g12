@@ -7,6 +7,7 @@ boolean connectToDB(String username, String password);
 
 /*Patient Methods:*/
 ArrayList<String> findPatient(String PID);
+ArrayList<ArrayList<String>> getPatients(String PID);
 boolean deletePatient(String pid);
 
 /*Prescription Methods:*/
