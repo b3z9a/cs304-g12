@@ -70,6 +70,23 @@ public class HealthDB {
 			System.out.println("Error connecting to Oracle: " + ex.getMessage());
 			return false;}
 	}
+	
+	/**
+	 * Delete specified patient
+	 * Cascades delete to referral, prescription, labtest, provincialhealthplan, extendedbenefitsplan, invoice tables
+	 */
+	public void deletePatient(String pid) {
+		try {
+			String query = "delete from patient where patientID = " + pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println("Patient successfully deleted");
+		} catch (SQLException ex){
+			System.out.println("Failed to delete patient" + ex.getMessage());
+		}
+	}
 
 	/**
 	 * findDoctor
@@ -112,28 +129,33 @@ public class HealthDB {
 	/**
 	 * Creates a prescription
 	 */
-	public void createPrescription() {
-
-		/* TODO Create a prescription */
-		System.out.println("Create a Prescription");
-	}
-
-	/**
-	 * Renews a prescription
-	 */
-	public void renewPrescription() {
-
-		/* TODO Renew a prescription */
-		System.out.println("Renew a Prescription");
+	public void createPrescription(String prescriptionID, String medication, String dosage, String quantity, String patientID, String drHID, String pharmHID, String prescribedDate, String filledDate) {
+		try {
+			String query ="insert into prescription values (" + prescriptionID +", '" + medication +"', " + dosage +", " + quantity +", " + patientID +", " + drHID +", " + pharmHID +", " + prescribedDate +", " + filledDate + ")";
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println("Prescription successfully created");
+		} catch (SQLException ex){
+			System.out.println("Failed to create prescription" + ex.getMessage());
+		}
 	}
 
 	/**
 	 * Creates a test
 	 */
-	public void createTest() {
-
-		/* TODO Create a test */
-		System.out.println("Create a Test");
+	public void createTest(String testID, String cholesterol, String HDLcholesterol, String LDLcholesterol, String triglycerides, String whiteBloodCellCount, String redBloodCellCount, String hematocrit, String plateletCount, String NRBCpercent, String NRBCabsolute, String sodium, String phosphorus, String glucose, String patientID, String drHID, String labTechHID, String orderedDate, String performedDate) {
+		try {
+			String query = "insert into labtest values (" + testID + ", " +  cholesterol +", " + HDLcholesterol +", " + LDLcholesterol +", " + triglycerides +", " + whiteBloodCellCount +", " + redBloodCellCount +", " + hematocrit +", " + plateletCount +", " + NRBCpercent +", " + NRBCabsolute +", " + sodium +", " + phosphorus +", " + glucose +", " + patientID +", " + drHID +", " + labTechHID +", " + orderedDate +", " + performedDate +")";
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println("Test successfully created");
+		} catch (SQLException ex){
+			System.out.println("Failed to create test" + ex.getMessage());
+		}
 	}
 
 	/**
@@ -330,7 +352,7 @@ public class HealthDB {
 		}
 		return tuples;
 	}
-	
+
 	/**
 	 * Returns total unpaid amount owing for specified patient
 	 	 *
@@ -358,7 +380,7 @@ public class HealthDB {
 		}
 		return tuple;
 	}
-	
+
 	/**
 	 * Returns OVERDUE total unpaid amount owing for specified patient
 	 	 *
@@ -387,7 +409,7 @@ public class HealthDB {
 		}
 		return tuple;
 	}
-	
+
 	/**
 	 * Returns invoices for specified patient
 	 	 *
@@ -403,7 +425,7 @@ public class HealthDB {
 			// Execute each query.
 			ResultSet rs = stmt.executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
-			
+
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
 				tuple.add(rs.getString("invoiceID"));
@@ -414,7 +436,7 @@ public class HealthDB {
 				tuple.add(rs.getString("amountOwing"));
 				tuples.add(tuple);
 			}
-			
+
 			// Close the stament, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
@@ -472,7 +494,7 @@ public class HealthDB {
         /* TODO Return tests */
         return new Object();
     }
-    
+
 	/**
      * Finds patient and returns it
      * @param hid
