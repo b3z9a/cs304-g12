@@ -512,14 +512,19 @@ public class HealthDB {
 
 	/**
 	 * Finds a prescription and returns it
-	 * @param presNum
-	 * @param pid
-	 * @param name
+	 * @param presNum - prescription number, can be null
+	 * @param pid - patient id, can be null
+	 * @param name - patient name, can be null
 	 * @return
 	 */
 	public Object findPrescription(String presNum, String pid, String name) {
 
 		/* TODO Return prescriptions */
+		/* Depending on search type,
+		either presNum has a value and pid, name == null
+		OR
+		pid, name has a value, presNum == null
+		 */
 		return new Object();
 	}
 

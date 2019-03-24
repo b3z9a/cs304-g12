@@ -600,6 +600,7 @@ public class HealthDBUI extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets= new Insets(0,5,0,0);
         gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridwidth = 2;
         panelPatientSummaryInfo.add(lbl, gbc);
 
         txtDocAddr = new JTextField(26);
@@ -702,6 +703,17 @@ public class HealthDBUI extends JFrame {
         btnCreateReferral.setText("Create New Referral");
         panelPatientSummaryActions.add(btnCreateReferral);
 
+        JButton btnDeletePatient = new JButton();
+        btnDeletePatient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Add error dialog box when empty patient
+                hdb.deletePatient(patientID);
+            }
+        });
+        btnDeletePatient.setText("Delete Patient");
+        panelPatientSummaryActions.add(btnDeletePatient);
+
     }
 
     private void setPanelPrescription() {
@@ -715,7 +727,7 @@ public class HealthDBUI extends JFrame {
 
         /* Row 1 */
         panelPrescriptionFinder = new JPanel();
-        panelPrescriptionFinder.setLayout(new FlowLayout());
+        panelPrescriptionFinder.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 1;
         panelPrescription.add(panelPrescriptionFinder, gbc);
@@ -759,34 +771,78 @@ public class HealthDBUI extends JFrame {
     }
     private void setPanelPrescriptionFinder() {
         JLabel lbl = new JLabel("Prescription #:", SwingConstants.LEADING);
-        panelPrescriptionFinder.add(lbl);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0,0,0,0);
+        gbc.gridx = 0; gbc.gridy = 0;
+        panelPrescriptionFinder.add(lbl, gbc);
 
         JTextField txtPrescription = new JTextField(10);
-        panelPrescriptionFinder.add(txtPrescription);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0,5,0,0);
+        gbc.gridx = 1; gbc.gridy = 0;
+        panelPrescriptionFinder.add(txtPrescription, gbc);
 
-        lbl = new JLabel("PID:", SwingConstants.LEADING);
-        panelPrescriptionFinder.add(lbl);
-
-        JTextField txtPID = new JTextField(8);
-        panelPrescriptionFinder.add(txtPID);
-
-        lbl = new JLabel("Name:", SwingConstants.LEADING);
-        panelPrescriptionFinder.add(lbl);
-
-        JTextField txtName = new JTextField(12);
-        panelPrescriptionFinder.add(txtName);
-
-        JButton btnFindPrescription = new JButton();
-        btnFindPrescription.addActionListener(new ActionListener() {
+        JButton btnFindPrescNum = new JButton();
+        btnFindPrescNum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.findPrescription(txtPrescription.getText(), txtPID.getText(), txtName.getText());
+                Object obj = hdb.findPrescription(txtPrescription.getText(), null, null);
 
                 /* TODO get prescriptions */
             }
         });
-        btnFindPrescription.setText("Find Prescription");
-        panelPrescriptionFinder.add(btnFindPrescription);
+        btnFindPrescNum.setText("Find by Prescription Number");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0,5,0,0);
+        gbc.gridx = 4; gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        panelPrescriptionFinder.add(btnFindPrescNum, gbc);
+
+        lbl = new JLabel("PID:", SwingConstants.LEADING);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0,0,0,0);
+        gbc.gridx = 0; gbc.gridy = 1;
+        panelPrescriptionFinder.add(lbl, gbc);
+
+        JTextField txtPID = new JTextField(10);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0,5,0,0);
+        gbc.gridx = 1; gbc.gridy = 1;
+        panelPrescriptionFinder.add(txtPID, gbc);
+
+        lbl = new JLabel("Name:", SwingConstants.LEADING);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0,5,0,0);
+        gbc.gridx = 2; gbc.gridy = 1;
+        panelPrescriptionFinder.add(lbl, gbc);
+
+        JTextField txtName = new JTextField(12);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0,5,0,0);
+        gbc.gridx = 3; gbc.gridy = 1;
+        panelPrescriptionFinder.add(txtName, gbc);
+
+        JButton btnFindPrescPatient = new JButton();
+        btnFindPrescPatient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                Object obj = hdb.findPrescription(null, txtPID.getText(), txtName.getText());
+            }
+        });
+        btnFindPrescPatient.setText("Find by Patient ID");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0,5,0,0);
+        gbc.gridx = 4; gbc.gridy = 1;
+        panelPrescriptionFinder.add(btnFindPrescPatient, gbc);
     }
     private void setPanelPrescriptionInfo() {
         JLabel lbl = new JLabel("Name");
