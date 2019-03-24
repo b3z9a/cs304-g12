@@ -804,28 +804,28 @@ public class HealthDBUI extends JFrame {
         lbl = new JLabel("PID:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0,0,0,0);
+        gbc.insets = new Insets(5,0,0,0);
         gbc.gridx = 0; gbc.gridy = 1;
         panelPrescriptionFinder.add(lbl, gbc);
 
         JTextField txtPID = new JTextField(10);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0,5,0,0);
+        gbc.insets = new Insets(5,5,0,0);
         gbc.gridx = 1; gbc.gridy = 1;
         panelPrescriptionFinder.add(txtPID, gbc);
 
         lbl = new JLabel("Name:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0,5,0,0);
+        gbc.insets = new Insets(5,5,0,0);
         gbc.gridx = 2; gbc.gridy = 1;
         panelPrescriptionFinder.add(lbl, gbc);
 
         JTextField txtName = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0,5,0,0);
+        gbc.insets = new Insets(5,5,0,0);
         gbc.gridx = 3; gbc.gridy = 1;
         panelPrescriptionFinder.add(txtName, gbc);
 
@@ -840,7 +840,7 @@ public class HealthDBUI extends JFrame {
         btnFindPrescPatient.setText("Find by Patient ID");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0,5,0,0);
+        gbc.insets = new Insets(5,5,0,0);
         gbc.gridx = 4; gbc.gridy = 1;
         panelPrescriptionFinder.add(btnFindPrescPatient, gbc);
     }
@@ -940,7 +940,7 @@ public class HealthDBUI extends JFrame {
 
         /* Row 1 */
         panelTestFinder = new JPanel();
-        panelTestFinder.setLayout(new FlowLayout());
+        panelTestFinder.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 1;
         panelTest.add(panelTestFinder, gbc);
@@ -984,34 +984,78 @@ public class HealthDBUI extends JFrame {
     }
     private void setPanelTestFinder() {
         JLabel lbl = new JLabel("Test #:", SwingConstants.LEADING);
-        panelTestFinder.add(lbl);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0,0,0,0);
+        gbc.gridx = 0; gbc.gridy = 0;
+        panelTestFinder.add(lbl, gbc);
 
         JTextField txtTest = new JTextField(10);
-        panelTestFinder.add(txtTest);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0,5,0,0);
+        gbc.gridx = 1; gbc.gridy = 0;
+        panelTestFinder.add(txtTest, gbc);
+
+        JButton btnFindTestNum = new JButton();
+        btnFindTestNum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object obj = hdb.getTests(txtTest.getText());
+
+                /* TODO get tests */
+            }
+        });
+        btnFindTestNum.setText("Find by Test Number");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0,5,0,0);
+        gbc.gridx = 4; gbc.gridy = 0;
+        panelTestFinder.add(btnFindTestNum, gbc);
 
         lbl = new JLabel("PID:", SwingConstants.LEADING);
-        panelTestFinder.add(lbl);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(5,0,0,0);
+        gbc.gridx = 0; gbc.gridy = 1;
+        panelTestFinder.add(lbl, gbc);
 
         JTextField txtPID = new JTextField(8);
-        panelTestFinder.add(txtPID);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(5,5,0,0);
+        gbc.gridx = 1; gbc.gridy = 1;
+        panelTestFinder.add(txtPID, gbc);
 
         lbl = new JLabel("Name:", SwingConstants.LEADING);
-        panelTestFinder.add(lbl);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(5,5,0,0);
+        gbc.gridx = 2; gbc.gridy = 1;
+        panelTestFinder.add(lbl, gbc);
 
         JTextField txtName = new JTextField(12);
-        panelTestFinder.add(txtName);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(5,5,0,0);
+        gbc.gridx = 3; gbc.gridy = 1;
+        panelTestFinder.add(txtName, gbc);
 
         JButton btnFindTests = new JButton();
         btnFindTests.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.findTest(txtTest.getText(), txtPID.getText(), txtName.getText());
+                Object obj = hdb.getTests(txtPID.getText());
 
                 /* TODO get tests */
             }
         });
-        btnFindTests.setText("Find Tests");
-        panelTestFinder.add(btnFindTests);
+        btnFindTests.setText("Find by Patient ID");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(5,5,0,0);
+        gbc.gridx = 4; gbc.gridy = 1;
+        panelTestFinder.add(btnFindTests, gbc);
     }
     private void setPanelTestInfo() {
         JLabel lbl = new JLabel("Name");
