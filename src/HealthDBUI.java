@@ -75,7 +75,7 @@ public class HealthDBUI extends JFrame {
     private JPanel panelInvoiceFinder;
     private JPanel panelInvoiceInfo;
     private JPanel panelInvoiceSubmit;
-    
+
     private JPanel panelPlanSummaryFinder;
     private JPanel panelPlanSummaryInfo;
     private JPanel panelPlanSummaryTests;
@@ -85,7 +85,7 @@ public class HealthDBUI extends JFrame {
     private JTextField txtInvoiceID;
     private JTextField txtInvoicePlanID;
     private JTextField txtInvoicePatientName;
-    
+
     private JTextField txtPatientName;
     private JTextField txtPatientPID;
     private JTextField txtPatientAddress;
@@ -156,7 +156,7 @@ public class HealthDBUI extends JFrame {
         setPanelInvoiceFinder();
         setPanelInvoiceInfo();
         setPanelInvoiceSubmit();
-        
+
         setPanelPlanSummary();
         setPanelPlanSummaryFinder();
         setPanelPlanSummaryInfo();
@@ -429,7 +429,7 @@ public class HealthDBUI extends JFrame {
         panelEmpty = new JPanel();
         panelUserClassInfo.add(panelEmpty, "Card7");
     }
-    
+
     private void printTuples(ArrayList<ArrayList<String>> tuples){
         StringBuilder sb = new StringBuilder();
         for (ArrayList<String> list : tuples){
@@ -552,11 +552,11 @@ public class HealthDBUI extends JFrame {
         JTextField txtName = new JTextField(12);
         panelPatientSummaryFinder.add(txtName);
 
-        JButton btnFindDoctor = new JButton();
-        btnFindDoctor.addActionListener(new ActionListener() {
+        JButton btnfindPatient = new JButton();
+        btnfindPatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                doctorArr = hdb.findDoctor(txtPID.getText(), txtName.getText());
+                doctorArr = hdb.findPatient(txtPID.getText(), txtName.getText());
 
                 patientID = doctorArr.get(2);
                 String name = doctorArr.get(0) + " " + doctorArr.get(1);
@@ -584,8 +584,8 @@ public class HealthDBUI extends JFrame {
                 printTuples(referrals);
             }
         });
-        btnFindDoctor.setText("Find Patient");
-        panelPatientSummaryFinder.add(btnFindDoctor);
+        btnfindPatient.setText("Find Patient");
+        panelPatientSummaryFinder.add(btnfindPatient);
     }
     private void setPanelPatientSummaryInfo() {
         JLabel lbl = new JLabel("Name");
@@ -707,7 +707,7 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                hdb.createEmptyTest(drHID, patientID);
+                hdb.createTest(drHID, patientID);
             }
         });
         btnCreateTest.setText("Create New Test");
@@ -717,7 +717,7 @@ public class HealthDBUI extends JFrame {
         btnCreateReferral.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                hdb.createReferral();
+                //hdb.createReferral();
             }
         });
         btnCreateReferral.setText("Create New Referral");
@@ -801,7 +801,7 @@ public class HealthDBUI extends JFrame {
         btnFindPrescription.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.findPrescription(txtPrescription.getText(), txtPID.getText(), txtName.getText());
+                Object obj = hdb.findPrescription(txtPrescription.getText());
 
                 /* TODO get prescriptions */
             }
@@ -970,7 +970,7 @@ public class HealthDBUI extends JFrame {
         btnFindTests.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.findTest(txtTest.getText(), txtPID.getText(), txtName.getText());
+                Object obj = hdb.findTest(txtTest.getText());
 
                 /* TODO get tests */
             }
@@ -1209,8 +1209,7 @@ public class HealthDBUI extends JFrame {
         btnFindInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.findInvoice(txtHID.getText(), txtStaffName.getText(), txtInvoiceNum.getText(),
-                        txtPID.getText(), txtPatientName.getText(), txtPlanNum.getText());
+                Object obj = hdb.findInvoice(txtInvoiceNum.getText());
 
                 /* TODO get tests */
             }
@@ -1376,11 +1375,11 @@ public class HealthDBUI extends JFrame {
         btnSubmitInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.submitInvoice(txtCreationDate.getText(), txtDueDate.getText(), txtInvoiceItem.getText(),
+                Object obj = hdb.updateInvoice(txtCreationDate.getText(), txtDueDate.getText(), txtInvoiceItem.getText(),
                         txtPaymentStatus.getText(), txtPaymentDate.getText(), txtPaymentMethod.getText(),
                         txtAmountOwing.getText());
 
-                // submitInvoice(String creationDate, String dueDate, String invoiceItem,
+                // updateInvoice(String creationDate, String dueDate, String invoiceItem,
                 //                              String paymentStatus, String paymentDate, String paymentMethod, String amountOwing)
 
                 /* TODO get tests */
@@ -1394,8 +1393,8 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 1; gbc.gridy = 4;
         panelInvoiceSubmit.add(btnSubmitInvoice, gbc);
     }
-    
-    
+
+
     private void setPanelPlanSummary() {
         lblPlanSummary = new JLabel("Plan Summary");
         lblPlanSummary.setFont(new Font("Arial", Font.BOLD, 20));
@@ -1404,8 +1403,8 @@ public class HealthDBUI extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 0; gbc.gridy = 0;
         panelPlanSummary.add(lblPlanSummary, gbc);
-        
-        
+
+
         /* Row 1 */
         panelPlanSummaryFinder = new JPanel();
         panelPlanSummaryFinder.setLayout(new GridBagLayout());
@@ -1414,7 +1413,7 @@ public class HealthDBUI extends JFrame {
         gbc.weightx = 1.0;
         gbc.gridx = 0; gbc.gridy = 1;
         panelPlanSummary.add(panelPlanSummaryFinder, gbc);
-        
+
 
         /* Row 2 */
         JLabel lblPatientInfo = new JLabel("Patient Information", SwingConstants.LEADING);
@@ -1434,7 +1433,7 @@ public class HealthDBUI extends JFrame {
         gbc.weightx = 1.0;
         gbc.gridx = 0; gbc.gridy = 3;
         panelPlanSummary.add(panelPlanSummaryInfo, gbc);
-        
+
         /* Row 4 */
         JLabel lblTests = new JLabel("Tests", SwingConstants.LEADING);
         lblTests.setFont(new Font("Arial", Font.BOLD, 20));
@@ -1453,7 +1452,7 @@ public class HealthDBUI extends JFrame {
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 5;
         panelPlanSummary.add(panelPlanSummaryTests, gbc);
-        
+
         /* Row 6 */
         JLabel lblPrescriptions = new JLabel("Prescriptions", SwingConstants.LEADING);
         lblPrescriptions.setFont(new Font("Arial", Font.BOLD, 20));
@@ -1556,7 +1555,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 3; gbc.gridy = 1;
         panelPlanSummaryFinder.add(txtPatientName, gbc);
 
-        
+
         lbl = new JLabel("Plan #:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
@@ -1664,7 +1663,7 @@ public class HealthDBUI extends JFrame {
         gbc.insets= new Insets(0,5,0,0);
         gbc.gridx = 3; gbc.gridy = 5;
         panelPlanSummaryInfo.add(txtPatientHomePhone, gbc);
-        
+
 
     }
     private void setPanelPlanSummaryTests() {
@@ -1692,7 +1691,7 @@ public class HealthDBUI extends JFrame {
         panelPlanSummaryReferrals.add(refTable, BorderLayout.CENTER);
 
     }
-    
+
     private void switchToUserSelectPanel() {
         /* Switch to User Class panel when login achieved */
         panelOracleLogin.setVisible(false);
