@@ -808,9 +808,11 @@ public class HealthDBUI extends JFrame {
                     txtName.setText("");
 
                     // Clear the data tables
-                    prescPSTableModel.setRowCount(0);
-                    testPSTableModel.setRowCount(0);
-                    refPSTableModel.setRowCount(0);
+                    String[][] data = createData(tests);
+                    for(int row = 0; row < data.length; row++)
+                    {
+                        testTPTableModel.addRow(data[row]);
+                    }
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1190,7 +1192,7 @@ public class HealthDBUI extends JFrame {
                     txtName.setText("");
 
                     // Clear the data tables
-                    prescPPTableModel.setRowCount(0);
+                    clearPanelData();
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1407,7 +1409,7 @@ public class HealthDBUI extends JFrame {
                     txtName.setText("");
 
                     // Clear the data tables
-                    testTPTableModel.setRowCount(0);
+                    clearPanelData();
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
