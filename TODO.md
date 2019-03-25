@@ -5,9 +5,14 @@
 * Format date field into MM-DD-YYYY
 * Add create prescription panel, create test panel, create referral panel
 * Click on invoice number to open it
-* Throw an error dialog when empty tuple is detected (invalid patient ID)
+* ~~Throw an error dialog when empty tuple is detected (invalid patient ID)~~
 * Turn tables into scrollable type using JScrollPane
 * ~~Clear tables when new patient entered~~
+* ~~Change phone number array index from country to phone number~~ 
+*
+*
+*
+*
 
 ## Back End
 *
