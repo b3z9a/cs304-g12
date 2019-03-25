@@ -708,6 +708,12 @@ public class HealthDBUI extends JFrame {
                 doctorArr = hdb.findPatient(txtPID.getText());
 
                 if(doctorArr.size() > 0) {
+
+                    // Clear the data tables
+                    prescTableModel.setRowCount(0);
+                    testTableModel.setRowCount(0);
+                    referralTableModel.setRowCount(0);
+
                     patientID = doctorArr.get(2);
                     String name = doctorArr.get(0) + " " + doctorArr.get(1);
                     String addr = doctorArr.get(3) + " " + doctorArr.get(4) + " " + doctorArr.get(6) + " " + doctorArr.get(5);
@@ -720,7 +726,6 @@ public class HealthDBUI extends JFrame {
                     txtDocHomeNum.setText(doctorArr.get(7));
                     txtDocMobileNum.setText(doctorArr.get(8));
 
-                    /* TODO Update prescription, test and referral panels */
                     prescriptions = hdb.getPrescriptions(doctorArr.get(2), name);
                     printTuples(prescriptions);
                     String[][] data = createData(prescriptions);
