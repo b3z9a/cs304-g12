@@ -192,13 +192,32 @@ public class HealthDBUI extends JFrame {
         patientArray = new ArrayList<String>();
     }
 
-    private void clearTables() {
+    private void clearPanelData() {
         patientArray.clear();
+
         prescPPTableModel.setRowCount(0);
         prescPSTableModel.setRowCount(0);
         testPSTableModel.setRowCount(0);
         testTPTableModel.setRowCount(0);
         refPSTableModel.setRowCount(0);
+
+        txtDocName.setText("");
+        txtDocPID.setText("");
+        txtDocAddr.setText("");
+        txtDocHomeNum.setText("");
+        txtDocMobileNum.setText("");
+
+        txtPharmName.setText("");
+        txtPharmPID.setText("");
+        txtPharmAddr.setText("");
+        txtPharmHomeNum.setText("");
+        txtPharmMobileNum.setText("");
+
+        txtLabName.setText("");
+        txtLabPID.setText("");
+        txtLabAddr.setText("");
+        txtLabHomeNum.setText("");
+        txtLabMobileNum.setText("");
     }
 
     /**
@@ -464,7 +483,7 @@ public class HealthDBUI extends JFrame {
                     case "Patient Summary":
                         System.out.println("Patient Summary");
 
-                        clearTables();
+                        clearPanelData();
 
                         /* Switch to Patient Summary panel */
                         panelPatientSummary.setVisible(true);
@@ -475,7 +494,8 @@ public class HealthDBUI extends JFrame {
                         break;
                     case "Prescriptions":
                         System.out.println("Prescriptions");
-                        clearTables();
+                        clearPanelData();
+
                         /* Switch to Pharmacist Class panel */
                         panelPatientSummary.setVisible(false);
                         panelPrescription.setVisible(true);
@@ -485,7 +505,8 @@ public class HealthDBUI extends JFrame {
                         break;
                     case "Tests":
                         System.out.println("Tests");
-                        clearTables();
+                        clearPanelData();
+
                         /* Switch to Tests panel */
                         panelPatientSummary.setVisible(false);
                         panelPrescription.setVisible(false);
@@ -495,7 +516,8 @@ public class HealthDBUI extends JFrame {
                         break;
                     case "Plan Summary":
                         System.out.println("Plan Summary");
-                        clearTables();
+                        clearPanelData();
+
                         /* Switch to Plan Summary panel */
                         panelPatientSummary.setVisible(false);
                         panelPrescription.setVisible(false);
@@ -521,7 +543,8 @@ public class HealthDBUI extends JFrame {
         btnClear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clearTables();
+                clearPanelData();
+
                 panelEmpty.setVisible(true);
                 panelPatientSummary.setVisible(false);
                 panelPrescription.setVisible(false);
