@@ -650,10 +650,10 @@ public class HealthDB {
 	 * @param testID: ID of the test to be found
 	 * @return the tuple of the test with the ID provided
 	 */
-	public ArrayList<String> findTest(String testID) {
+	public String findTest(String testID) {
 
 		/* TODO Return test */
-		return new ArrayList<String>();
+		return new String();
 	}
 
 	/**
