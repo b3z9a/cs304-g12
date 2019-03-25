@@ -952,7 +952,7 @@ public class HealthDBUI extends JFrame {
 
                     int resp = JOptionPane.showConfirmDialog(null, fields, "Create prescription for " + name, JOptionPane.OK_CANCEL_OPTION);
 
-                    if(resp == 1) {
+                    if(resp == 0) {
                         String medication = dMedication.getText();
                         String dosage = dDosage.getText();
                         String qty = dQty.getText();
