@@ -865,6 +865,7 @@ public class HealthDBUI extends JFrame {
                 String dosage = "";
                 String qty = "";
                 hdb.createPrescription(patientID, drHID, medication, dosage, qty);
+
             }
         });
         btnCreatePrescription.setText("Create New Prescription");
@@ -876,6 +877,7 @@ public class HealthDBUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 hdb.createTest(drHID, patientID);
+ 
             }
         });
         btnCreateTest.setText("Create New Test");
@@ -888,6 +890,7 @@ public class HealthDBUI extends JFrame {
                 String referreeHID = "54337"; // TODO create dialog to ask for referree
 
                 hdb.createReferral(patientID, drHID, referreeHID);
+                
             }
         });
         btnCreateReferral.setText("Create New Referral");
@@ -899,6 +902,18 @@ public class HealthDBUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // TODO Add error dialog box when empty patient
                 hdb.deletePatient(patientID);
+            	if (patientID == "") {
+            		JOptionPane.showMessageDialog(frame,
+            			    "Patient does not exist",
+            			    "Error",
+            			    JOptionPane.ERROR_MESSAGE);
+            	}
+                
+                JOptionPane.showConfirmDialog(
+                	frame,
+                    "Are you sure you would like to delete?",
+               	    "Delete Patient",
+               	    JOptionPane.YES_NO_OPTION);
             }
         });
         btnDeletePatient.setText("Delete Patient");
