@@ -284,8 +284,138 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
+        gbc.insets = new Insets(5,0,0,0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panelOracleLogin.add(btnLogin, gbc);
+
+
+        JButton btnLauraLogin = new JButton();
+        btnLauraLogin.setHorizontalTextPosition(0);
+        btnLauraLogin.setPreferredSize(new Dimension(80, 30));
+        btnLauraLogin.setText("Laura Login");
+        /* Login button action listener */
+        btnLauraLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                username = "ora_klj8";
+                password = "a30442115"; /* Fill in if you want */
+
+                hdb.setOracleCredentials(username, password);
+
+                /* Switch to next view only if database connection is made */
+                if (hdb.connectToDB(username, password)) {
+
+                    /* Switch to User Class panel when login achieved */
+                    switchToUserSelectPanel();
+                }
+                else {
+                    System.out.println("Login Failed!");
+                    JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.insets = new Insets(10,0,0,0);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panelOracleLogin.add(btnLauraLogin, gbc);
+
+        JButton btnMichelleLogin = new JButton();
+        btnMichelleLogin.setHorizontalTextPosition(0);
+        btnMichelleLogin.setPreferredSize(new Dimension(80, 30));
+        btnMichelleLogin.setText("Michelle Login");
+        /* Login button action listener */
+        btnMichelleLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                username = "ora_u4d9";
+                password = "a32746133"; /* Fill in if you want */
+
+                hdb.setOracleCredentials(username, password);
+
+                /* Switch to next view only if database connection is made */
+                if (hdb.connectToDB(username, password)) {
+
+                    /* Switch to User Class panel when login achieved */
+                    switchToUserSelectPanel();
+                }
+                else {
+                    System.out.println("Login Failed!");
+                    JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        gbc.insets = new Insets(5,0,0,0);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panelOracleLogin.add(btnMichelleLogin, gbc);
+
+        JButton btnJennaLogin = new JButton();
+        btnJennaLogin.setHorizontalTextPosition(0);
+        btnJennaLogin.setPreferredSize(new Dimension(80, 30));
+        btnJennaLogin.setText("Jenna Login");
+        /* Login button action listener */
+        btnJennaLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                username = "ora_b3z9a";
+                password = "a31823115"; /* Fill in if you want */
+
+                hdb.setOracleCredentials(username, password);
+
+                /* Switch to next view only if database connection is made */
+                if (hdb.connectToDB(username, password)) {
+
+                    /* Switch to User Class panel when login achieved */
+                    switchToUserSelectPanel();
+                }
+                else {
+                    System.out.println("Login Failed!");
+                    JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        gbc.insets = new Insets(5,0,0,0);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panelOracleLogin.add(btnJennaLogin, gbc);
+
+        JButton btnJanLogin = new JButton();
+        btnJanLogin.setHorizontalTextPosition(0);
+        btnJanLogin.setPreferredSize(new Dimension(80, 30));
+        btnJanLogin.setText("Jan Login");
+        /* Login button action listener */
+        btnJanLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                username = "ora_b3a0b";
+                password = "a28912146";
+
+                hdb.setOracleCredentials(username, password);
+
+                /* Switch to next view only if database connection is made */
+                if (hdb.connectToDB(username, password)) {
+
+                    /* Switch to User Class panel when login achieved */
+                    switchToUserSelectPanel();
+                }
+                else {
+                    System.out.println("Login Failed!");
+                    JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 7;
+        gbc.insets = new Insets(5,0,0,0);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panelOracleLogin.add(btnJanLogin, gbc);
     }
 
     /**
