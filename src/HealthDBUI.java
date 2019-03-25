@@ -606,7 +606,7 @@ public class HealthDBUI extends JFrame {
                     testTableModel.addRow(data[row]);
                 }
 
-                referrals = hdb.getTests(doctorArr.get(2));
+                referrals = hdb.getReferrals(doctorArr.get(2));
                 printTuples(referrals);
                 data = createData(referrals);
                 for(int row = 0; row < data.length; row++)
@@ -705,7 +705,7 @@ public class HealthDBUI extends JFrame {
     }
     private void setPanelPatientSummaryTests() {
 
-        String cols[] = {"Test ID", "Ordered Date", "Fulfilled Status"};
+        String cols[] = {"Test ID", "Ordered Date", "Performed Date"};
         String data[][] = {};
         testTableModel = new DefaultTableModel(data, cols);
         testTable = new JTable(testTableModel);
@@ -715,7 +715,7 @@ public class HealthDBUI extends JFrame {
     }
     private void setPanelPatientSummaryReferrals() {
 
-        String cols[] = {"Doctor", "Specialization", "Date"};
+        String cols[] = {"First Name", "Last Name", "Specialization", "Date"};
         String data[][] = {};
         referralTableModel = new DefaultTableModel(data, cols);
         refTable = new JTable(referralTableModel);
