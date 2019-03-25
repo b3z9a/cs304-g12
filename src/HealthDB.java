@@ -79,7 +79,7 @@ public class HealthDB {
 			System.out.println("Error connecting to Oracle: " + ex.getMessage());
 			return false;}
 	}
-	
+
 	/**
 	 * createX methods: Creates a new X tuple
 	 */
@@ -101,7 +101,7 @@ public class HealthDB {
 			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			prescriptionIDCounter = prescriptionIDCounter++;
 			String query ="insert into prescription (prescriptionID, medication, dosage, quantity, patientID,"
-							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication + "', " + dosage 
+							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication + "', " + dosage
 							+ ", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today + "', 'YYY-MM-DD'))";
 			// Create a statement
 			Statement stmt = con.createStatement();
@@ -128,7 +128,7 @@ public class HealthDB {
 		try {
 			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			testIDCounter = testIDCounter++;
-			String query = "insert into labtest (testID, patientID, drHID, orderedDate) values (" + testIDCounter + ", " 
+			String query = "insert into labtest (testID, patientID, drHID, orderedDate) values (" + testIDCounter + ", "
 							+ patientID + ", " + drHID + ", " + "to_date('" + today + "', 'YYY-MM-DD'))";
 			// Create a statement
 			Statement stmt = con.createStatement();
@@ -156,7 +156,7 @@ public class HealthDB {
 	public boolean createReferral(String patientID, String referrerHID, String referreeHID) {
 		try {
 			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
-			String query = "insert into referral (patientID, referrerHID, referreeHID, referredDate) values (" 
+			String query = "insert into referral (patientID, referrerHID, referreeHID, referredDate) values ("
 							+ patientID + ", " + referrerHID + ", " + referreeHID + ", " + "to_date('" + today + "', 'YYY-MM-DD'))";
 			// Create a statement
 			Statement stmt = con.createStatement();
@@ -193,11 +193,11 @@ public class HealthDB {
 														String paymentDate, String paymentMethod, String amountOwing, String paymentID, String planID) {
 		try {
 			// Oracle will insert null if you insert an empty string. Therefore do not need to check if optional values are empty strings
-			
+
 			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			invoiceIDCounter = invoiceIDCounter++;
 			String query = "insert into invoice (invoiceID, patientID, invoiceItem, creationDate, dueDate, paymentStatus, "
-							+ "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", " 
+							+ "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
 							+ patientID + ", " + "to_date('" + today + "', 'YYY-MM-DD'), " + dueDate + ", " + paymentStatus + ", "
 							+ paymentDate + ", " + paymentMethod + ", " + amountOwing + ", " + paymentID + ", " + planID + ")";
 			// Create a statement
@@ -212,11 +212,11 @@ public class HealthDB {
 			return false;
 		}
 	}
-	
-	/** 
+
+	/**
 	 * deleteX method: Deletes an existing X tuple by specified ID
 	 */
-	
+
 	/**
 	 * Delete specified patient.
 	 * @param pid
@@ -239,17 +239,48 @@ public class HealthDB {
 			return false;
 		}
 	}
-	
-	/** getX methods: Returns all X tuples with specified name/ID
+
+	/** getX methods: Returns all X tuples for specified name/ID
 	 */
-	
+
 	/** Finds all patients with a name containing the string provided.
 	* @param name: the name of the patient to be searched for
 	* @return tuples of all patients whose first or last name contains the string provided.
 	*/
 	public ArrayList<ArrayList<String>> getPatients(String name){
-		/* TODO: Find patients*/
-		return new ArrayList<ArrayList<String>>();
+		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
+		try{
+			String query = "select p.firstName, p.lastName, p.patientID, p.street, "
+							+ "pc.city, pc.province, pc.postalcode, pc.country, "
+							+ "p.homePhone, p.mobilePhone from patient p, postalcode pc "
+							+ "where (p.firstName like '" + name + "%'" + " or p.lastName like '" + name + "%') and p.postalcode = pc.postalcode" ;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				ArrayList<String> tuple = new ArrayList<String>();
+				tuple.add(rs.getString("firstName"));
+				tuple.add(rs.getString("lastName"));
+				tuple.add(rs.getString("patientID"));
+				tuple.add(rs.getString("street"));
+				tuple.add(rs.getString("city"));
+				tuple.add(rs.getString("province"));
+				tuple.add(rs.getString("postalcode"));
+				tuple.add(rs.getString("country"));
+				tuple.add(rs.getString("homePhone"));
+				tuple.add(rs.getString("mobilePhone"));
+				tuples.add(tuple);
+			}
+
+			// Close the statement, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get patients. " + ex.getMessage());
+		}
+		return tuples;
 	}
 
 	/**
@@ -548,7 +579,7 @@ public class HealthDB {
 	/**
 	 * findX methods: Finds X tuple by its primary key
 	 */
-	
+
 	/**
 	 * findPatient
 	 * Finds a patient in the database, stores tuple information in a data structure
@@ -587,19 +618,33 @@ public class HealthDB {
 		System.out.println("Failed to get patient personal info. " + ex.getMessage());
 	}
 	return tuple;
-	}	
+	}
 
 
 	/**
-	 * Finds a prescription and returns it
+	 * Finds the patient ID associated with a prescription.
 	 * @param prescriptionID: ID of the prescription
+	 * @return PID of patient associated with prescription. Returns the empty
+	 					 string if no prescription is found.
 	 */
-	public ArrayList<String> findPrescription(String prescriptionID) {
+	public String findPrescription(String prescriptionID) {
+		try{
+			String query = "select patientID from Prescription where prescriptionID = " + prescriptionID;
+			Statement stmt = con.createStatement();
+			// Execute each query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
 
-		/* TODO Return prescription */
-		return new ArrayList<String>();
+			if(rs.next()){
+				return rs.getString("patientID");
+		  }
+
+		} catch (SQLException ex){
+				System.out.println("Error finding prescription. " + ex.getMessage());
+		}
+		return "";
 	}
-	
+
 	/**
 	 * Finds a test and returns it
 	 * @param testID: ID of the test to be found
@@ -610,7 +655,7 @@ public class HealthDB {
 		/* TODO Return test */
 		return new ArrayList<String>();
 	}
-	
+
 	/**
      * Finds an invoice and returns it
      * @param invoiceID
@@ -620,7 +665,7 @@ public class HealthDB {
         /* TODO Return invoice */
         return new ArrayList<String>();
     }
-    
+
     /**
      * updateX methods: Updates an existing X tuple with given data
      */
@@ -652,6 +697,8 @@ public class HealthDB {
 													 String phosphorus, String labTechID) {
 
 			/* TODO submit test data */
+			// old createTest query to repurpose for updateTest
+			//String query = "insert into labtest values (" + testID + ", " +  cholesterol +", " + HDLcholesterol +", " + LDLcholesterol +", " + triglycerides +", " + whiteBloodCellCount +", " + redBloodCellCount +", " + hematocrit +", " + plateletCount +", " + NRBCpercent +", " + NRBCabsolute +", " + sodium +", " + phosphorus +", " + glucose +", " + patientID +", " + drHID +", " + labTechHID +", " + orderedDate +", " + performedDate +")";
 			return true;
 	}
 
