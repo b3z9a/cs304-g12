@@ -652,6 +652,8 @@ public class HealthDB {
 													 String phosphorus, String labTechID) {
 
 			/* TODO submit test data */
+			// old createTest query to repurpose for updateTest
+			//String query = "insert into labtest values (" + testID + ", " +  cholesterol +", " + HDLcholesterol +", " + LDLcholesterol +", " + triglycerides +", " + whiteBloodCellCount +", " + redBloodCellCount +", " + hematocrit +", " + plateletCount +", " + NRBCpercent +", " + NRBCabsolute +", " + sodium +", " + phosphorus +", " + glucose +", " + patientID +", " + drHID +", " + labTechHID +", " + orderedDate +", " + performedDate +")";
 			return true;
 	}
 
