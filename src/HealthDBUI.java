@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -112,6 +114,9 @@ public class HealthDBUI extends JFrame {
     private JTextField txtLabAddr;
     private JTextField txtLabHomeNum;
     private JTextField txtLabMobileNum;
+
+    private JTable prescriptionTable;
+    private DefaultTableModel prescTableModel;
 
     public static void main(String args[]) {
         hdb = new HealthDB();
@@ -431,7 +436,7 @@ public class HealthDBUI extends JFrame {
 
     private String[][] createData(ArrayList<ArrayList<String>> tuples)
     {
-        String[][] data = new String[20][20];
+        String[][] data = new String[tuples.size()][tuples.get(0).size()];
 
         int row = 0;
         int col = 0;
@@ -442,7 +447,7 @@ public class HealthDBUI extends JFrame {
                 data[row][col] = s;
                 col++;
             }
-		col = 0;
+		    col = 0;
             row++;
         }
 	
@@ -583,15 +588,16 @@ public class HealthDBUI extends JFrame {
                 /* TODO Update prescription, test and referral panels */
                 prescriptions = hdb.getPrescriptions(doctorArr.get(2), name);
                 printTuples(prescriptions);
-                //createData(prescriptions);
+                String[][] data = createData(prescriptions);
+                prescTableModel.addRow(data);
 
                 tests = hdb.getTests(doctorArr.get(2));
                 printTuples(tests);
-                //createData(tests);
+                createData(tests);
 
                 referrals = hdb.getTests(doctorArr.get(2));
                 printTuples(referrals);
-                //createData(referrals);
+                createData(referrals);
             }
         });
         btnfindPatient.setText("Find Patient");
@@ -677,15 +683,16 @@ public class HealthDBUI extends JFrame {
     private void setPanelPatientSummaryPrescriptions() {
         String cols[] = {"ID", "Date", "Medication", "Dosage", "Quantity", "Status"};
         String data[][] = {};
-        JTable presTable = new JTable(data, cols);
-        panelPatientSummaryPrescriptions.add(presTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPatientSummaryPrescriptions.add(presTable, BorderLayout.CENTER);
+        prescTableModel = new DefaultTableModel(data, cols);
+        prescriptionTable = new JTable(prescTableModel);
+        panelPatientSummaryPrescriptions.add(prescriptionTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelPatientSummaryPrescriptions.add(prescriptionTable, BorderLayout.CENTER);
     }
     private void setPanelPatientSummaryTests() {
 
         String cols[] = {"ID", "Date", "Status"};
         String data[][] = {};
-        JTable testTable = new JTable(data, cols);
+        JTable testTable = new JTable(new DefaultTableModel(data, cols));
         panelPatientSummaryTests.add(testTable.getTableHeader(), BorderLayout.PAGE_START);
         panelPatientSummaryTests.add(testTable, BorderLayout.CENTER);
 
@@ -694,7 +701,7 @@ public class HealthDBUI extends JFrame {
 
         String cols[] = {"Doctor", "Specialization", "Date"};
         String data[][] = {};
-        JTable refTable = new JTable(data, cols);
+        JTable refTable = new JTable(new DefaultTableModel(data, cols));
         panelPatientSummaryReferrals.add(refTable.getTableHeader(), BorderLayout.PAGE_START);
         panelPatientSummaryReferrals.add(refTable, BorderLayout.CENTER);
 
