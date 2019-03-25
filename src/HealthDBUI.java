@@ -1070,10 +1070,12 @@ public class HealthDBUI extends JFrame {
                         prescPPTableModel.addRow(data[row]);
                     }
 
+                    txtPrescNum.setText("");
                     txtPID.setText("");
                     txtName.setText("");
                 }
                 else {
+                    txtPrescNum.setText("");
                     txtPID.setText("");
                     txtName.setText("");
 
@@ -1148,11 +1150,12 @@ public class HealthDBUI extends JFrame {
                     {
                         prescPPTableModel.addRow(data[row]);
                     }
-
+                    txtPrescNum.setText("");
                     txtPID.setText("");
                     txtName.setText("");
                 }
                 else {
+                    txtPrescNum.setText("");
                     txtPID.setText("");
                     txtName.setText("");
 
@@ -1361,10 +1364,12 @@ public class HealthDBUI extends JFrame {
                         testTPTableModel.addRow(data[row]);
                     }
 
+                    txtTest.setText("");
                     txtPID.setText("");
                     txtName.setText("");
                 }
                 else {
+                    txtTest.setText("");
                     txtPID.setText("");
                     txtName.setText("");
 
@@ -1440,11 +1445,12 @@ public class HealthDBUI extends JFrame {
                     {
                         testTPTableModel.addRow(data[row]);
                     }
-
+                    txtTest.setText("");
                     txtPID.setText("");
                     txtName.setText("");
                 }
                 else {
+                    txtTest.setText("");
                     txtPID.setText("");
                     txtName.setText("");
 
