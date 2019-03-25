@@ -1088,10 +1088,12 @@ public class HealthDBUI extends JFrame {
 
                     prescriptions = hdb.getPrescriptions(patientArray.get(2), name);
                     printTuples(prescriptions);
-                    String[][] data = createData(prescriptions);
-                    for(int row = 0; row < data.length; row++)
-                    {
-                        prescPPTableModel.addRow(data[row]);
+                    if(prescriptions.size() > 0) {
+                        String[][] data = createData(prescriptions);
+                        for(int row = 0; row < data.length; row++)
+                        {
+                            prescPPTableModel.addRow(data[row]);
+                        }
                     }
 
                     txtPrescNum.setText("");
@@ -1104,7 +1106,7 @@ public class HealthDBUI extends JFrame {
                     txtName.setText("");
 
                     // Clear the data tables
-                    prescPPTableModel.setRowCount(0);
+                    clearPanelData();
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1471,10 +1473,13 @@ public class HealthDBUI extends JFrame {
 
                     tests = hdb.getTests(patientArray.get(2));
                     printTuples(tests);
-                    String[][] data = createData(tests);
-                    for(int row = 0; row < data.length; row++)
+                    if(tests.size() > 0)
                     {
-                        testTPTableModel.addRow(data[row]);
+                        String[][] data = createData(tests);
+                        for(int row = 0; row < data.length; row++)
+                        {
+                            testTPTableModel.addRow(data[row]);
+                        }
                     }
                     txtTest.setText("");
                     txtPID.setText("");
@@ -1486,7 +1491,7 @@ public class HealthDBUI extends JFrame {
                     txtName.setText("");
 
                     // Clear the data tables
-                    testTPTableModel.setRowCount(0);
+                    clearPanelData();
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
