@@ -313,6 +313,14 @@ public class HealthDB {
 				tuple.add(rs.getString("dosageMeasure"));
 				tuple.add(rs.getString("quantity"));
 				tuple.add(rs.getString("filledDate"));
+
+				if(rs.getString("filledDate") == "") {
+                    tuple.add("No");
+                }
+				else {
+				    tuple.add("Yes");
+                }
+
 				tuples.add(tuple);
 			}
 

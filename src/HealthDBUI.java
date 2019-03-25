@@ -887,7 +887,7 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryInfo.add(txtDocHomeNum, gbc);
     }
     private void setPanelPatientSummaryPrescriptions() {
-        String cols[] = {"ID", "Date", "Medication", "Dosage", "Dosage Unit", "Quantity", "Filled Date"};
+        String cols[] = {"ID", "Date", "Medication", "Dosage", "Dosage Unit", "Quantity", "Filled Date", "Filled?"};
         String data[][] = {};
         prescPSTableModel = new DefaultTableModel(data, cols);
         prescPSTable = new JTable(prescPSTableModel);
