@@ -26,8 +26,7 @@ public class HealthDB {
 	private Connection con;
 
 	/**
-	 * Primary key constants
-	 * Increment on creating the corresponding tuple to generate unique primary keys
+	 * Primary key constants Increment on creating the corresponding tuple to generate unique primary keys
 	 *
 	 * prescriptionID
 	 * testID
@@ -80,76 +79,10 @@ public class HealthDB {
 			System.out.println("Error connecting to Oracle: " + ex.getMessage());
 			return false;}
 	}
-
+	
 	/**
-	 * Delete specified patient.
-	 * @param pid
-	 * @return true if the patient was successfully deleted
-	 * Deletes patient and cascades delete to
-	 * referral, prescription, labtest, provincialhealthplan, extendedbenefitsplan, invoice tables
+	 * createX methods: Creates a new X tuple
 	 */
-	public boolean deletePatient(String pid) {
-		try {
-			String query = "delete from patient where patientID = " + pid;
-			// Create a statement
-			Statement stmt = con.createStatement();
-			// Execute the query.
-			ResultSet rs = stmt.executeQuery(query);
-			System.out.println("Patient successfully deleted");
-			return true;
-		} catch (SQLException ex){
-			System.out.println("Failed to delete patient" + ex.getMessage());
-			return false;
-		}
-	}
-
-	/**
-	 * findPatient
-	 * Finds a patient in the database, stores tuple information in a data structure
-	 * tuple[] = {0 firstname, 1 lastname, 2 pid, 3 street, 4 city, 5 postalcode, 6 country, 7 homephone, 8 mobilephone}
-	 * @param PID
-	 * @return the single tuple for the patient with the given PID
-	 */
-	public ArrayList<String> findPatient(String PID) {
-		ArrayList<String> tuple = new ArrayList<String>();
-		try{
-			String query = "select p.firstName, p.lastName, p.patientID, p.street,"+
-										 " pc.city, pc.province, pc.postalcode, pc.country, "+
-										 "p.homePhone, p.mobilePhone from patient p, postalcode"+
-										 " pc where p.postalcode = pc.postalcode and p.patientID = " + PID;
-			// Create a statement
-			Statement stmt = con.createStatement();
-			// Execute the query.
-			ResultSet rs = stmt.executeQuery(query);
-			ResultSetMetaData rsmd = rs.getMetaData();
-
-			while(rs.next()){
-				tuple.add(rs.getString("firstName"));
-				tuple.add(rs.getString("lastName"));
-				tuple.add(rs.getString("patientID"));
-				tuple.add(rs.getString("street"));
-				tuple.add(rs.getString("city"));
-				tuple.add(rs.getString("province"));
-				tuple.add(rs.getString("postalcode"));
-				tuple.add(rs.getString("country"));
-				tuple.add(rs.getString("homePhone"));
-				tuple.add(rs.getString("mobilePhone"));
-			}
-
-	} catch (SQLException ex){
-		System.out.println("Failed to get patient personal info. " + ex.getMessage());
-	}
-	return tuple;
-}
-
-/** Finds all patients with a name containing the string provided.
-* @param name: the name of the patient to be searched for
-* @return tuples of all patients whose first or last name contains the string provided.
-*/
-public ArrayList<ArrayList<String>> getPatients(String name){
-	/* TODO: Find patients*/
-	return new ArrayList<ArrayList<String>>();
-}
 
 	/**
 	 * Creates a prescription
@@ -167,13 +100,14 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 		try {
 			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			prescriptionIDCounter = prescriptionIDCounter++;
-			String query ="insert into prescription (prescriptionID, medication, dosage, quantity, patientID,"+
-										" drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication + "', " + dosage +
-										", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today + "', 'YYY-MM-DD'))";
+			String query ="insert into prescription (prescriptionID, medication, dosage, quantity, patientID,"
+							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication + "', " + dosage 
+							+ ", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today + "', 'YYY-MM-DD'))";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
+			stmt.close();
 			System.out.println("Prescription successfully created");
 			return true;
 		} catch (SQLException ex){
@@ -200,6 +134,7 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 			Statement stmt = con.createStatement();
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
+			stmt.close();
 			System.out.println("Test successfully created");
 			return true;
 		} catch (SQLException ex){
@@ -221,17 +156,17 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 	public boolean createReferral(String patientID, String referrerHID, String referreeHID) {
 		try {
 			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
-			testIDCounter = testIDCounter++;
-			String query = "insert into referral (patientID, referrerHID, referreeHID, referredDate) values (" + 
-							patientID + ", " + referrerHID + ", " + referreeHID + ", " + "to_date('" + today + "', 'YYY-MM-DD'))";
+			String query = "insert into referral (patientID, referrerHID, referreeHID, referredDate) values (" 
+							+ patientID + ", " + referrerHID + ", " + referreeHID + ", " + "to_date('" + today + "', 'YYY-MM-DD'))";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
+			stmt.close();
 			System.out.println("Referral successfully created");
 			return true;
 		} catch (SQLException ex){
-			System.out.println("Failed to referral" + ex.getMessage());
+			System.out.println("Failed to create referral" + ex.getMessage());
 			return false;
 		}
 	}
@@ -249,17 +184,73 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 	 * Optional on creating a new invoice
 	 * @param paymentDate
 	 * @param paymentMethod
+	 * @param paymentID
 	 * @param planID
 	 *
 	 * Creates an unpaid/fully paid invoice with current date as creation date
 	 */
 	public boolean createInvoice(String patientID, String invoiceItem, String dueDate, String paymentStatus,
-														String paymentDate, String paymentMethod, String amountOwing, String planID) {
-		/* TODO Create an invoice */
-		System.out.println("Create an Inovice");
-		return true;
+														String paymentDate, String paymentMethod, String amountOwing, String paymentID, String planID) {
+		try {
+			// Oracle will insert null if you insert an empty string. Therefore do not need to check if optional values are empty strings
+			
+			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+			invoiceIDCounter = invoiceIDCounter++;
+			String query = "insert into invoice (invoiceID, patientID, invoiceItem, creationDate, dueDate, paymentStatus, "
+							+ "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", " 
+							+ patientID + ", " + "to_date('" + today + "', 'YYY-MM-DD'), " + dueDate + ", " + paymentStatus + ", "
+							+ paymentDate + ", " + paymentMethod + ", " + amountOwing + ", " + paymentID + ", " + planID + ")";
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			stmt.close();
+			System.out.println("Invoice successfully created");
+			return true;
+		} catch (SQLException ex){
+			System.out.println("Failed to create invoice" + ex.getMessage());
+			return false;
+		}
 	}
-
+	
+	/** 
+	 * deleteX method: Deletes an existing X tuple by specified ID
+	 */
+	
+	/**
+	 * Delete specified patient.
+	 * @param pid
+	 * @return true if the patient was successfully deleted
+	 * Deletes patient and cascades delete to
+	 * referral, prescription, labtest, provincialhealthplan, extendedbenefitsplan, invoice tables
+	 */
+	public boolean deletePatient(String pid) {
+		try {
+			String query = "delete from patient where patientID = " + pid;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			stmt.close();
+			System.out.println("Patient successfully deleted");
+			return true;
+		} catch (SQLException ex){
+			System.out.println("Failed to delete patient" + ex.getMessage());
+			return false;
+		}
+	}
+	
+	/** getX methods: Returns all X tuples with specified name/ID
+	 */
+	
+	/** Finds all patients with a name containing the string provided.
+	* @param name: the name of the patient to be searched for
+	* @return tuples of all patients whose first or last name contains the string provided.
+	*/
+	public ArrayList<ArrayList<String>> getPatients(String name){
+		/* TODO: Find patients*/
+		return new ArrayList<ArrayList<String>>();
+	}
 
 	/**
 	 * Returns the prescriptions of the specified patient
@@ -294,7 +285,7 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 				tuples.add(tuple);
 			}
 
-			// Close the stament, the result set will be closed in the process.
+			// Close the statement, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
 			System.out.println("Failed to get prescriptions. " + ex.getMessage());
@@ -328,7 +319,7 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 				tuples.add(tuple);
 			}
 
-			// Close the stament, the result set will be closed in the process.
+			// Close the statement, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
 			System.out.println("Failed to get test summary. " + ex.getMessage());
@@ -366,7 +357,7 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 				tuples.add(tuple);
 			}
 
-			// Close the stament, the result set will be closed in the process.
+			// Close the statement, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
 			System.out.println("Failed to get referrals. " + ex.getMessage());
@@ -400,7 +391,7 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 				tuple.add(rs.getString("endDate"));
 			}
 
-			// Close the stament, the result set will be closed in the process.
+			// Close the statement, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
 			System.out.println("Failed to get provincial plan information " + ex.getMessage());
@@ -451,7 +442,7 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 				tuples.add(tuple);
 			}
 
-			// Close the stament, the result set will be closed in the process.
+			// Close the statement, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
 			System.out.println("Failed to get extended benefits information " + ex.getMessage());
@@ -480,7 +471,7 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 				tuple.add(rs.getString("amountOwing"));
 			}
 
-			// Close the stament, the result set will be closed in the process.
+			// Close the statement, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
 			System.out.println("Failed to get amount owing " + ex.getMessage());
@@ -510,7 +501,7 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 				tuple.add(rs.getString("overdueAmountOwing"));
 			}
 
-			// Close the stament, the result set will be closed in the process.
+			// Close the statement, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
 			System.out.println("Failed to get overdue amount owing " + ex.getMessage());
@@ -546,13 +537,58 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 				tuples.add(tuple);
 			}
 
-			// Close the stament, the result set will be closed in the process.
+			// Close the statement, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
 			System.out.println("Failed to get provincial plan information " + ex.getMessage());
 		}
 		return tuples;
 	}
+
+	/**
+	 * findX methods: Finds X tuple by its primary key
+	 */
+	
+	/**
+	 * findPatient
+	 * Finds a patient in the database, stores tuple information in a data structure
+	 * tuple[] = {0 firstname, 1 lastname, 2 pid, 3 street, 4 city, 5 postalcode, 6 country, 7 homephone, 8 mobilephone}
+	 * @param PID
+	 * @return the single tuple for the patient with the given PID
+	 */
+	public ArrayList<String> findPatient(String PID) {
+		ArrayList<String> tuple = new ArrayList<String>();
+		try{
+			String query = "select p.firstName, p.lastName, p.patientID, p.street,"+
+										 " pc.city, pc.province, pc.postalcode, pc.country, "+
+										 "p.homePhone, p.mobilePhone from patient p, postalcode"+
+										 " pc where p.postalcode = pc.postalcode and p.patientID = " + PID;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				tuple.add(rs.getString("firstName"));
+				tuple.add(rs.getString("lastName"));
+				tuple.add(rs.getString("patientID"));
+				tuple.add(rs.getString("street"));
+				tuple.add(rs.getString("city"));
+				tuple.add(rs.getString("province"));
+				tuple.add(rs.getString("postalcode"));
+				tuple.add(rs.getString("country"));
+				tuple.add(rs.getString("homePhone"));
+				tuple.add(rs.getString("mobilePhone"));
+			}
+			stmt.close();
+
+	} catch (SQLException ex){
+		System.out.println("Failed to get patient personal info. " + ex.getMessage());
+	}
+	return tuple;
+	}	
+
 
 	/**
 	 * Finds a prescription and returns it
@@ -563,6 +599,31 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 		/* TODO Return prescription */
 		return new ArrayList<String>();
 	}
+	
+	/**
+	 * Finds a test and returns it
+	 * @param testID: ID of the test to be found
+	 * @return the tuple of the test with the ID provided
+	 */
+	public ArrayList<String> findTest(String testID) {
+
+		/* TODO Return test */
+		return new ArrayList<String>();
+	}
+	
+	/**
+     * Finds an invoice and returns it
+     * @param invoiceID
+     * @return
+     */
+    public ArrayList<String> findInvoice(String invoiceID) {
+        /* TODO Return invoice */
+        return new ArrayList<String>();
+    }
+    
+    /**
+     * updateX methods: Updates an existing X tuple with given data
+     */
 
 	/**
 	* Updates a prescription in the database.
@@ -575,17 +636,6 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 	public boolean updatePrescription(String hid, String pid, String medication, String dosage, String quantity){
 		/* TODO Updates an existing prescription. */
 		return true;
-	}
-
-	/**
-	 * Finds a test and returns it
-	 * @param testID: ID of the test to be found
-	 * @return the tuple of the test with the ID provided
-	 */
-	public ArrayList<String> findTest(String testID) {
-
-		/* TODO Return test */
-		return new ArrayList<String>();
 	}
 
 	/**
@@ -604,16 +654,6 @@ public ArrayList<ArrayList<String>> getPatients(String name){
 			/* TODO submit test data */
 			return true;
 	}
-
-	/**
-     * Finds an invoice and returns it
-     * @param invoiceID
-     * @return
-     */
-    public ArrayList<String> findInvoice(String invoiceID) {
-        /* TODO Return invoice */
-        return new ArrayList<String>();
-    }
 
 		/**
 		* Updates an existing invoice in the database.
