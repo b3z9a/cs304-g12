@@ -808,11 +808,7 @@ public class HealthDBUI extends JFrame {
                     txtName.setText("");
 
                     // Clear the data tables
-                    String[][] data = createData(tests);
-                    for(int row = 0; row < data.length; row++)
-                    {
-                        testTPTableModel.addRow(data[row]);
-                    }
+                    clearPanelData();
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1168,8 +1164,8 @@ public class HealthDBUI extends JFrame {
                     txtPharmName.setText(name);
                     txtPharmPID.setText(patientArray.get(2));
                     txtPharmAddr.setText(addr);
-                    txtPharmHomeNum.setText(patientArray.get(7));
-                    txtPharmMobileNum.setText(patientArray.get(8));
+                    txtPharmHomeNum.setText(patientArray.get(8));
+                    txtPharmMobileNum.setText(patientArray.get(9));
 
                     prescriptions = hdb.getPrescriptions(patientArray.get(2), name);
                     printTuples(prescriptions);
@@ -1385,8 +1381,8 @@ public class HealthDBUI extends JFrame {
                     txtLabName.setText(name);
                     txtLabPID.setText(patientArray.get(2));
                     txtLabAddr.setText(addr);
-                    txtLabHomeNum.setText(patientArray.get(7));
-                    txtLabMobileNum.setText(patientArray.get(8));
+                    txtLabHomeNum.setText(patientArray.get(8));
+                    txtLabMobileNum.setText(patientArray.get(9));
 
                     tests = hdb.getTests(patientArray.get(2));
                     printTuples(tests);
