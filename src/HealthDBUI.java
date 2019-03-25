@@ -754,6 +754,14 @@ public class HealthDBUI extends JFrame {
                     txtName.setText("");
                 }
                 else {
+                    txtPID.setText("");
+                    txtName.setText("");
+
+                    // Clear the data tables
+                    prescTableModel.setRowCount(0);
+                    testTableModel.setRowCount(0);
+                    referralTableModel.setRowCount(0);
+
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
 
