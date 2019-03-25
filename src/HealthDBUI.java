@@ -707,45 +707,51 @@ public class HealthDBUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 doctorArr = hdb.findPatient(txtPID.getText());
 
-                patientID = doctorArr.get(2);
-                String name = doctorArr.get(0) + " " + doctorArr.get(1);
-                String addr = doctorArr.get(3) + " " + doctorArr.get(4) + " " + doctorArr.get(6) + " " + doctorArr.get(5);
+                if(doctorArr.size() > 0) {
+                    patientID = doctorArr.get(2);
+                    String name = doctorArr.get(0) + " " + doctorArr.get(1);
+                    String addr = doctorArr.get(3) + " " + doctorArr.get(4) + " " + doctorArr.get(6) + " " + doctorArr.get(5);
 
-                System.out.println(doctorArr.get(2) + ", " + name);
+                    System.out.println(doctorArr.get(2) + ", " + name);
 
-                txtDocName.setText(name);
-                txtDocPID.setText(doctorArr.get(2));
-                txtDocAddr.setText(addr);
-                txtDocHomeNum.setText(doctorArr.get(7));
-                txtDocMobileNum.setText(doctorArr.get(8));
+                    txtDocName.setText(name);
+                    txtDocPID.setText(doctorArr.get(2));
+                    txtDocAddr.setText(addr);
+                    txtDocHomeNum.setText(doctorArr.get(7));
+                    txtDocMobileNum.setText(doctorArr.get(8));
 
-                /* TODO Update prescription, test and referral panels */
-                prescriptions = hdb.getPrescriptions(doctorArr.get(2), name);
-                printTuples(prescriptions);
-                String[][] data = createData(prescriptions);
-                for(int row = 0; row < data.length; row++)
-                {
-                    prescTableModel.addRow(data[row]);    
+                    /* TODO Update prescription, test and referral panels */
+                    prescriptions = hdb.getPrescriptions(doctorArr.get(2), name);
+                    printTuples(prescriptions);
+                    String[][] data = createData(prescriptions);
+                    for(int row = 0; row < data.length; row++)
+                    {
+                        prescTableModel.addRow(data[row]);
+                    }
+
+                    tests = hdb.getTests(doctorArr.get(2));
+                    printTuples(tests);
+                    data = createData(tests);
+                    for(int row = 0; row < data.length; row++)
+                    {
+                        testTableModel.addRow(data[row]);
+                    }
+
+                    referrals = hdb.getReferrals(doctorArr.get(2));
+                    printTuples(referrals);
+                    data = createData(referrals);
+                    for(int row = 0; row < data.length; row++)
+                    {
+                        referralTableModel.addRow(data[row]);
+                    }
+
+                    txtPID.setText("");
+                    txtName.setText("");
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
 
-                tests = hdb.getTests(doctorArr.get(2));
-                printTuples(tests);
-                data = createData(tests);
-                for(int row = 0; row < data.length; row++)
-                {
-                    testTableModel.addRow(data[row]);
-                }
-
-                referrals = hdb.getReferrals(doctorArr.get(2));
-                printTuples(referrals);
-                data = createData(referrals);
-                for(int row = 0; row < data.length; row++)
-                {
-                    referralTableModel.addRow(data[row]);
-                }
-
-                txtPID.setText("");
-                txtName.setText("");
             }
         });
         btnfindPatient.setText("Find Patient");
