@@ -69,9 +69,16 @@ public class HealthDBUI extends JFrame {
 
     private JPanel panelPlanSummaryFinder;
     private JPanel panelPlanSummaryInfo;
-    private JPanel panelPlanSummaryTests;
-    private JPanel panelPlanSummaryPrescriptions;
-    private JPanel panelPlanSummaryReferrals;
+    private JPanel panelProvincialPlan;
+    private JPanel panelExtendedBenefits;
+    private JPanel panelInvoiceHistory;
+    private JPanel panelInvoiceHistoryGrid;
+    private JPanel panelPlanSummaryActions;
+    
+    private JTextField txtPlanID;
+    private JTextField txtStartDate;
+    private JTextField txtPolicyType;
+    private JTextField txtEndDate;
 
     private JTextField txtInvoiceID;
     private JTextField txtInvoicePlanID;
@@ -151,9 +158,11 @@ public class HealthDBUI extends JFrame {
         setPanelPlanSummary();
         setPanelPlanSummaryFinder();
         setPanelPlanSummaryInfo();
-        setPanelPlanSummaryTests();
-        setPanelPlanSummaryPrescriptions();
-        setPanelPlanSummaryReferrals();
+        setPanelProvincialPlan();
+        setPanelExtendedBenefits();
+        setPanelInvoiceHistory();
+        setPanelInvoiceHistoryGrid();
+        setPanelPlanSummaryActions();
     }
 
     /**
@@ -1470,8 +1479,11 @@ public class HealthDBUI extends JFrame {
         panelInvoiceSubmit.add(btnSubmitInvoice, gbc);
     }
 
-
     private void setPanelPlanSummary() {
+    	
+    	// --------------------------------------------------
+    	
+        /* Row 0 */
         JLabel lbl = new JLabel("Plan Summary");
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
         lbl.setHorizontalAlignment(SwingConstants.LEADING);
@@ -1479,6 +1491,7 @@ public class HealthDBUI extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 0; gbc.gridy = 0;
         panelPlanSummary.add(lbl, gbc);
+        
         /* Row 1 */
         panelPlanSummaryFinder = new JPanel();
         panelPlanSummaryFinder.setLayout(new GridBagLayout());
@@ -1488,9 +1501,10 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 1;
         panelPlanSummary.add(panelPlanSummaryFinder, gbc);
 
+        // --------------------------------------------------
 
         /* Row 2 */
-        lbl = new JLabel("Patient Information", SwingConstants.LEADING);
+        lbl = new JLabel("Personal Information", SwingConstants.LEADING);
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
         gbc = new GridBagConstraints();
         gbc.insets= new Insets(10,0,0,0);
@@ -1507,9 +1521,11 @@ public class HealthDBUI extends JFrame {
         gbc.weightx = 1.0;
         gbc.gridx = 0; gbc.gridy = 3;
         panelPlanSummary.add(panelPlanSummaryInfo, gbc);
-
+        
+        // --------------------------------------------------
+        
         /* Row 4 */
-        lbl = new JLabel("Tests", SwingConstants.LEADING);
+        lbl = new JLabel("Provincial Plan", SwingConstants.LEADING);
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
         gbc = new GridBagConstraints();
         gbc.insets= new Insets(10,0,0,0);
@@ -1519,16 +1535,18 @@ public class HealthDBUI extends JFrame {
         panelPlanSummary.add(lbl, gbc);
 
         /* Row 5 */
-        panelPlanSummaryTests = new JPanel();
-        panelPlanSummaryTests.setLayout(new BorderLayout());
+        panelProvincialPlan = new JPanel();
+        panelProvincialPlan.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0; gbc.weighty = 1.0;
+        gbc.weightx = 1.0;
         gbc.gridx = 0; gbc.gridy = 5;
-        panelPlanSummary.add(panelPlanSummaryTests, gbc);
-
+        panelPlanSummary.add(panelProvincialPlan, gbc);
+        
+        // --------------------------------------------------
+        
         /* Row 6 */
-        lbl = new JLabel("Prescriptions", SwingConstants.LEADING);
+        lbl = new JLabel("Extended Benefits Plan", SwingConstants.LEADING);
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
         gbc = new GridBagConstraints();
         gbc.insets= new Insets(10,0,0,0);
@@ -1538,16 +1556,18 @@ public class HealthDBUI extends JFrame {
         panelPlanSummary.add(lbl, gbc);
 
         /* Row 7 */
-        panelPlanSummaryPrescriptions = new JPanel();
-        panelPlanSummaryPrescriptions.setLayout(new BorderLayout());
+        panelExtendedBenefits = new JPanel();
+        panelExtendedBenefits.setLayout(new BorderLayout());
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 7;
-        panelPlanSummary.add(panelPlanSummaryPrescriptions, gbc);
-
+        panelPlanSummary.add(panelExtendedBenefits, gbc);
+        
+        // --------------------------------------------------
+        
         /* Row 8 */
-        lbl = new JLabel("Referrals", SwingConstants.LEADING);
+        lbl = new JLabel("Invoice History", SwingConstants.LEADING);
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
         gbc = new GridBagConstraints();
         gbc.insets= new Insets(10,0,0,0);
@@ -1557,107 +1577,215 @@ public class HealthDBUI extends JFrame {
         panelPlanSummary.add(lbl, gbc);
 
         /* Row 9 */
-        panelPlanSummaryReferrals = new JPanel();
-        panelPlanSummaryReferrals.setLayout(new BorderLayout());
+        panelInvoiceHistory = new JPanel();
+        panelInvoiceHistory.setLayout(new GridBagLayout());
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.gridx = 0; gbc.gridy = 9;
+        panelPlanSummary.add(panelInvoiceHistory, gbc);
+        
+        // --------------------------------------------------
+
+        /* Row 10 */
+        /*
+        lbl = new JLabel("Invoice History Info", SwingConstants.LEADING);
+        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(10,0,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 10;
+        panelPlanSummary.add(lbl, gbc);
+        */
+
+        /* Row 10 */
+        panelInvoiceHistoryGrid = new JPanel();
+        panelInvoiceHistoryGrid.setLayout(new BorderLayout());
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 9;
-        panelPlanSummary.add(panelPlanSummaryReferrals, gbc);
+        gbc.gridx = 0; gbc.gridy = 10;
+        panelPlanSummary.add(panelInvoiceHistoryGrid, gbc);
+        
+        // -------------------------------------
+        
+        /* Row 11 */
+        panelPlanSummaryActions= new JPanel();
+        panelPlanSummaryActions.setLayout(new FlowLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 11;
+        panelPlanSummary.add(panelPlanSummaryActions, gbc);
+    }
+    private void setPanelProvincialPlan() {
+    	JLabel lbl = new JLabel("Plan ID:");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 0; gbc.gridy = 3;
+        panelProvincialPlan.add(lbl, gbc);
+
+        txtPlanID = new JTextField(12);
+        txtPlanID.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 1; gbc.gridy = 3;
+        panelProvincialPlan.add(txtPlanID, gbc);
+        
+        lbl = new JLabel("Policy Type:");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 2; gbc.gridy = 3;
+        panelProvincialPlan.add(lbl, gbc);
+
+        txtPolicyType = new JTextField(12);
+        txtPolicyType.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 3; gbc.gridy = 3;
+        panelProvincialPlan.add(txtPolicyType, gbc);
+        
+        lbl = new JLabel("Start Date:");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 0; gbc.gridy = 4;
+        panelProvincialPlan.add(lbl, gbc);
+
+        txtStartDate = new JTextField(12);
+        txtStartDate.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 1; gbc.gridy = 4;
+        panelProvincialPlan.add(txtStartDate, gbc);
+        
+        lbl = new JLabel("End Date:");
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.gridx = 2; gbc.gridy = 4;
+        panelProvincialPlan.add(lbl, gbc);
+
+        txtEndDate = new JTextField(12);
+        txtEndDate.setEditable(false);
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,5,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 3; gbc.gridy = 4;
+        panelProvincialPlan.add(txtEndDate, gbc);
+       
+    }
+    private void setPanelExtendedBenefits() {
+    	String cols[] = {"Benefit", "Annual Maximum", "YTD"};
+        String data[][] = {};
+        JTable presTable = new JTable(data, cols);
+        panelExtendedBenefits.add(presTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelExtendedBenefits.add(presTable, BorderLayout.CENTER);
+
+    }
+    private void setPanelInvoiceHistoryGrid() {
+    	String cols[] = {"Invoice ID", "Invoice Item", "Creation Date", "Due Date", "Status", "Balance"};
+        String data[][] = {};
+        JTable presTable = new JTable(data, cols);
+        panelInvoiceHistoryGrid.add(presTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelInvoiceHistoryGrid.add(presTable, BorderLayout.CENTER);
+    }
+    private void setPanelInvoiceHistory() {
+    	JLabel lbl = new JLabel("Total Unpaid:", SwingConstants.LEADING);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 0; gbc.gridy = 0;
+        panelInvoiceHistory.add(lbl, gbc);
+
+        JTextField txtTotalUnpaid = new JTextField(10);
+        gbc = new GridBagConstraints();
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 1; gbc.gridy = 0;
+        panelInvoiceHistory.add(txtTotalUnpaid, gbc);
+
+        lbl = new JLabel("Total Overdue:", SwingConstants.LEADING);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 2; gbc.gridy = 0;
+        panelInvoiceHistory.add(lbl, gbc);
+
+        JTextField txtTotalOverDue = new JTextField(12);
+        gbc = new GridBagConstraints();
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 3; gbc.gridy = 0;
+        panelInvoiceHistory.add(txtTotalOverDue, gbc); 
     }
     private void setPanelPlanSummaryFinder() {
-        JLabel lbl = new JLabel("HID:", SwingConstants.LEADING);
+        JLabel lbl = new JLabel("PID:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 0; gbc.gridy = 0;
         panelPlanSummaryFinder.add(lbl, gbc);
 
-        JTextField txtHID = new JTextField(10);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 1; gbc.gridy = 0;
-        panelPlanSummaryFinder.add(txtHID, gbc);
-
-        lbl = new JLabel("Staff Name:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 2; gbc.gridy = 0;
-        panelPlanSummaryFinder.add(lbl, gbc);
-
-        JTextField txtStaffName = new JTextField(12);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 3; gbc.gridy = 0;
-        panelPlanSummaryFinder.add(txtStaffName, gbc);
-
-        lbl = new JLabel("Invoice #:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 4; gbc.gridy = 0;
-        panelPlanSummaryFinder.add(lbl, gbc);
-
-        JTextField txtInvoiceNum = new JTextField(12);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 5; gbc.gridy = 0;
-        panelPlanSummaryFinder.add(txtInvoiceNum, gbc);
-
-        lbl = new JLabel("PID:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 1;
-        panelPlanSummaryFinder.add(lbl, gbc);
-
         JTextField txtPID = new JTextField(10);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 1; gbc.gridy = 1;
+        gbc.gridx = 1; gbc.gridy = 0;
         panelPlanSummaryFinder.add(txtPID, gbc);
 
         lbl = new JLabel("Name:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 2; gbc.gridy = 1;
+        gbc.gridx = 2; gbc.gridy = 0;
         panelPlanSummaryFinder.add(lbl, gbc);
 
-        JTextField txtPatientName = new JTextField(12);
+        JTextField txtName = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 3; gbc.gridy = 1;
-        panelPlanSummaryFinder.add(txtPatientName, gbc);
-
+        gbc.gridx = 3; gbc.gridy = 0;
+        panelPlanSummaryFinder.add(txtName, gbc);
 
         lbl = new JLabel("Plan #:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 4; gbc.gridy = 1;
+        gbc.gridx = 0; gbc.gridy = 1;
         panelPlanSummaryFinder.add(lbl, gbc);
 
         JTextField txtPlanNum = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 5; gbc.gridy = 1;
+        gbc.gridx = 1; gbc.gridy = 1;
         panelPlanSummaryFinder.add(txtPlanNum, gbc);
 
-        JButton btnFindPatient = new JButton();
-        btnFindPatient.addActionListener(new ActionListener() {
+        lbl = new JLabel("Invoice #:", SwingConstants.LEADING);
+        gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 0; gbc.gridy = 2;
+        panelPlanSummaryFinder.add(lbl, gbc);
+
+        JTextField txtInvoiceNumber = new JTextField(10);
+        gbc = new GridBagConstraints();
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 1; gbc.gridy = 2;
+        panelPlanSummaryFinder.add(txtInvoiceNumber, gbc);
+
+        JButton btnFindPlan = new JButton();
+        btnFindPlan.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.findPatient(txtPID.getText());
+                Object obj = hdb.findPlan(txtPlanID.getText());
 
                 /* TODO get tests */
             }
         });
-        btnFindPatient.setText("Find Patient");
+        btnFindPlan.setText("Find Plan");
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 0);
         gbc.gridwidth = 2;
         gbc.gridx = 2; gbc.gridy = 2;
-        panelPlanSummaryFinder.add(btnFindPatient, gbc);
+        panelPlanSummaryFinder.add(btnFindPlan, gbc);
     }
     private void setPanelPlanSummaryInfo() {
         JLabel lbl = new JLabel("Name:");
@@ -1736,35 +1864,29 @@ public class HealthDBUI extends JFrame {
         gbc.insets= new Insets(0,5,0,0);
         gbc.gridx = 3; gbc.gridy = 5;
         panelPlanSummaryInfo.add(txtPatientHomePhone, gbc);
-
-
     }
-    private void setPanelPlanSummaryTests() {
-
-        String cols[] = {"ID", "Date", "Status"};
-        String data[][] = {};
-        JTable testTable = new JTable(data, cols);
-        panelPlanSummaryTests.add(testTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPlanSummaryTests.add(testTable, BorderLayout.CENTER);
-
+    private void setPanelPlanSummaryActions() {
+        JButton btnCreateInvoice = new JButton();
+        btnCreateInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String patientID = "";
+                String invoiceItem = "";
+                String dueDate = "";
+                String paymentStatus = "";
+                String paymentDate = "";
+                String paymentMethod = "";
+                String amountOwing = "";
+                String paymentID = "";
+                String planID = "";
+                hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus, 
+                		paymentDate, paymentMethod, amountOwing, paymentID, planID);
+            }
+        });
+        btnCreateInvoice.setText("Create Invoice");
+        panelPlanSummaryActions.add(btnCreateInvoice);
     }
-    private void setPanelPlanSummaryPrescriptions() {
-        String cols[] = {"ID", "Date", "Medication", "Dosage", "Quantity", "Status"};
-        String data[][] = {};
-        JTable presTable = new JTable(data, cols);
-        panelPlanSummaryPrescriptions.add(presTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPlanSummaryPrescriptions.add(presTable, BorderLayout.CENTER);
-    }
-    private void setPanelPlanSummaryReferrals() {
-
-        String cols[] = {"Doctor", "Specialization", "Date"};
-        String data[][] = {};
-        JTable refTable = new JTable(data, cols);
-        panelPlanSummaryReferrals.add(refTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPlanSummaryReferrals.add(refTable, BorderLayout.CENTER);
-
-    }
-
+  
     private void switchToUserSelectPanel() {
         /* Switch to User Class panel when login achieved */
         panelOracleLogin.setVisible(false);
