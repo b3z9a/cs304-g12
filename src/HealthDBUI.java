@@ -1050,8 +1050,6 @@ public class HealthDBUI extends JFrame {
 
                     // Clear the data tables
                     prescTableModel.setRowCount(0);
-                    testTableModel.setRowCount(0);
-                    referralTableModel.setRowCount(0);
 
                     patientID = patientArray.get(2);
                     String name = patientArray.get(0) + " " + patientArray.get(1);
@@ -1059,11 +1057,11 @@ public class HealthDBUI extends JFrame {
 
                     System.out.println(patientArray.get(2) + ", " + name);
 
-                    txtDocName.setText(name);
-                    txtDocPID.setText(patientArray.get(2));
-                    txtDocAddr.setText(addr);
-                    txtDocHomeNum.setText(patientArray.get(7));
-                    txtDocMobileNum.setText(patientArray.get(8));
+                    txtPharmName.setText(name);
+                    txtPharmPID.setText(patientArray.get(2));
+                    txtPharmAddr.setText(addr);
+                    txtPharmHomeNum.setText(patientArray.get(7));
+                    txtPharmMobileNum.setText(patientArray.get(8));
 
                     prescriptions = hdb.getPrescriptions(patientArray.get(2), name);
                     printTuples(prescriptions);
@@ -1082,8 +1080,6 @@ public class HealthDBUI extends JFrame {
 
                     // Clear the data tables
                     prescTableModel.setRowCount(0);
-                    testTableModel.setRowCount(0);
-                    referralTableModel.setRowCount(0);
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1176,9 +1172,8 @@ public class HealthDBUI extends JFrame {
     private void setPanelPrescriptionPrescriptions() {
         String cols[] = {"ID", "Date", "Medication", "Dosage", "Quantity", "Status", "Fill"};
         String data[][] = {};
-        JTable presTable = new JTable(data, cols);
-        panelPrescriptionPrescriptions.add(presTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPrescriptionPrescriptions.add(presTable, BorderLayout.CENTER);
+        panelPrescriptionPrescriptions.add(prescriptionTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelPrescriptionPrescriptions.add(prescriptionTable, BorderLayout.CENTER);
     }
 
     private void setPanelTest() {
@@ -1303,9 +1298,7 @@ public class HealthDBUI extends JFrame {
                 if(patientArray.size() > 0) {
 
                     // Clear the data tables
-                    prescTableModel.setRowCount(0);
                     testTableModel.setRowCount(0);
-                    referralTableModel.setRowCount(0);
 
                     patientID = patientArray.get(2);
                     String name = patientArray.get(0) + " " + patientArray.get(1);
@@ -1313,11 +1306,11 @@ public class HealthDBUI extends JFrame {
 
                     System.out.println(patientArray.get(2) + ", " + name);
 
-                    txtDocName.setText(name);
-                    txtDocPID.setText(patientArray.get(2));
-                    txtDocAddr.setText(addr);
-                    txtDocHomeNum.setText(patientArray.get(7));
-                    txtDocMobileNum.setText(patientArray.get(8));
+                    txtLabName.setText(name);
+                    txtLabPID.setText(patientArray.get(2));
+                    txtLabAddr.setText(addr);
+                    txtLabHomeNum.setText(patientArray.get(7));
+                    txtLabMobileNum.setText(patientArray.get(8));
 
                     tests = hdb.getTests(patientArray.get(2));
                     printTuples(tests);
@@ -1335,9 +1328,7 @@ public class HealthDBUI extends JFrame {
                     txtName.setText("");
 
                     // Clear the data tables
-                    prescTableModel.setRowCount(0);
                     testTableModel.setRowCount(0);
-                    referralTableModel.setRowCount(0);
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1432,9 +1423,8 @@ public class HealthDBUI extends JFrame {
     private void setPanelTestTests() {
         String cols[] = {"ID", "Date", "Medication", "Dosage", "Quantity", "Status", "Fill"};
         String data[][] = {};
-        JTable presTable = new JTable(data, cols);
-        panelTestTests.add(presTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelTestTests.add(presTable, BorderLayout.CENTER);
+        panelTestTests.add(testTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelTestTests.add(testTable, BorderLayout.CENTER);
     }
 
     private void setPanelInvoice() {
