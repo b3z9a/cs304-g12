@@ -240,7 +240,7 @@ public class HealthDB {
 		}
 	}
 	
-	/** getX methods: Returns all X tuples with specified name/ID
+	/** getX methods: Returns all X tuples for specified name/ID
 	 */
 	
 	/** Finds all patients with a name containing the string provided.
@@ -248,8 +248,39 @@ public class HealthDB {
 	* @return tuples of all patients whose first or last name contains the string provided.
 	*/
 	public ArrayList<ArrayList<String>> getPatients(String name){
-		/* TODO: Find patients*/
-		return new ArrayList<ArrayList<String>>();
+		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
+		try{
+			String query = "select p.firstName, p.lastName, p.patientID, p.street, " 
+							+ "pc.city, pc.province, pc.postalcode, pc.country, "
+							+ "p.homePhone, p.mobilePhone from patient p, postalcode pc " 
+							+ "where (p.firstName like '%" + name + "%'" + " or p.lastName like '%" + name + "%') and p.postalcode = pc.postalcode" ;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				ArrayList<String> tuple = new ArrayList<String>();
+				tuple.add(rs.getString("firstName"));
+				tuple.add(rs.getString("lastName"));
+				tuple.add(rs.getString("patientID"));
+				tuple.add(rs.getString("street"));
+				tuple.add(rs.getString("city"));
+				tuple.add(rs.getString("province"));
+				tuple.add(rs.getString("postalcode"));
+				tuple.add(rs.getString("country"));
+				tuple.add(rs.getString("homePhone"));
+				tuple.add(rs.getString("mobilePhone"));
+				tuples.add(tuple);
+			}
+	
+			// Close the statement, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get patients. " + ex.getMessage());
+		}
+		return tuples;
 	}
 
 	/**
