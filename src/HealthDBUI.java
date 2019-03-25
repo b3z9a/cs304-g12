@@ -762,31 +762,42 @@ public class HealthDBUI extends JFrame {
                     txtDocName.setText(name);
                     txtDocPID.setText(patientArray.get(2));
                     txtDocAddr.setText(addr);
-                    txtDocHomeNum.setText(patientArray.get(7));
-                    txtDocMobileNum.setText(patientArray.get(8));
+                    txtDocHomeNum.setText(patientArray.get(8));
+                    txtDocMobileNum.setText(patientArray.get(9));
 
                     prescriptions = hdb.getPrescriptions(patientArray.get(2), name);
                     printTuples(prescriptions);
-                    String[][] data = createData(prescriptions);
-                    for(int row = 0; row < data.length; row++)
+                    if(prescriptions.size() > 0)
                     {
-                        prescPSTableModel.addRow(data[row]);
+                        String[][] data = createData(prescriptions);
+                        for(int row = 0; row < data.length; row++)
+                        {
+                            prescPSTableModel.addRow(data[row]);
+                        }
                     }
+
 
                     tests = hdb.getTests(patientArray.get(2));
                     printTuples(tests);
-                    data = createData(tests);
-                    for(int row = 0; row < data.length; row++)
+                    if(tests.size() > 0)
                     {
-                        testPSTableModel.addRow(data[row]);
+                        String[][] data = createData(tests);
+                        for(int row = 0; row < data.length; row++)
+                        {
+                            testPSTableModel.addRow(data[row]);
+                        }
                     }
+
 
                     referrals = hdb.getReferrals(patientArray.get(2));
                     printTuples(referrals);
-                    data = createData(referrals);
-                    for(int row = 0; row < data.length; row++)
+                    if(referrals.size() > 0)
                     {
-                        refPSTableModel.addRow(data[row]);
+                        String[][] data = createData(referrals);
+                        for(int row = 0; row < data.length; row++)
+                        {
+                            refPSTableModel.addRow(data[row]);
+                        }
                     }
 
                     txtPID.setText("");
@@ -1160,11 +1171,15 @@ public class HealthDBUI extends JFrame {
 
                     prescriptions = hdb.getPrescriptions(patientArray.get(2), name);
                     printTuples(prescriptions);
-                    String[][] data = createData(prescriptions);
-                    for(int row = 0; row < data.length; row++)
+                    if(prescriptions.size() > 0)
                     {
-                        prescPPTableModel.addRow(data[row]);
+                        String[][] data = createData(prescriptions);
+                        for(int row = 0; row < data.length; row++)
+                        {
+                            prescPPTableModel.addRow(data[row]);
+                        }
                     }
+
                     txtPrescNum.setText("");
                     txtPID.setText("");
                     txtName.setText("");
@@ -1373,10 +1388,13 @@ public class HealthDBUI extends JFrame {
 
                     tests = hdb.getTests(patientArray.get(2));
                     printTuples(tests);
-                    String[][] data = createData(tests);
-                    for(int row = 0; row < data.length; row++)
+                    if(tests.size() > 0)
                     {
-                        testTPTableModel.addRow(data[row]);
+                        String[][] data = createData(tests);
+                        for(int row = 0; row < data.length; row++)
+                        {
+                            testTPTableModel.addRow(data[row]);
+                        }
                     }
 
                     txtTest.setText("");
