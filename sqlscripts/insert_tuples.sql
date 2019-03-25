@@ -102,3 +102,55 @@ insert into Invoice values (152748, 31572742, 'Clinic visit', TO_DATE('2018-05-1
 insert into Invoice values (119396, 31857372, 'Orthodic insoles', TO_DATE('2019-01-13','YYYY-MM-DD'), TO_DATE('2019-03-13','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 265.50, NULL, 128473);
 insert into Invoice values (137472, 12345678, 'Orthodic insoles', TO_DATE('2019-01-13','YYYY-MM-DD'), TO_DATE('2019-03-13','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 265.50, NULL, 128473);
 insert into Invoice values (192745, 29562774, 'Massage re: back injury', TO_DATE('2019-01-04','YYYY-MM-DD'), TO_DATE('2019-02-04','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 145.0, NULL, 127828);
+
+  insert into HealthcareProfessional values (53211, 'Aaron', 'Miller', '', '2685 W Broadway', 'V6Z1Y6', '604-775-3021', '604-882-4038');
+  insert into HealthcareProfessional values (58377, 'James', 'Yu', '', '200-2475 Bayswater St', 'V6H3N1', '604-668-4522', '604-565-2111');
+  insert into HealthcareProfessional values (52942, 'Alex', 'Chen', '200', '1755 1st Ave W', 'V6K2G2', '604-668-8323', '604-788-6569');
+  insert into HealthcareProfessional values (54242, 'Vanessa', 'Burak', 'A110', '3261 5 Ave W', 'V6S0J9', '604-731-2388', '604-788-3076');
+  insert into HealthcareProfessional values (54986, 'Sanja', 'Avinashi', '359', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
+
+  insert into Doctor values (53211, 932111, 'Family Doctor');
+  insert into Doctor values (58377, 926433, 'Family Doctor');
+  insert into Doctor values (52942, 985744, 'Family Doctor');
+  insert into Doctor values (54242, 928355, 'Family Doctor');
+  insert into Doctor values (54976, 924274, 'Family Doctor');
+
+  insert into PostalCode values ('V5T3N4', 'Vancouver', 'BC', 'Canada');
+
+  insert into HealthcareProfessional values (58739, 'Catherine', 'Cantarutti', '', '3080 Price Edward St', 'V5T3N4', '604-778-3848', '604-853-5833');
+  insert into HealthcareProfessional values (58572, 'Kevin', 'Chan', '210', '3080 Price Edward St', 'V5T3N4', '604-744-2948', '604-593-5844');
+  insert into HealthcareProfessional values (56483, 'Divi', 'Chandra', '', '3080 Price Edward St', 'V5T3N4', '604-565-9843', '250-857-3844');
+  insert into HealthcareProfessional values (56837, 'Helen', 'Yu', 'B-210', '3080 Price Edward St', 'V5T3N4', '604-847-3883', '250-883-9853');
+  insert into HealthcareProfessional values (55243, 'Yi Yueh', 'Cheng', '10', '3080 Price Edward St', 'V5T3N4', '604-722-8535', '250-573-8573');
+
+  insert into Doctor values (58739, 939583, 'Anesthesiologist');
+  insert into Doctor values (58572, 919384, 'Dermatologist');
+  insert into Doctor values (56483, 995824, 'Gastroenterologist');
+  insert into Doctor values (56837, 985723, 'Geriatric Medicine Specialist');
+  insert into Doctor values (55243, 985737, 'Gynecologist');
+
+  insert into HealthcareProfessional values (53948, 'Peter', 'Chiu', '', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
+  insert into HealthcareProfessional values (53596, 'Bahar', 'Cinarli', '', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
+  insert into HealthcareProfessional values (55284, 'Jeff', 'Coleman', '210', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
+  insert into HealthcareProfessional values (55934, 'Nishi', 'Dhawan', '15', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
+  insert into HealthcareProfessional values (56868, 'Timothy', 'Doty', '', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
+
+  insert into Doctor values (53948, 938572, 'Hematologist');
+  insert into Doctor values (53596, 959283, 'Heptologist');
+  insert into Doctor values (55284, 969924, 'Neonatologist');
+  insert into Doctor values (55934, 956384, 'Psychiatrist');
+  insert into Doctor values (56868, 924858, 'Radiologist');
+
+  insert into PostalCode values ('V5G2X6', 'Burnaby', 'BC', 'Canada');
+
+  insert into HealthcareProfessional values (51837, 'Sanja', 'Avinashi', '220', '3935 Kincaid St', 'V5G2X6', '604-634-8573', '778-584-4835');
+  insert into HealthcareProfessional values (53592, 'Sanja', 'Avinashi', '215', '3935 Kincaid St', 'V5G2X6', '604-634-8434', '778-573-5838');
+  insert into HealthcareProfessional values (59434, 'Sanja', 'Avinashi', '233', '3935 Kincaid St', 'V5G2X6', '604-644-6832', '766-938-9671');
+  insert into HealthcareProfessional values (56838, 'Sanja', 'Avinashi', '115', '3935 Kincaid St', 'V5G2X6', '604-644-6824', '855-365-8344');
+  insert into HealthcareProfessional values (56992, 'Sanja', 'Avinashi', '101', '3935 Kincaid St', 'V5G2X6', '604-662-4823', '855-365-3843');
+
+  insert into Doctor values (51837, 982743, 'Rheumatologist');
+  insert into Doctor values (53592, 992847, 'Sleep Disorder Specialist');
+  insert into Doctor values (59434, 973853, 'Surgeon');
+  insert into Doctor values (56838, 923485, 'Urologist');
+  insert into Doctor values (56992, 913958, 'Otolaryngologist');
