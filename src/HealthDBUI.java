@@ -743,6 +743,9 @@ public class HealthDBUI extends JFrame {
                 {
                     referralTableModel.addRow(data[row]);
                 }
+
+                txtPID.setText("");
+                txtName.setText("");
             }
         });
         btnfindPatient.setText("Find Patient");
