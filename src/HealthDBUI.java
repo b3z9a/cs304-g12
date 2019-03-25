@@ -1018,6 +1018,9 @@ public class HealthDBUI extends JFrame {
         panelPrescription.add(panelPrescriptionPrescriptions, gbc);
     }
     private void setPanelPrescriptionFinder() {
+        JTextField txtPID = new JTextField(10);
+        JTextField txtName = new JTextField(12);
+
         JLabel lbl = new JLabel("Prescription #:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
@@ -1036,11 +1039,49 @@ public class HealthDBUI extends JFrame {
         btnFindPrescNum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
-                
-                Object obj = hdb.findPrescription(txtPrescNum.getText());
+
+                String pid = hdb.findPrescription(txtPrescNum.getText());
 
                 /* TODO get prescriptions */
+                patientArray = hdb.findPatient(pid);
+
+                if(patientArray.size() > 0) {
+
+                    // Clear the data tables
+                    prescPPTableModel.setRowCount(0);
+
+                    patientID = patientArray.get(2);
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+                    String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
+
+                    System.out.println(patientArray.get(2) + ", " + name);
+
+                    txtPharmName.setText(name);
+                    txtPharmPID.setText(patientArray.get(2));
+                    txtPharmAddr.setText(addr);
+                    txtPharmHomeNum.setText(patientArray.get(7));
+                    txtPharmMobileNum.setText(patientArray.get(8));
+
+                    prescriptions = hdb.getPrescriptions(patientArray.get(2), name);
+                    printTuples(prescriptions);
+                    String[][] data = createData(prescriptions);
+                    for(int row = 0; row < data.length; row++)
+                    {
+                        prescPPTableModel.addRow(data[row]);
+                    }
+
+                    txtPID.setText("");
+                    txtName.setText("");
+                }
+                else {
+                    txtPID.setText("");
+                    txtName.setText("");
+
+                    // Clear the data tables
+                    prescPPTableModel.setRowCount(0);
+
+                    JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         btnFindPrescNum.setText("Find by Prescription Number");
@@ -1058,7 +1099,6 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 1;
         panelPrescriptionFinder.add(lbl, gbc);
 
-        JTextField txtPID = new JTextField(10);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(5,5,0,0);
@@ -1072,7 +1112,6 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 2; gbc.gridy = 1;
         panelPrescriptionFinder.add(lbl, gbc);
 
-        JTextField txtName = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(5,5,0,0);
@@ -1271,6 +1310,9 @@ public class HealthDBUI extends JFrame {
         panelTest.add(panelTestTests, gbc);
     }
     private void setPanelTestFinder() {
+        JTextField txtPID = new JTextField(10);
+        JTextField txtName = new JTextField(12);
+
         JLabel lbl = new JLabel("Test #:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
@@ -1289,9 +1331,48 @@ public class HealthDBUI extends JFrame {
         btnFindTestNum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.findTest(txtTest.getText());
 
-                /* TODO get tests */
+                String pid = hdb.findTest(txtTest.getText());
+
+                patientArray = hdb.findPatient(pid);
+
+                if(patientArray.size() > 0) {
+
+                    // Clear the data tables
+                    testTPTableModel.setRowCount(0);
+
+                    patientID = patientArray.get(2);
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+                    String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
+
+                    System.out.println(patientArray.get(2) + ", " + name);
+
+                    txtLabName.setText(name);
+                    txtLabPID.setText(patientArray.get(2));
+                    txtLabAddr.setText(addr);
+                    txtLabHomeNum.setText(patientArray.get(7));
+                    txtLabMobileNum.setText(patientArray.get(8));
+
+                    tests = hdb.getTests(patientArray.get(2));
+                    printTuples(tests);
+                    String[][] data = createData(tests);
+                    for(int row = 0; row < data.length; row++)
+                    {
+                        testTPTableModel.addRow(data[row]);
+                    }
+
+                    txtPID.setText("");
+                    txtName.setText("");
+                }
+                else {
+                    txtPID.setText("");
+                    txtName.setText("");
+
+                    // Clear the data tables
+                    testTPTableModel.setRowCount(0);
+
+                    JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         btnFindTestNum.setText("Find by Test Number");
@@ -1308,7 +1389,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 1;
         panelTestFinder.add(lbl, gbc);
 
-        JTextField txtPID = new JTextField(10);
+
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(5,5,0,0);
@@ -1322,7 +1403,6 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 2; gbc.gridy = 1;
         panelTestFinder.add(lbl, gbc);
 
-        JTextField txtName = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(5,5,0,0);
@@ -1373,8 +1453,6 @@ public class HealthDBUI extends JFrame {
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
-
-                /* TODO get tests */
             }
         });
         btnFindTestPID.setText("Find by Patient ID");
