@@ -589,7 +589,10 @@ public class HealthDBUI extends JFrame {
                 prescriptions = hdb.getPrescriptions(doctorArr.get(2), name);
                 printTuples(prescriptions);
                 String[][] data = createData(prescriptions);
-                prescTableModel.addRow(data);
+		                for(int row = 0; row < data.length; row++)
+                {
+                    prescTableModel.addRow(data[row]);    
+                }
 
                 tests = hdb.getTests(doctorArr.get(2));
                 printTuples(tests);
@@ -681,7 +684,7 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryInfo.add(txtDocHomeNum, gbc);
     }
     private void setPanelPatientSummaryPrescriptions() {
-        String cols[] = {"ID", "Date", "Medication", "Dosage", "Quantity", "Status"};
+        String cols[] = {"ID", "Date", "Medication", "Dosage", "Dosage Unit", "Quantity", "Filled Date"};
         String data[][] = {};
         prescTableModel = new DefaultTableModel(data, cols);
         prescriptionTable = new JTable(prescTableModel);
