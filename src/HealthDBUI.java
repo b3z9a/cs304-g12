@@ -928,11 +928,29 @@ public class HealthDBUI extends JFrame {
         btnCreatePrescription.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String medication = "";
-                String dosage = "";
-                String qty = "";
-                hdb.createPrescription(patientID, drHID, medication, dosage, qty);
+                JTextField dMedication = new JTextField();
+                JTextField dDosage = new JTextField();
+                JTextField dQty = new JTextField();
 
+                if(patientArray.size() > 0)
+                {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    Object[] fields = {"Patient: " + name, "Medication", dMedication, "Dosage", dDosage, "Quantity", dQty};
+
+                    int resp = JOptionPane.showConfirmDialog(null, fields, "Create prescription for " + name, JOptionPane.OK_CANCEL_OPTION);
+
+                    if(resp == 1) {
+                        String medication = dMedication.getText();
+                        String dosage = dDosage.getText();
+                        String qty = dQty.getText();
+                        hdb.createPrescription(patientID, drHID, medication, dosage, qty);
+                        System.out.println(medication + " " + dosage + " " + qty);
+                    }
+                    else {
+                        System.out.println("No values entered");
+                    }
+                }
             }
         });
         btnCreatePrescription.setText("Create New Prescription");
