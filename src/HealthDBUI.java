@@ -115,12 +115,16 @@ public class HealthDBUI extends JFrame {
     private JTextField txtLabHomeNum;
     private JTextField txtLabMobileNum;
 
-    private JTable prescriptionTable;
-    private DefaultTableModel prescTableModel;
-    private JTable testTable;
-    private DefaultTableModel testTableModel;
-    private JTable refTable;
-    private DefaultTableModel referralTableModel;
+    private JTable prescPSTable;
+    private DefaultTableModel prescPSTableModel;
+    private JTable testPSTable;
+    private DefaultTableModel testPSTableModel;
+    private JTable refPSTable;
+    private DefaultTableModel refPSTableModel;
+    private JTable prescPPTable;
+    private DefaultTableModel prescPPTableModel;
+    private JTable testTPTable;
+    private DefaultTableModel testTPTableModel;
 
     public static void main(String args[]) {
         hdb = new HealthDB();
@@ -186,6 +190,15 @@ public class HealthDBUI extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         patientArray = new ArrayList<String>();
+    }
+
+    private void clearTables() {
+        patientArray.clear();
+        prescPPTableModel.setRowCount(0);
+        prescPSTableModel.setRowCount(0);
+        testPSTableModel.setRowCount(0);
+        testTPTableModel.setRowCount(0);
+        refPSTableModel.setRowCount(0);
     }
 
     /**
@@ -451,6 +464,8 @@ public class HealthDBUI extends JFrame {
                     case "Patient Summary":
                         System.out.println("Patient Summary");
 
+                        clearTables();
+
                         /* Switch to Patient Summary panel */
                         panelPatientSummary.setVisible(true);
                         panelPrescription.setVisible(false);
@@ -460,7 +475,7 @@ public class HealthDBUI extends JFrame {
                         break;
                     case "Prescriptions":
                         System.out.println("Prescriptions");
-
+                        clearTables();
                         /* Switch to Pharmacist Class panel */
                         panelPatientSummary.setVisible(false);
                         panelPrescription.setVisible(true);
@@ -470,7 +485,7 @@ public class HealthDBUI extends JFrame {
                         break;
                     case "Tests":
                         System.out.println("Tests");
-
+                        clearTables();
                         /* Switch to Tests panel */
                         panelPatientSummary.setVisible(false);
                         panelPrescription.setVisible(false);
@@ -480,7 +495,7 @@ public class HealthDBUI extends JFrame {
                         break;
                     case "Plan Summary":
                         System.out.println("Plan Summary");
-
+                        clearTables();
                         /* Switch to Plan Summary panel */
                         panelPatientSummary.setVisible(false);
                         panelPrescription.setVisible(false);
@@ -506,6 +521,7 @@ public class HealthDBUI extends JFrame {
         btnClear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                clearTables();
                 panelEmpty.setVisible(true);
                 panelPatientSummary.setVisible(false);
                 panelPrescription.setVisible(false);
@@ -710,9 +726,9 @@ public class HealthDBUI extends JFrame {
                 if(patientArray.size() > 0) {
 
                     // Clear the data tables
-                    prescTableModel.setRowCount(0);
-                    testTableModel.setRowCount(0);
-                    referralTableModel.setRowCount(0);
+                    prescPSTableModel.setRowCount(0);
+                    testPSTableModel.setRowCount(0);
+                    refPSTableModel.setRowCount(0);
 
                     patientID = patientArray.get(2);
                     String name = patientArray.get(0) + " " + patientArray.get(1);
@@ -731,7 +747,7 @@ public class HealthDBUI extends JFrame {
                     String[][] data = createData(prescriptions);
                     for(int row = 0; row < data.length; row++)
                     {
-                        prescTableModel.addRow(data[row]);
+                        prescPSTableModel.addRow(data[row]);
                     }
 
                     tests = hdb.getTests(patientArray.get(2));
@@ -739,7 +755,7 @@ public class HealthDBUI extends JFrame {
                     data = createData(tests);
                     for(int row = 0; row < data.length; row++)
                     {
-                        testTableModel.addRow(data[row]);
+                        testPSTableModel.addRow(data[row]);
                     }
 
                     referrals = hdb.getReferrals(patientArray.get(2));
@@ -747,7 +763,7 @@ public class HealthDBUI extends JFrame {
                     data = createData(referrals);
                     for(int row = 0; row < data.length; row++)
                     {
-                        referralTableModel.addRow(data[row]);
+                        refPSTableModel.addRow(data[row]);
                     }
 
                     txtPID.setText("");
@@ -758,9 +774,9 @@ public class HealthDBUI extends JFrame {
                     txtName.setText("");
 
                     // Clear the data tables
-                    prescTableModel.setRowCount(0);
-                    testTableModel.setRowCount(0);
-                    referralTableModel.setRowCount(0);
+                    prescPSTableModel.setRowCount(0);
+                    testPSTableModel.setRowCount(0);
+                    refPSTableModel.setRowCount(0);
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -850,29 +866,29 @@ public class HealthDBUI extends JFrame {
     private void setPanelPatientSummaryPrescriptions() {
         String cols[] = {"ID", "Date", "Medication", "Dosage", "Dosage Unit", "Quantity", "Filled Date"};
         String data[][] = {};
-        prescTableModel = new DefaultTableModel(data, cols);
-        prescriptionTable = new JTable(prescTableModel);
-        panelPatientSummaryPrescriptions.add(prescriptionTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPatientSummaryPrescriptions.add(prescriptionTable, BorderLayout.CENTER);
+        prescPSTableModel = new DefaultTableModel(data, cols);
+        prescPSTable = new JTable(prescPSTableModel);
+        panelPatientSummaryPrescriptions.add(prescPSTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelPatientSummaryPrescriptions.add(prescPSTable, BorderLayout.CENTER);
     }
     private void setPanelPatientSummaryTests() {
 
         String cols[] = {"Test ID", "Ordered Date", "Performed Date"};
         String data[][] = {};
-        testTableModel = new DefaultTableModel(data, cols);
-        testTable = new JTable(testTableModel);
-        panelPatientSummaryTests.add(testTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPatientSummaryTests.add(testTable, BorderLayout.CENTER);
+        testPSTableModel = new DefaultTableModel(data, cols);
+        testPSTable = new JTable(testPSTableModel);
+        panelPatientSummaryTests.add(testPSTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelPatientSummaryTests.add(testPSTable, BorderLayout.CENTER);
 
     }
     private void setPanelPatientSummaryReferrals() {
 
         String cols[] = {"First Name", "Last Name", "Specialization", "Date"};
         String data[][] = {};
-        referralTableModel = new DefaultTableModel(data, cols);
-        refTable = new JTable(referralTableModel);
-        panelPatientSummaryReferrals.add(refTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPatientSummaryReferrals.add(refTable, BorderLayout.CENTER);
+        refPSTableModel = new DefaultTableModel(data, cols);
+        refPSTable = new JTable(refPSTableModel);
+        panelPatientSummaryReferrals.add(refPSTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelPatientSummaryReferrals.add(refPSTable, BorderLayout.CENTER);
 
     }
     private void setPanelPatientSummaryActions() {
@@ -1049,7 +1065,7 @@ public class HealthDBUI extends JFrame {
                 if(patientArray.size() > 0) {
 
                     // Clear the data tables
-                    prescTableModel.setRowCount(0);
+                    prescPPTableModel.setRowCount(0);
 
                     patientID = patientArray.get(2);
                     String name = patientArray.get(0) + " " + patientArray.get(1);
@@ -1068,7 +1084,7 @@ public class HealthDBUI extends JFrame {
                     String[][] data = createData(prescriptions);
                     for(int row = 0; row < data.length; row++)
                     {
-                        prescTableModel.addRow(data[row]);
+                        prescPPTableModel.addRow(data[row]);
                     }
 
                     txtPID.setText("");
@@ -1079,7 +1095,7 @@ public class HealthDBUI extends JFrame {
                     txtName.setText("");
 
                     // Clear the data tables
-                    prescTableModel.setRowCount(0);
+                    prescPPTableModel.setRowCount(0);
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1170,12 +1186,12 @@ public class HealthDBUI extends JFrame {
 
     }
     private void setPanelPrescriptionPrescriptions() {
-        String cols[] = {"ID", "Date", "Medication", "Dosage", "Quantity", "Status", "Fill"};
+        String cols[] = {"ID", "Date", "Medication", "Dosage", "Dosage Unit", "Quantity", "Filled Date"};
         String data[][] = {};
-        prescTableModel = new DefaultTableModel(data, cols);
-        prescriptionTable = new JTable(prescTableModel);
-        panelPrescriptionPrescriptions.add(prescriptionTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPrescriptionPrescriptions.add(prescriptionTable, BorderLayout.CENTER);
+        prescPPTableModel = new DefaultTableModel(data, cols);
+        prescPPTable = new JTable(prescPPTableModel);
+        panelPrescriptionPrescriptions.add(prescPPTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelPrescriptionPrescriptions.add(prescPPTable, BorderLayout.CENTER);
     }
 
     private void setPanelTest() {
@@ -1300,7 +1316,7 @@ public class HealthDBUI extends JFrame {
                 if(patientArray.size() > 0) {
 
                     // Clear the data tables
-                    testTableModel.setRowCount(0);
+                    testTPTableModel.setRowCount(0);
 
                     patientID = patientArray.get(2);
                     String name = patientArray.get(0) + " " + patientArray.get(1);
@@ -1319,7 +1335,7 @@ public class HealthDBUI extends JFrame {
                     String[][] data = createData(tests);
                     for(int row = 0; row < data.length; row++)
                     {
-                        testTableModel.addRow(data[row]);
+                        testTPTableModel.addRow(data[row]);
                     }
 
                     txtPID.setText("");
@@ -1330,7 +1346,7 @@ public class HealthDBUI extends JFrame {
                     txtName.setText("");
 
                     // Clear the data tables
-                    testTableModel.setRowCount(0);
+                    testTPTableModel.setRowCount(0);
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1423,12 +1439,12 @@ public class HealthDBUI extends JFrame {
 
     }
     private void setPanelTestTests() {
-        String cols[] = {"ID", "Date", "Medication", "Dosage", "Quantity", "Status", "Fill"};
+        String cols[] = {"Test ID", "Ordered Date", "Performed Date"};
         String data[][] = {};
-        testTableModel = new DefaultTableModel(data, cols);
-        testTable = new JTable(testTableModel);
-        panelTestTests.add(testTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelTestTests.add(testTable, BorderLayout.CENTER);
+        testTPTableModel = new DefaultTableModel(data, cols);
+        testTPTable = new JTable(testTPTableModel);
+        panelTestTests.add(testTPTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelTestTests.add(testTPTable, BorderLayout.CENTER);
     }
 
     private void setPanelInvoice() {
