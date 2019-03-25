@@ -355,6 +355,13 @@ public class HealthDB {
 				tuple.add(rs.getString("testID"));
 				tuple.add(rs.getString("orderedDate"));
 				tuple.add(rs.getString("performedDate"));
+
+                if(rs.getString("performedDate") == null) {
+                    tuple.add("No");
+                }
+                else {
+                    tuple.add("Yes");
+                }
 				tuples.add(tuple);
 			}
 

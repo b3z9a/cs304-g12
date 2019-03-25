@@ -896,7 +896,7 @@ public class HealthDBUI extends JFrame {
     }
     private void setPanelPatientSummaryTests() {
 
-        String cols[] = {"Test ID", "Ordered Date", "Performed Date"};
+        String cols[] = {"Test ID", "Ordered Date", "Performed Date", "Completed?"};
         String data[][] = {};
         testPSTableModel = new DefaultTableModel(data, cols);
         testPSTable = new JTable(testPSTableModel);
