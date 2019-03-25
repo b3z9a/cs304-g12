@@ -718,4 +718,9 @@ public class HealthDB {
         /* TODO Update invoice. */
         return true;
     }
+
+    public Object findPlan(String text) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
