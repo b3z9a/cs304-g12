@@ -98,7 +98,7 @@ public class HealthDBUI extends JFrame {
     private JTextField txtDocMobileNum;
     private JTextField txtDocHomeNum;
 
-    private ArrayList<String> doctorArr;
+    private ArrayList<String> patientArray;
     private ArrayList<ArrayList<String>> prescriptions;
     private ArrayList<ArrayList<String>> tests;
     private ArrayList<ArrayList<String>> referrals;
@@ -185,7 +185,7 @@ public class HealthDBUI extends JFrame {
         frame.setContentPane(panelRoot);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        doctorArr = new ArrayList<String>();
+        patientArray = new ArrayList<String>();
     }
 
     /**
@@ -705,28 +705,28 @@ public class HealthDBUI extends JFrame {
         btnfindPatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                doctorArr = hdb.findPatient(txtPID.getText());
+                patientArray = hdb.findPatient(txtPID.getText());
 
-                if(doctorArr.size() > 0) {
+                if(patientArray.size() > 0) {
 
                     // Clear the data tables
                     prescTableModel.setRowCount(0);
                     testTableModel.setRowCount(0);
                     referralTableModel.setRowCount(0);
 
-                    patientID = doctorArr.get(2);
-                    String name = doctorArr.get(0) + " " + doctorArr.get(1);
-                    String addr = doctorArr.get(3) + " " + doctorArr.get(4) + " " + doctorArr.get(6) + " " + doctorArr.get(5);
+                    patientID = patientArray.get(2);
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+                    String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
 
-                    System.out.println(doctorArr.get(2) + ", " + name);
+                    System.out.println(patientArray.get(2) + ", " + name);
 
                     txtDocName.setText(name);
-                    txtDocPID.setText(doctorArr.get(2));
+                    txtDocPID.setText(patientArray.get(2));
                     txtDocAddr.setText(addr);
-                    txtDocHomeNum.setText(doctorArr.get(7));
-                    txtDocMobileNum.setText(doctorArr.get(8));
+                    txtDocHomeNum.setText(patientArray.get(7));
+                    txtDocMobileNum.setText(patientArray.get(8));
 
-                    prescriptions = hdb.getPrescriptions(doctorArr.get(2), name);
+                    prescriptions = hdb.getPrescriptions(patientArray.get(2), name);
                     printTuples(prescriptions);
                     String[][] data = createData(prescriptions);
                     for(int row = 0; row < data.length; row++)
@@ -734,7 +734,7 @@ public class HealthDBUI extends JFrame {
                         prescTableModel.addRow(data[row]);
                     }
 
-                    tests = hdb.getTests(doctorArr.get(2));
+                    tests = hdb.getTests(patientArray.get(2));
                     printTuples(tests);
                     data = createData(tests);
                     for(int row = 0; row < data.length; row++)
@@ -742,7 +742,7 @@ public class HealthDBUI extends JFrame {
                         testTableModel.addRow(data[row]);
                     }
 
-                    referrals = hdb.getReferrals(doctorArr.get(2));
+                    referrals = hdb.getReferrals(patientArray.get(2));
                     printTuples(referrals);
                     data = createData(referrals);
                     for(int row = 0; row < data.length; row++)
@@ -997,6 +997,8 @@ public class HealthDBUI extends JFrame {
         btnFindPrescNum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
+                
                 Object obj = hdb.findPrescription(txtPrescNum.getText());
 
                 /* TODO get prescriptions */
@@ -1042,7 +1044,49 @@ public class HealthDBUI extends JFrame {
         btnFindPrescPatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.getPrescriptions(txtPID.getText(), txtName.getText());
+                patientArray = hdb.findPatient(txtPID.getText());
+
+                if(patientArray.size() > 0) {
+
+                    // Clear the data tables
+                    prescTableModel.setRowCount(0);
+                    testTableModel.setRowCount(0);
+                    referralTableModel.setRowCount(0);
+
+                    patientID = patientArray.get(2);
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+                    String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
+
+                    System.out.println(patientArray.get(2) + ", " + name);
+
+                    txtDocName.setText(name);
+                    txtDocPID.setText(patientArray.get(2));
+                    txtDocAddr.setText(addr);
+                    txtDocHomeNum.setText(patientArray.get(7));
+                    txtDocMobileNum.setText(patientArray.get(8));
+
+                    prescriptions = hdb.getPrescriptions(patientArray.get(2), name);
+                    printTuples(prescriptions);
+                    String[][] data = createData(prescriptions);
+                    for(int row = 0; row < data.length; row++)
+                    {
+                        prescTableModel.addRow(data[row]);
+                    }
+
+                    txtPID.setText("");
+                    txtName.setText("");
+                }
+                else {
+                    txtPID.setText("");
+                    txtName.setText("");
+
+                    // Clear the data tables
+                    prescTableModel.setRowCount(0);
+                    testTableModel.setRowCount(0);
+                    referralTableModel.setRowCount(0);
+
+                    JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         btnFindPrescPatient.setText("Find by Patient ID");
@@ -1254,7 +1298,49 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                Object obj = hdb.getTests(txtPID.getText());
+                patientArray = hdb.findPatient(txtPID.getText());
+
+                if(patientArray.size() > 0) {
+
+                    // Clear the data tables
+                    prescTableModel.setRowCount(0);
+                    testTableModel.setRowCount(0);
+                    referralTableModel.setRowCount(0);
+
+                    patientID = patientArray.get(2);
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+                    String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
+
+                    System.out.println(patientArray.get(2) + ", " + name);
+
+                    txtDocName.setText(name);
+                    txtDocPID.setText(patientArray.get(2));
+                    txtDocAddr.setText(addr);
+                    txtDocHomeNum.setText(patientArray.get(7));
+                    txtDocMobileNum.setText(patientArray.get(8));
+
+                    tests = hdb.getTests(patientArray.get(2));
+                    printTuples(tests);
+                    String[][] data = createData(tests);
+                    for(int row = 0; row < data.length; row++)
+                    {
+                        testTableModel.addRow(data[row]);
+                    }
+
+                    txtPID.setText("");
+                    txtName.setText("");
+                }
+                else {
+                    txtPID.setText("");
+                    txtName.setText("");
+
+                    // Clear the data tables
+                    prescTableModel.setRowCount(0);
+                    testTableModel.setRowCount(0);
+                    referralTableModel.setRowCount(0);
+
+                    JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
+                }
 
                 /* TODO get tests */
             }
