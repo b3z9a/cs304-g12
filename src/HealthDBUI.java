@@ -422,7 +422,7 @@ public class HealthDBUI extends JFrame {
 
     private String[][] createData(ArrayList<ArrayList<String>> tuples)
     {
-        String data[][] = {};
+        String[][] data = new String[20][];
 
         int row = 0;
         int col = 0;
