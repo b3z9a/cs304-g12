@@ -1172,6 +1172,8 @@ public class HealthDBUI extends JFrame {
     private void setPanelPrescriptionPrescriptions() {
         String cols[] = {"ID", "Date", "Medication", "Dosage", "Quantity", "Status", "Fill"};
         String data[][] = {};
+        prescTableModel = new DefaultTableModel(data, cols);
+        prescriptionTable = new JTable(prescTableModel);
         panelPrescriptionPrescriptions.add(prescriptionTable.getTableHeader(), BorderLayout.PAGE_START);
         panelPrescriptionPrescriptions.add(prescriptionTable, BorderLayout.CENTER);
     }
@@ -1423,6 +1425,8 @@ public class HealthDBUI extends JFrame {
     private void setPanelTestTests() {
         String cols[] = {"ID", "Date", "Medication", "Dosage", "Quantity", "Status", "Fill"};
         String data[][] = {};
+        testTableModel = new DefaultTableModel(data, cols);
+        testTable = new JTable(testTableModel);
         panelTestTests.add(testTable.getTableHeader(), BorderLayout.PAGE_START);
         panelTestTests.add(testTable, BorderLayout.CENTER);
     }
