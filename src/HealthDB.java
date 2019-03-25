@@ -632,6 +632,8 @@ public class HealthDB {
 	} catch (SQLException ex){
 		System.out.println("Failed to get patient personal info. " + ex.getMessage());
 	}
+	System.out.println("Patient summary tuple passed:");
+	printTuple(tuple);
 	return tuple;
 	}
 
@@ -737,5 +739,15 @@ public class HealthDB {
     public Object findPlan(String text) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private void printTuple(ArrayList<String> tuple){
+			StringBuilder sb = new StringBuilder();
+				for (String s : tuple){
+					sb.append(" '");
+					sb.append(s);
+					sb.append("', ");
+				}
+			System.out.println(sb.toString());
 	}
 }

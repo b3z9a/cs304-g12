@@ -76,7 +76,7 @@ public class HealthDBUI extends JFrame {
     private JPanel panelInvoiceHistory;
     private JPanel panelInvoiceHistoryGrid;
     private JPanel panelPlanSummaryActions;
-    
+
     private JTextField txtPlanID;
     private JTextField txtStartDate;
     private JTextField txtPolicyType;
@@ -329,7 +329,7 @@ public class HealthDBUI extends JFrame {
         btnLauraLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                username = "ora_klj8";
+                username = "ora_k1j8";
                 password = "a30442115"; /* Fill in if you want */
 
                 hdb.setOracleCredentials(username, password);
@@ -600,10 +600,22 @@ public class HealthDBUI extends JFrame {
         StringBuilder sb = new StringBuilder();
         for (ArrayList<String> list : tuples){
           for (String s : list){
+            sb.append(" '");
             sb.append(s);
+            sb.append("', ");
           }
           sb.append("\n");
         }
+        System.out.println(sb.toString());
+    }
+
+    private void printTuple(ArrayList<String> tuple){
+        StringBuilder sb = new StringBuilder();
+          for (String s : tuple){
+            sb.append(" '");
+            sb.append(s);
+            sb.append("', ");
+          }
         System.out.println(sb.toString());
     }
 
@@ -623,7 +635,7 @@ public class HealthDBUI extends JFrame {
 		    col = 0;
             row++;
         }
-	
+
        	System.out.println(Arrays.deepToString(data));
 
         return data;
@@ -962,7 +974,7 @@ public class HealthDBUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 hdb.createTest(drHID, patientID);
- 
+
             }
         });
         btnCreateTest.setText("Create New Test");
@@ -975,7 +987,7 @@ public class HealthDBUI extends JFrame {
                 String referreeHID = "54337"; // TODO create dialog to ask for referree
 
                 hdb.createReferral(patientID, drHID, referreeHID);
-                
+
             }
         });
         btnCreateReferral.setText("Create New Referral");
@@ -993,7 +1005,7 @@ public class HealthDBUI extends JFrame {
             			    "Error",
             			    JOptionPane.ERROR_MESSAGE);
             	}
-                
+
                 JOptionPane.showConfirmDialog(
                 	frame,
                     "Are you sure you would like to delete?",
@@ -1940,9 +1952,9 @@ public class HealthDBUI extends JFrame {
     }
 
     private void setPanelPlanSummary() {
-    	
+
     	// --------------------------------------------------
-    	
+
         /* Row 0 */
         JLabel lbl = new JLabel("Plan Summary");
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
@@ -1951,7 +1963,7 @@ public class HealthDBUI extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 0; gbc.gridy = 0;
         panelPlanSummary.add(lbl, gbc);
-        
+
         /* Row 1 */
         panelPlanSummaryFinder = new JPanel();
         panelPlanSummaryFinder.setLayout(new GridBagLayout());
@@ -1981,9 +1993,9 @@ public class HealthDBUI extends JFrame {
         gbc.weightx = 1.0;
         gbc.gridx = 0; gbc.gridy = 3;
         panelPlanSummary.add(panelPlanSummaryInfo, gbc);
-        
+
         // --------------------------------------------------
-        
+
         /* Row 4 */
         lbl = new JLabel("Provincial Plan", SwingConstants.LEADING);
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
@@ -2002,9 +2014,9 @@ public class HealthDBUI extends JFrame {
         gbc.weightx = 1.0;
         gbc.gridx = 0; gbc.gridy = 5;
         panelPlanSummary.add(panelProvincialPlan, gbc);
-        
+
         // --------------------------------------------------
-        
+
         /* Row 6 */
         lbl = new JLabel("Extended Benefits Plan", SwingConstants.LEADING);
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
@@ -2023,9 +2035,9 @@ public class HealthDBUI extends JFrame {
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 7;
         panelPlanSummary.add(panelExtendedBenefits, gbc);
-        
+
         // --------------------------------------------------
-        
+
         /* Row 8 */
         lbl = new JLabel("Invoice History", SwingConstants.LEADING);
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
@@ -2044,7 +2056,7 @@ public class HealthDBUI extends JFrame {
         gbc.weightx = 1.0;
         gbc.gridx = 0; gbc.gridy = 9;
         panelPlanSummary.add(panelInvoiceHistory, gbc);
-        
+
         // --------------------------------------------------
 
         /* Row 10 */
@@ -2067,9 +2079,9 @@ public class HealthDBUI extends JFrame {
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 10;
         panelPlanSummary.add(panelInvoiceHistoryGrid, gbc);
-        
+
         // -------------------------------------
-        
+
         /* Row 11 */
         panelPlanSummaryActions= new JPanel();
         panelPlanSummaryActions.setLayout(new FlowLayout());
@@ -2092,7 +2104,7 @@ public class HealthDBUI extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 1; gbc.gridy = 3;
         panelProvincialPlan.add(txtPlanID, gbc);
-        
+
         lbl = new JLabel("Policy Type:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
@@ -2107,7 +2119,7 @@ public class HealthDBUI extends JFrame {
         gbc.insets= new Insets(0,5,0,0);
         gbc.gridx = 3; gbc.gridy = 3;
         panelProvincialPlan.add(txtPolicyType, gbc);
-        
+
         lbl = new JLabel("Start Date:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
@@ -2122,7 +2134,7 @@ public class HealthDBUI extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 1; gbc.gridy = 4;
         panelProvincialPlan.add(txtStartDate, gbc);
-        
+
         lbl = new JLabel("End Date:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
@@ -2137,7 +2149,7 @@ public class HealthDBUI extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 3; gbc.gridy = 4;
         panelProvincialPlan.add(txtEndDate, gbc);
-       
+
     }
     private void setPanelExtendedBenefits() {
     	String cols[] = {"Benefit", "Annual Maximum", "YTD"};
@@ -2178,7 +2190,7 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
         gbc.gridx = 3; gbc.gridy = 0;
-        panelInvoiceHistory.add(txtTotalOverDue, gbc); 
+        panelInvoiceHistory.add(txtTotalOverDue, gbc);
     }
     private void setPanelPlanSummaryFinder() {
         JLabel lbl = new JLabel("PID:", SwingConstants.LEADING);
@@ -2339,14 +2351,14 @@ public class HealthDBUI extends JFrame {
                 String amountOwing = "";
                 String paymentID = "";
                 String planID = "";
-                hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus, 
+                hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus,
                 		paymentDate, paymentMethod, amountOwing, paymentID, planID);
             }
         });
         btnCreateInvoice.setText("Create Invoice");
         panelPlanSummaryActions.add(btnCreateInvoice);
     }
-  
+
     private void switchToUserSelectPanel() {
         /* Switch to User Class panel when login achieved */
         panelOracleLogin.setVisible(false);

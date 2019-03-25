@@ -1,31 +1,19 @@
 /* Drops all tables */
-
 DROP TABLE PostalCode CASCADE constraints;
-
 DROP TABLE HealthcareProfessional CASCADE constraints;
-
 DROP TABLE LabTechnician CASCADE constraints;
-
 DROP TABLE Pharmacist CASCADE constraints;
-
 DROP TABLE Doctor CASCADE constraints;
-
 DROP TABLE Referral CASCADE constraints;
-
 DROP TABLE Medication CASCADE constraints;
-
 DROP TABLE Prescription CASCADE constraints;
-
 DROP TABLE LabTest CASCADE constraints;
-
 DROP TABLE ProvincialHealthPlan CASCADE constraints;
-
 DROP TABLE ExtendedBenefitsPlan CASCADE constraints;
-
 DROP TABLE Invoice CASCADE constraints;
-
 DROP TABLE Patient CASCADE constraints;
 
+/* Create the tables.*/
 CREATE TABLE PostalCode (
     postalCode  varchar(6),
     city        varchar(20),
@@ -105,7 +93,7 @@ CREATE TABLE Prescription (
     quantity 		integer not null,
     patientID		integer not null,
     drHID			integer not null,
-    pharmHID		integer not null,
+    pharmHID		integer,
     prescribedDate	date not null,
     filledDate		date,
     PRIMARY KEY (prescriptionID),
@@ -195,7 +183,7 @@ CREATE TABLE Invoice (
     FOREIGN KEY (planID) REFERENCES ProvincialHealthPlan
 );
 
-/* Inserts 5+ tuples into each table. */
+/* Populate the database. */
 
 insert into PostalCode values ('V6Z1Y6', 'Vancouver', 'BC', 'Canada');
 insert into PostalCode values ('V6H3N1', 'Vancouver', 'BC', 'Canada');
@@ -227,26 +215,26 @@ insert into HealthcareProfessional values (52731, 'Melissa', 'Clark', '211', '10
 insert into HealthcareProfessional values (54781, 'Alice', 'Liu', 'E-117', '4480 Oak St', 'V6H3N1', '604-785-4001', '604-875-2345 x33115');
 insert into HealthcareProfessional values (53833, 'Aarav', 'Patel', 'A-220', '4480 Oak St', 'V6H3N1', '778-885-3411', '604-682-2344 x33219');
 insert into HealthcareProfessional values (52918, 'David', 'Chen', '', '2685 W Broadway', 'V6K2G2', '604-668-4228', '604-731-9187');
-  insert into HealthcareProfessional values (53211, 'Aaron', 'Miller', '', '2685 W Broadway', 'V6Z1Y6', '604-775-3021', '604-882-4038');
-  insert into HealthcareProfessional values (58377, 'James', 'Yu', '', '200-2475 Bayswater St', 'V6H3N1', '604-668-4522', '604-565-2111');
-  insert into HealthcareProfessional values (52942, 'Alex', 'Chen', '200', '1755 1st Ave W', 'V6K2G2', '604-668-8323', '604-788-6569');
-  insert into HealthcareProfessional values (54242, 'Vanessa', 'Burak', 'A110', '3261 5 Ave W', 'V6S0J9', '604-731-2388', '604-788-3076');
-  insert into HealthcareProfessional values (54986, 'Sanja', 'Avinashi', '359', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
-  insert into HealthcareProfessional values (58739, 'Catherine', 'Cantarutti', '', '3080 Price Edward St', 'V5T3N4', '604-778-3848', '604-853-5833');
-  insert into HealthcareProfessional values (58572, 'Kevin', 'Chan', '210', '3080 Price Edward St', 'V5T3N4', '604-744-2948', '604-593-5844');
-  insert into HealthcareProfessional values (56483, 'Divi', 'Chandra', '', '3080 Price Edward St', 'V5T3N4', '604-565-9843', '250-857-3844');
-  insert into HealthcareProfessional values (56837, 'Helen', 'Yu', 'B-210', '3080 Price Edward St', 'V5T3N4', '604-847-3883', '250-883-9853');
-  insert into HealthcareProfessional values (55243, 'Yi Yueh', 'Cheng', '10', '3080 Price Edward St', 'V5T3N4', '604-722-8535', '250-573-8573');
-  insert into HealthcareProfessional values (53948, 'Peter', 'Chiu', '', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
-  insert into HealthcareProfessional values (53596, 'Bahar', 'Cinarli', '', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
-  insert into HealthcareProfessional values (55284, 'Jeff', 'Coleman', '210', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
-  insert into HealthcareProfessional values (55934, 'Nishi', 'Dhawan', '15', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
-  insert into HealthcareProfessional values (56868, 'Timothy', 'Doty', '', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
-  insert into HealthcareProfessional values (51837, 'Sanja', 'Avinashi', '220', '3935 Kincaid St', 'V5G2X6', '604-634-8573', '778-584-4835');
-  insert into HealthcareProfessional values (53592, 'Sanja', 'Avinashi', '215', '3935 Kincaid St', 'V5G2X6', '604-634-8434', '778-573-5838');
-  insert into HealthcareProfessional values (59434, 'Sanja', 'Avinashi', '233', '3935 Kincaid St', 'V5G2X6', '604-644-6832', '766-938-9671');
-  insert into HealthcareProfessional values (56838, 'Sanja', 'Avinashi', '115', '3935 Kincaid St', 'V5G2X6', '604-644-6824', '855-365-8344');
-  insert into HealthcareProfessional values (56992, 'Sanja', 'Avinashi', '101', '3935 Kincaid St', 'V5G2X6', '604-662-4823', '855-365-3843');
+insert into HealthcareProfessional values (53211, 'Aaron', 'Miller', '', '2685 W Broadway', 'V6Z1Y6', '604-775-3021', '604-882-4038');
+insert into HealthcareProfessional values (58377, 'James', 'Yu', '', '200-2475 Bayswater St', 'V6H3N1', '604-668-4522', '604-565-2111');
+insert into HealthcareProfessional values (52942, 'Alex', 'Chen', '200', '1755 1st Ave W', 'V6K2G2', '604-668-8323', '604-788-6569');
+insert into HealthcareProfessional values (54242, 'Vanessa', 'Burak', 'A110', '3261 5 Ave W', 'V6S0J9', '604-731-2388', '604-788-3076');
+insert into HealthcareProfessional values (54986, 'Sanja', 'Avinashi', '359', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
+insert into HealthcareProfessional values (58739, 'Catherine', 'Cantarutti', '', '3080 Price Edward St', 'V5T3N4', '604-778-3848', '604-853-5833');
+insert into HealthcareProfessional values (58572, 'Kevin', 'Chan', '210', '3080 Price Edward St', 'V5T3N4', '604-744-2948', '604-593-5844');
+insert into HealthcareProfessional values (56483, 'Divi', 'Chandra', '', '3080 Price Edward St', 'V5T3N4', '604-565-9843', '250-857-3844');
+insert into HealthcareProfessional values (56837, 'Helen', 'Yu', 'B-210', '3080 Price Edward St', 'V5T3N4', '604-847-3883', '250-883-9853');
+insert into HealthcareProfessional values (55243, 'Yi Yueh', 'Cheng', '10', '3080 Price Edward St', 'V5T3N4', '604-722-8535', '250-573-8573');
+insert into HealthcareProfessional values (53948, 'Peter', 'Chiu', '', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
+insert into HealthcareProfessional values (53596, 'Bahar', 'Cinarli', '', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
+insert into HealthcareProfessional values (55284, 'Jeff', 'Coleman', '210', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
+insert into HealthcareProfessional values (55934, 'Nishi', 'Dhawan', '15', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
+insert into HealthcareProfessional values (56868, 'Timothy', 'Doty', '', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
+insert into HealthcareProfessional values (51837, 'Sanja', 'Avinashi', '220', '3935 Kincaid St', 'V5G2X6', '604-634-8573', '778-584-4835');
+insert into HealthcareProfessional values (53592, 'Sanja', 'Avinashi', '215', '3935 Kincaid St', 'V5G2X6', '604-634-8434', '778-573-5838');
+insert into HealthcareProfessional values (59434, 'Sanja', 'Avinashi', '233', '3935 Kincaid St', 'V5G2X6', '604-644-6832', '766-938-9671');
+insert into HealthcareProfessional values (56838, 'Sanja', 'Avinashi', '115', '3935 Kincaid St', 'V5G2X6', '604-644-6824', '855-365-8344');
+insert into HealthcareProfessional values (56992, 'Sanja', 'Avinashi', '101', '3935 Kincaid St', 'V5G2X6', '604-662-4823', '855-365-3843');
 
 
 insert into Doctor values (54337, 922789, 'Cardiologist');
@@ -320,11 +308,11 @@ insert into LabTechnician values (56328, 848673);
 insert into LabTechnician values (57831, 849582);
 
 insert into Patient values (1, 'Tony', 'Liu', '15388 24th Ave', 'V3V6H2', '778-348-5834', '250-865-3853');
-insert into Patient values (2, 'Simon', 'Gaur', '10777 University Dr.', 'V3V6H2', '778-482-4458', '250-865-3853');
-insert into Patient values (3, 'Barry', 'Lam', '10215 150 St.', 'V3V6H2', '778-485-2834', '250-865-3853');
-insert into Patient values (4, 'Vince', 'Lao', '7155 Hall Rd', 'V3V6A8', '855-384-2442', '250-865-3853');
-insert into Patient values (32118954, 'Jonathan', 'Banks', '2144 Dunbar St.', 'V6B3N6', '604-731-2499', '778-456-2382');
+insert into Patient values (2, 'Simon', 'Gaur', '10777 University Dr.', 'V3V6H2', NULL, NULL);
+insert into Patient values (3, 'Barry', 'Lam', NULL, NULL, '778-485-2834', '250-865-3853');
+insert into Patient values (4, 'Vince', 'Lao', '7155 Hall Rd', 'V3V6A8', NULL, '250-865-3853');
 insert into Patient values (12345678, 'Chris', 'Ellis', 'E-104-N, Pinehurst Apartments, 422 Maple St', 'V6B3N6', NULL, NULL);
+insert into Patient values (32118954, 'Jonathan', 'Banks', '2144 Dunbar St.', 'V6B3N6', '604-731-2499', '778-456-2382');
 insert into Patient values (29562774, 'David', 'Chen', '1114 Lameys Mill Rd.', 'V6S0J9', '604-731-8753', '604-731-9187');
 insert into Patient values (31857372, 'Winny', 'Zhu', '4491 W 4th Ave', 'V6S0J9', '778-291-3753', '778-981-3722');
 insert into Patient values (31274656, 'Antar', 'Atwal', 'Apt. 117, 8833 Hazelbridge Way', 'V6Y2V7', '604-233-4713', '604-233-8172');
@@ -358,13 +346,13 @@ insert into Referral values (31274656, 52918, 53833, TO_DATE('2018-10-06', 'YYYY
 insert into Referral values (12345678, 52918, 53833, TO_DATE('2018-12-11', 'YYYY-MM-DD'));
 insert into Referral values (12345678, 52918, 54337, TO_DATE('2019-02-21', 'YYYY-MM-DD'));
 insert into Referral values (1, 53211, 54337, TO_DATE('2019-01-15', 'YYYY-MM-DD'));
-insert into Referral values (1, 53211, 54337, TO_DATE('2017-11-17', 'YYYY-MM-DD'));
-insert into Referral values (1, 53211, 54337, TO_DATE('2018-08-15', 'YYYY-MM-DD'));
-insert into Referral values (2, 58377, 54337, TO_DATE('2018-06-13', 'YYYY-MM-DD'));
-insert into Referral values (2, 58377, 54337, TO_DATE('2018-02-22', 'YYYY-MM-DD'));
-insert into Referral values (2, 58377, 54337, TO_DATE('2019-03-11', 'YYYY-MM-DD'));
+insert into Referral values (1, 53211, 56483, TO_DATE('2017-11-17', 'YYYY-MM-DD'));
+insert into Referral values (1, 53211, 58572, TO_DATE('2018-08-15', 'YYYY-MM-DD'));
+insert into Referral values (2, 58377, 53596, TO_DATE('2018-06-13', 'YYYY-MM-DD'));
+insert into Referral values (2, 58377, 56868, TO_DATE('2018-02-22', 'YYYY-MM-DD'));
+insert into Referral values (2, 58377, 56992, TO_DATE('2019-03-11', 'YYYY-MM-DD'));
 insert into Referral values (4, 52942, 54337, TO_DATE('2019-03-11', 'YYYY-MM-DD'));
-insert into Referral values (4, 52942, 54337, TO_DATE('2018-10-09', 'YYYY-MM-DD'));
+insert into Referral values (4, 52942, 51837, TO_DATE('2018-10-09', 'YYYY-MM-DD'));
 
 insert into Medication values ('Albuterol', 'mg');
 insert into Medication values ('Esomeprazole', 'mg');
@@ -381,29 +369,54 @@ insert into Medication values ('Amlodipine', 'mg');
 
 insert into Prescription values (452855, 'Albuterol', 25, 100, 32118954, 54337, 55246, TO_DATE('2018-09-11','YYYY-MM-DD'), TO_DATE('2018-09-13','YYYY-MM-DD'));
 insert into Prescription values (485274, 'Fluoxetine', 20, 300, 12345678, 52918, 53763, TO_DATE('2019-01-20','YYYY-MM-DD'), TO_DATE('2019-01-20','YYYY-MM-DD'));
-insert into Prescription values (438245, 'Esomeprazole', 10, 40, 12345678, 52918, 53763, TO_DATE('2018-08-04','YYYY-MM-DD'), NULL);
+insert into Prescription values (438245, 'Esomeprazole', 10, 40, 12345678, 52918, NULL, TO_DATE('2018-08-04','YYYY-MM-DD'), NULL);
 insert into Prescription values (472596, 'Pregabalin', 85, 1, 12345678, 52918, 52127, TO_DATE('2018-03-15','YYYY-MM-DD'), TO_DATE('2018-03-21','YYYY-MM-DD'));
 insert into Prescription values (492845, 'Fluticasone', 15, 100, 12345678, 52918, 52127, TO_DATE('2018-04-26','YYYY-MM-DD'), TO_DATE('2018-05-01','YYYY-MM-DD'));
 insert into Prescription values (472947, 'Pregabalin', 85, 1, 31857372, 52918, 52127, TO_DATE('2018-03-15','YYYY-MM-DD'), TO_DATE('2018-03-21','YYYY-MM-DD'));
 insert into Prescription values (427437, 'Fluticasone', 15, 100, 31274656, 52918, 52127, TO_DATE('2018-04-26','YYYY-MM-DD'), TO_DATE('2018-05-01','YYYY-MM-DD'));
+insert into Prescription values (438477, 'Amoxicillin', 25, 100, 4, 53211, 58573, TO_DATE('2019-01-05','YYYY-MM-DD'), TO_DATE('2019-01-06','YYYY-MM-DD'));
+insert into Prescription values (445873, 'Fluoxetine', 20, 200, 4, 53211, 58573, TO_DATE('2018-10-03','YYYY-MM-DD'), TO_DATE('2018-10-03','YYYY-MM-DD'));
+insert into Prescription values (427483, 'Levothyroxine', 15, 150, 4, 53211, 58574, TO_DATE('2018-06-19','YYYY-MM-DD'), TO_DATE('2018-06-19','YYYY-MM-DD'));
+insert into Prescription values (495872, 'Fluticasone', 35, 75, 4, 53211, NULL, TO_DATE('2017-08-16','YYYY-MM-DD'), TO_DATE('2017-08-16','YYYY-MM-DD'));
+insert into Prescription values (431734, 'Metformin', 25, 30, 2, 58377, NULL, TO_DATE('2019-03-25','YYYY-MM-DD'), NULL);
+insert into Prescription values (459382, 'Levothyroxine', 15, 100, 2, 58377, 58575, TO_DATE('2019-01-26','YYYY-MM-DD'), TO_DATE('2019-01-31','YYYY-MM-DD'));
+insert into Prescription values (448582, 'Lisinopril', 20, 200, 2, 58377, 58575, TO_DATE('2018-10-01','YYYY-MM-DD'), TO_DATE('2018-10-06','YYYY-MM-DD'));
+insert into Prescription values (433853, 'Pregabalin', 20, 300, 3, 52942, NULL, TO_DATE('2018-04-15','YYYY-MM-DD'), NULL);
+insert into Prescription values (429384, 'Simvastatin', 30, 50, 3, 52942, NULL, TO_DATE('2019-03-12','YYYY-MM-DD'), NULL);
+insert into Prescription values (448273, 'Lipitor', 5, 100, 3, 52942, NULL, TO_DATE('2018-03-11','YYYY-MM-DD'), NULL);
+
 
 insert into LabTest values (827432, 175.4, 70.8, 95.2, 104.6, 2.27, 3.51, 45.1, 195, 25.7, 0.75, 140, 3.8, 133.2, 12345678, 52918, 51833, TO_DATE('2019-01-29', 'YYYY-MM-DD'), NULL);
 insert into LabTest values (882475, 132.0, 70.2, 61.8, 85.7, 2.33, 3.46, 40.2, 206, 17.2, 0.66, 140, 3.6, 121.0, 12345678, 52918, 52856, TO_DATE('2019-02-23', 'YYYY-MM-DD'), NULL);
 insert into LabTest values (830485, 155.7, 85.7, 70.0, 113.2, 2.36, 3.58, 39.7, 173, 23.3, 0.70, 140, 3.7, 140.6, 12345678, 52918, 53176, TO_DATE('2018-11-05', 'YYYY-MM-DD'), TO_DATE('2018-11-06', 'YYYY-MM-DD'));
 insert into LabTest values (865282, 200.8, 103.9, 96.9, 92.7, 2.21, 3.44, 48.3, 180, 20.1, 0.68, 140, 4.1, 135.9, 12345678, 52918, 53647, TO_DATE('2018-10-21', 'YYYY-MM-DD'), TO_DATE('2018-10-23', 'YYYY-MM-DD'));
 insert into LabTest values (818673, 125.0, 63.5, 61.5, 99.6, 2.42, 3.20, 42.9, 215, 21.5, 0.72, 140, 4.0, 144.6, 12345678, 52918, 54328, TO_DATE('2018-12-13', 'YYYY-MM-DD'), TO_DATE('2018-12-17', 'YYYY-MM-DD'));
+insert into LabTest values (883747, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 54337, NULL, TO_DATE('2019-03-21', 'YYYY-MM-DD'), NULL);
+insert into LabTest values (837563, 179.8, 67.5, 93.0, 102.5, 2.16, 3.49, 43.8, 190, 24.7, 0.81, 133, 3.7, 138.2, 1, 53211, 53176, TO_DATE('2018-12-21', 'YYYY-MM-DD'), TO_DATE('2019-01-03', 'YYYY-MM-DD'));
+insert into LabTest values (848281, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 58377, NULL, TO_DATE('2019-03-11', 'YYYY-MM-DD'), NULL);
+insert into LabTest values (847850, 183.3, 81.1, 97.8, 103.6, 2.15, 3.44, 42.1, 192, 23.6, 0.76, 138, 3.7, 133.6, 2, 58377, 53565, TO_DATE('2018-04-16', 'YYYY-MM-DD'), TO_DATE('2018-04-17', 'YYYY-MM-DD'));
+insert into LabTest values (847370, 184.1, 81.4, 100.2, 100.0, 2.17, 3.46, 42.7, 192, 23.9, 0.78, 132, 3.7, 133.6, 2, 58377, 54566, TO_DATE('2018-11-03', 'YYYY-MM-DD'), TO_DATE('2018-11-10', 'YYYY-MM-DD'));
+insert into LabTest values (827475, 165.0, 70.8, 93.0, 96.7, 2.15, 3.75, 42.0, 186, 22.3, 0.66, 138, 3.6, 121.2, 4, 52942, 57831, TO_DATE('2018-08-14', 'YYYY-MM-DD'), TO_DATE('2018-08-20', 'YYYY-MM-DD'));
 
 insert into ProvincialHealthPlan values (128473, 'BC Resident - MSP', TO_DATE('2018-01-01','YYYY-MM-DD'), TO_DATE('2019-12-31','YYYY-MM-DD'), 32118954);
 insert into ProvincialHealthPlan values (125724, 'BC Resident - MSP', TO_DATE('2018-01-01','YYYY-MM-DD'), TO_DATE('2019-12-31','YYYY-MM-DD'), 29562774);
 insert into ProvincialHealthPlan values (127828, 'BC Resident - Income Assistance', TO_DATE('2019-01-01','YYYY-MM-DD'), TO_DATE('2019-12-31','YYYY-MM-DD'), 12345678);
 insert into ProvincialHealthPlan values (121738, 'Out-of-Province', TO_DATE('2019-01-01','YYYY-MM-DD'), TO_DATE('2019-12-31','YYYY-MM-DD'), 31274656);
 insert into ProvincialHealthPlan values (126724, 'Out-of-Province', TO_DATE('2019-01-01','YYYY-MM-DD'), TO_DATE('2019-12-31','YYYY-MM-DD'), 31274656);
+insert into ProvincialHealthPlan values (128471, 'BC Resident - MSP', TO_DATE('2018-01-01','YYYY-MM-DD'), TO_DATE('2019-12-31','YYYY-MM-DD'), 1);
+insert into ProvincialHealthPlan values (124772, 'BC Resident - MSP', TO_DATE('2018-01-01','YYYY-MM-DD'), TO_DATE('2019-12-31','YYYY-MM-DD'), 2);
+insert into ProvincialHealthPlan values (124324, 'BC Resident - Income Assistance', TO_DATE('2019-01-01','YYYY-MM-DD'), TO_DATE('2019-12-31','YYYY-MM-DD'), 3);
+insert into ProvincialHealthPlan values (128472, 'BC Resident - Premium MSP', TO_DATE('2019-01-01','YYYY-MM-DD'), TO_DATE('2019-12-31','YYYY-MM-DD'), 4);
 
 insert into ExtendedBenefitsPlan values (238948, 128473, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'N', 'N', 'N', 'N', 'N', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2500.00, 463.00);
 insert into ExtendedBenefitsPlan values (273284, 125724, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'Y', 'N', 'Y', 'Y', 'Y', 'Y', 2500.0, 0.0, 2500.00, 400.00, NULL, NULL, 2500.00, 0.0, 2500.0, 0.0, 2500.00, 463.00);
 insert into ExtendedBenefitsPlan values (294742, 127828, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2021-01-01', 'YYYY-MM-DD'), 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1000.0, 0.0, 1000.0, 225.50, 1000.0, 0.0, 1000.0, 125.25, 1000.0, 100.0, 2500.00, 225.00);
 insert into ExtendedBenefitsPlan values (274633, 127828, TO_DATE('2018-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'Y', 'N', 'N', 'N', 'N', 'Y', 1000.0, 125.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1500.00, 500.00);
 insert into ExtendedBenefitsPlan values (258291, 121738, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'N', 'N', 'N', 'N', 'N', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2500.00, 0.00);
+  insert into ExtendedBenefitsPlan values (283735, 128471, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'Y', 'N', 'N', 'N', 'N', 'Y', 1000.0, 200.0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2000.00, 103.00);
+  insert into ExtendedBenefitsPlan values (238580, 124324, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'N', 'N', 'N', 'N', 'Y', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 500.0, 0.0, 1500.00, 369.00);
+  insert into ExtendedBenefitsPlan values (285739, 124324, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'Y', 'Y', 'Y', 'N', 'N', 'N', 500.0, 0.0, 500.0, 0.0, 500.0, 150.21, NULL, NULL, NULL, NULL, NULL, NULL);
+  insert into ExtendedBenefitsPlan values (205930, 128472, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'N', 'N', 'Y', 'N', 'N', 'Y', NULL, NULL, NULL, NULL, 1000.00, 1000.00, NULL, NULL, NULL, NULL, 1250.00, 0.0);
 
 insert into Invoice values (119274, 32118954, 'Annual exam', TO_DATE('2018-11-02','YYYY-MM-DD'), TO_DATE('2018-12-02','YYYY-MM-DD'), 'Paid', TO_DATE('2018-11-27','YYYY-MM-DD'), 'Credit\Debit', 0.0, 628462, 128473);
 insert into Invoice values (183746, 12345678, 'Annual exam', TO_DATE('2018-11-02','YYYY-MM-DD'), TO_DATE('2018-12-02','YYYY-MM-DD'), 'Paid', TO_DATE('2018-11-27','YYYY-MM-DD'), 'Credit\Debit', 0.0, 628462, 128473);
@@ -413,11 +426,15 @@ insert into Invoice values (152748, 31572742, 'Clinic visit', TO_DATE('2018-05-1
 insert into Invoice values (119396, 31857372, 'Orthodic insoles', TO_DATE('2019-01-13','YYYY-MM-DD'), TO_DATE('2019-03-13','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 265.50, NULL, 128473);
 insert into Invoice values (137472, 12345678, 'Orthodic insoles', TO_DATE('2019-01-13','YYYY-MM-DD'), TO_DATE('2019-03-13','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 265.50, NULL, 128473);
 insert into Invoice values (192745, 29562774, 'Massage re: back injury', TO_DATE('2019-01-04','YYYY-MM-DD'), TO_DATE('2019-02-04','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 145.0, NULL, 127828);
-
-
-
-
-
-
-
-
+insert into Invoice values (138824, 1, 'Clinic visit', TO_DATE('2019-02-14','YYYY-MM-DD'), TO_DATE('2019-03-14','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 100.0, NULL, 128471);
+insert into Invoice values (128473, 1, 'Knee brace', TO_DATE('2019-02-12','YYYY-MM-DD'), TO_DATE('2019-03-12','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 100.0, NULL, 128471);
+insert into Invoice values (159837, 1, 'Prescription - Albuterol', TO_DATE('2019-02-15','YYYY-MM-DD'), TO_DATE('2018-03-15','YYYY-MM-DD'), 'Paid', TO_DATE('2019-03-12','YYYY-MM-DD'), 'Credit\Debit', 0.0, 628462, 128471);
+insert into Invoice values (129842, 1, 'Prescription - Fluoxetine', TO_DATE('2019-03-01','YYYY-MM-DD'), TO_DATE('2019-04-01','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 100.0, NULL, 128471);
+insert into Invoice values (185734, 3, 'Clinic visit', TO_DATE('2019-02-12','YYYY-MM-DD'), TO_DATE('2019-02-12','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 150.0, NULL, 124324);
+insert into Invoice values (158382, 3, 'Back brace', TO_DATE('2019-02-11','YYYY-MM-DD'), TO_DATE('2018-03-11','YYYY-MM-DD'), 'Paid', TO_DATE('2019-03-05','YYYY-MM-DD'), 'Cash', 20.0, 674823, 124324);
+insert into Invoice values (124759, 3, 'Clinic visit', TO_DATE('2019-02-25','YYYY-MM-DD'), TO_DATE('2018-03-25','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 200.0, NULL, 124324);
+insert into Invoice values (184854, 3, 'Prescription - Pregbalin', TO_DATE('2018-10-14','YYYY-MM-DD'), TO_DATE('2018-11-14','YYYY-MM-DD'), 'Paid', TO_DATE('2018-11-15','YYYY-MM-DD'), 'Credit\Debit', 0.0, 682742, 124324);
+insert into Invoice values (152745, 4, 'Clinic visit', TO_DATE('2019-01-05','YYYY-MM-DD'), TO_DATE('2018-05-11','YYYY-MM-DD'), 'Paid', TO_DATE('2018-11-27','YYYY-MM-DD'), 'Cheque', 0.0, 683743, 128472);
+insert into Invoice values (123845, 4, 'Prescription - Amoxicillin', TO_DATE('2018-10-11','YYYY-MM-DD'), TO_DATE('2018-11-11','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 37.21, NULL, 128472);
+insert into Invoice values (145883, 4, 'Chest X-Ray', TO_DATE('2019-03-25','YYYY-MM-DD'), TO_DATE('2019-04-25','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 200.0, NULL, 128472);
+insert into Invoice values (123984, 4, 'Orthopedic massage', TO_DATE('2019-01-05','YYYY-MM-DD'), TO_DATE('2019-02-05','YYYY-MM-DD'), 'Paid', TO_DATE('2019-01-07','YYYY-MM-DD'), 'Credit\Debit', 0.0, 684732, 128472);
