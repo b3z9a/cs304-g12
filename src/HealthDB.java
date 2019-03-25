@@ -314,7 +314,7 @@ public class HealthDB {
 				tuple.add(rs.getString("quantity"));
 				tuple.add(rs.getString("filledDate"));
 
-				if(rs.getString("filledDate") == "") {
+				if(rs.getString("filledDate") == null) {
                     tuple.add("No");
                 }
 				else {
