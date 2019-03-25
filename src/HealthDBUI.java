@@ -418,7 +418,28 @@ public class HealthDBUI extends JFrame {
           sb.append("\n");
         }
         System.out.println(sb.toString());
-      }
+    }
+
+    private String[][] createData(ArrayList<ArrayList<String>> tuples)
+    {
+        String data[][] = {};
+
+        int row = 0;
+        int col = 0;
+
+        /* Using same code as printTuples */
+        for(ArrayList<String> tuple : tuples) {
+            for (String s : tuple) {
+                data[row][col] = s;
+                col++;
+            }
+            row++;
+        }
+
+        System.out.println(data);
+
+        return data;
+    }
 
     private void setPanelPatientSummary() {
         JLabel lbl = new JLabel("Patient Summary");
@@ -552,10 +573,15 @@ public class HealthDBUI extends JFrame {
                 /* TODO Update prescription, test and referral panels */
                 prescriptions = hdb.getPrescriptions(doctorArr.get(2), name);
                 printTuples(prescriptions);
+                createData(prescriptions);
+
                 tests = hdb.getTests(doctorArr.get(2));
                 printTuples(tests);
+                createData(tests);
+
                 referrals = hdb.getTests(doctorArr.get(2));
                 printTuples(referrals);
+                createData(referrals);
             }
         });
         btnfindPatient.setText("Find Patient");
