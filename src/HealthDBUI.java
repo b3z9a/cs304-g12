@@ -956,7 +956,7 @@ public class HealthDBUI extends JFrame {
                         String medication = dMedication.getText();
                         String dosage = dDosage.getText();
                         String qty = dQty.getText();
-                        hdb.createPrescription(patientID, drHID, medication, dosage, qty);
+                        hdb.createPrescription(medication, dosage, qty, patientID, drHID);
                         System.out.println(medication + " " + dosage + " " + qty);
                     }
                     else {

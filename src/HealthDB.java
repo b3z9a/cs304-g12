@@ -101,8 +101,9 @@ public class HealthDB {
 			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			prescriptionIDCounter = prescriptionIDCounter++;
 			String query ="insert into prescription (prescriptionID, medication, dosage, quantity, patientID,"
-							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication + "', " + dosage
-							+ ", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today + "', 'YYY-MM-DD'))";
+							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ", '" + medication + "', " + dosage
+							+ ", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today + "', 'YYYY-MM-DD'))";
+			System.out.println("createPrescription query: "+ query);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
