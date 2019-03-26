@@ -52,9 +52,9 @@ public class HealthDBUI extends JFrame {
 
     private JPanel panelPatientSummaryFinder;
     private JPanel panelPatientSummaryInfo;
-    private JPanel panelPatientSummaryPrescriptions;
-    private JPanel panelPatientSummaryTests;
-    private JPanel panelPatientSummaryReferrals;
+    private JScrollPane panePatientSummaryPrescriptions;
+    private JScrollPane panePatientSummaryTests;
+    private JScrollPane panePatientSummaryReferrals;
     private JPanel panelPatientSummaryActions;
 
     private JPanel panelPrescriptionFinder;
@@ -718,13 +718,13 @@ public class HealthDBUI extends JFrame {
 
 
         /* Row 5 */
-        panelPatientSummaryPrescriptions = new JPanel();
-        panelPatientSummaryPrescriptions.setLayout(new BorderLayout());
+        panePatientSummaryPrescriptions = new JScrollPane();
+        panePatientSummaryPrescriptions.setLayout(new ScrollPaneLayout());
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 5;
-        panelPatientSummary.add(panelPatientSummaryPrescriptions, gbc);
+        panelPatientSummary.add(panePatientSummaryPrescriptions, gbc);
 
         /* Row 6 */
         lbl = new JLabel("Tests", SwingConstants.LEADING);
@@ -737,13 +737,13 @@ public class HealthDBUI extends JFrame {
         panelPatientSummary.add(lbl, gbc);
 
         /* Row 7 */
-        panelPatientSummaryTests = new JPanel();
-        panelPatientSummaryTests.setLayout(new BorderLayout());
+        panePatientSummaryTests = new JScrollPane();
+        panePatientSummaryTests.setLayout(new ScrollPaneLayout());
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 7;
-        panelPatientSummary.add(panelPatientSummaryTests, gbc);
+        panelPatientSummary.add(panePatientSummaryTests, gbc);
 
         /* Row 8 */
         lbl = new JLabel("Referrals", SwingConstants.LEADING);
@@ -756,13 +756,13 @@ public class HealthDBUI extends JFrame {
         panelPatientSummary.add(lbl, gbc);
 
         /* Row 9 */
-        panelPatientSummaryReferrals = new JPanel();
-        panelPatientSummaryReferrals.setLayout(new BorderLayout());
+        panePatientSummaryReferrals = new JScrollPane();
+        panePatientSummaryReferrals.setLayout(new ScrollPaneLayout());
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 9;
-        panelPatientSummary.add(panelPatientSummaryReferrals, gbc);
+        panelPatientSummary.add(panePatientSummaryReferrals, gbc);
 
         /* Row 10 */
         panelPatientSummaryActions= new JPanel();
@@ -920,8 +920,7 @@ public class HealthDBUI extends JFrame {
         String data[][] = {};
         prescPSTableModel = new DefaultTableModel(data, cols);
         prescPSTable = new JTable(prescPSTableModel);
-        panelPatientSummaryPrescriptions.add(prescPSTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPatientSummaryPrescriptions.add(prescPSTable, BorderLayout.CENTER);
+        panePatientSummaryPrescriptions.add(prescPSTable);
     }
     private void setPanelPatientSummaryTests() {
 
@@ -929,8 +928,7 @@ public class HealthDBUI extends JFrame {
         String data[][] = {};
         testPSTableModel = new DefaultTableModel(data, cols);
         testPSTable = new JTable(testPSTableModel);
-        panelPatientSummaryTests.add(testPSTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPatientSummaryTests.add(testPSTable, BorderLayout.CENTER);
+        panePatientSummaryTests.add(testPSTable);
 
     }
     private void setPanelPatientSummaryReferrals() {
@@ -939,8 +937,7 @@ public class HealthDBUI extends JFrame {
         String data[][] = {};
         refPSTableModel = new DefaultTableModel(data, cols);
         refPSTable = new JTable(refPSTableModel);
-        panelPatientSummaryReferrals.add(refPSTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPatientSummaryReferrals.add(refPSTable, BorderLayout.CENTER);
+        panePatientSummaryReferrals.add(refPSTable);
 
     }
     private void setPanelPatientSummaryActions() {
