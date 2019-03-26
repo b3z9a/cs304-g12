@@ -641,6 +641,18 @@ public class HealthDBUI extends JFrame {
         return data;
     }
 
+    private void updateTable(ArrayList<ArrayList<String>> arr, DefaultTableModel tableModel) {
+        printTuples(arr);
+        if(arr.size() > 0)
+        {
+            String[][] data = createData(arr);
+            for(int row = 0; row < data.length; row++)
+            {
+                tableModel.addRow(data[row]);
+            }
+        }
+    }
+
     private void setPanelPatientSummary() {
         JLabel lbl = new JLabel("Patient Summary");
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
@@ -779,6 +791,8 @@ public class HealthDBUI extends JFrame {
 
                     prescriptions = hdb.getPrescriptions(patientArray.get(2), name);
                     printTuples(prescriptions);
+                    updateTable(prescriptions, prescPSTableModel);
+                    /*
                     if(prescriptions.size() > 0)
                     {
                         String[][] data = createData(prescriptions);
@@ -786,11 +800,13 @@ public class HealthDBUI extends JFrame {
                         {
                             prescPSTableModel.addRow(data[row]);
                         }
-                    }
+                    }*/
 
 
                     tests = hdb.getTests(patientArray.get(2));
                     printTuples(tests);
+                    updateTable(tests, testPSTableModel);
+                    /*
                     if(tests.size() > 0)
                     {
                         String[][] data = createData(tests);
@@ -798,11 +814,13 @@ public class HealthDBUI extends JFrame {
                         {
                             testPSTableModel.addRow(data[row]);
                         }
-                    }
+                    }*/
 
 
                     referrals = hdb.getReferrals(patientArray.get(2));
                     printTuples(referrals);
+                    updateTable(referrals, refPSTableModel);
+                    /*
                     if(referrals.size() > 0)
                     {
                         String[][] data = createData(referrals);
@@ -810,7 +828,7 @@ public class HealthDBUI extends JFrame {
                         {
                             refPSTableModel.addRow(data[row]);
                         }
-                    }
+                    }*/
 
                     txtPID.setText("");
                     txtName.setText("");
@@ -824,7 +842,6 @@ public class HealthDBUI extends JFrame {
 
                     JOptionPane.showMessageDialog(frame, "Patient not found!", "Invalid Patient Error", JOptionPane.ERROR_MESSAGE);
                 }
-
             }
         });
         btnfindPatient.setText("Find Patient");
@@ -956,7 +973,9 @@ public class HealthDBUI extends JFrame {
                         String dosage = dDosage.getText();
                         String qty = dQty.getText();
                         hdb.createPrescription(medication, dosage, qty, patientID, drHID);
-                        System.out.println(medication + " " + dosage + " " + qty);
+
+                        prescriptions = hdb.getPrescriptions(patientID, name);
+                        updateTable(prescriptions, prescPSTableModel);
                     }
                     else {
                         System.out.println("No values entered");
@@ -979,6 +998,8 @@ public class HealthDBUI extends JFrame {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
                     if(hdb.createTest(patientID, drHID)) {
+                        tests = hdb.getTests(patientID);
+                        updateTable(tests, testPSTableModel);
                         JOptionPane.showMessageDialog(frame, "Test created for " + name, "Create test for " + name,  JOptionPane.INFORMATION_MESSAGE);
                     }
                     else {
@@ -1010,6 +1031,9 @@ public class HealthDBUI extends JFrame {
                         String drHIDInput = dDrHID.getText();
                         hdb.createReferral(patientID, drHID, drHIDInput);
                         System.out.println(drHIDInput);
+
+                        referrals = hdb.getReferrals(patientID);
+                        updateTable(referrals, refPSTableModel);
                     }
                     else {
                         System.out.println("No values entered");
@@ -1047,6 +1071,7 @@ public class HealthDBUI extends JFrame {
                     if(resp == 0)
                     {
                         hdb.deletePatient(patientID);
+                        clearPanelData();
                     }
                 }
                 else {
