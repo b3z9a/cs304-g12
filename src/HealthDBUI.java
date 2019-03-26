@@ -877,7 +877,7 @@ public class HealthDBUI extends JFrame {
                 if(patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
-                    int row = testTPTable.getSelectedRow();
+                    int row = testPSTable.getSelectedRow();
                     String testID = testPSTableModel.getValueAt(row, 0).toString();
                     ArrayList<String> testData = hdb.findTest(testID);
 
