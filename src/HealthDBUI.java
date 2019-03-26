@@ -878,17 +878,23 @@ public class HealthDBUI extends JFrame {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
                     int row = testPSTable.getSelectedRow();
-                    String testID = testPSTableModel.getValueAt(row, 0).toString();
-                    ArrayList<String> testData = hdb.findTest(testID);
 
-                    Object[] data = {"Patient: " + name, "Test ID: " + testID, " ", "Cholesterol: " + testData.get(0), "HDL Cholesterol: " + testData.get(1),
-                            "LDL Choleterol: " + testData.get(2), "Triglycerides: " + testData.get(3), "White Blood Cell Count: " + testData.get(4),
-                            "Red Blood Cell Count: " + testData.get(5), "Hematocrit: " + testData.get(6), "Platelet Count: " + testData.get(7),
-                            "NRBC Percent: " + testData.get(8), "NRBC Absolute: " + testData.get(9), "Sodium: " + testData.get(10),
-                            "Glucose: " + testData.get(11), "Phosphorus: " + testData.get(12), "Lab Tech ID: " + testData.get(13)};
+                    if(row >= 0) {
+                        String testID = testPSTableModel.getValueAt(row, 0).toString();
+                        ArrayList<String> testData = hdb.findTest(testID);
+
+                        Object[] data = {"Patient: " + name, "Test ID: " + testID, " ", "Cholesterol: " + testData.get(0), "HDL Cholesterol: " + testData.get(1),
+                                "LDL Choleterol: " + testData.get(2), "Triglycerides: " + testData.get(3), "White Blood Cell Count: " + testData.get(4),
+                                "Red Blood Cell Count: " + testData.get(5), "Hematocrit: " + testData.get(6), "Platelet Count: " + testData.get(7),
+                                "NRBC Percent: " + testData.get(8), "NRBC Absolute: " + testData.get(9), "Sodium: " + testData.get(10),
+                                "Glucose: " + testData.get(11), "Phosphorus: " + testData.get(12), "Lab Tech ID: " + testData.get(13)};
 
 
-                    JOptionPane.showMessageDialog(frame, data, "Test # " + testID + " for Patient " + name, JOptionPane.PLAIN_MESSAGE);
+                        JOptionPane.showMessageDialog(frame, data, "Test # " + testID + " for Patient " + name, JOptionPane.PLAIN_MESSAGE);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(frame, "Please select a test from the Test table.", "Error",  JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 else {
                     JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
