@@ -1435,7 +1435,7 @@ public class HealthDBUI extends JFrame {
         panelTestActions.setLayout(new FlowLayout());
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 6;
-        panelTest.add(panelTestInfo, gbc);
+        panelTest.add(panelTestActions, gbc);
     }
     private void setPanelTestFinder() {
         JTextField txtPID = new JTextField(10);
