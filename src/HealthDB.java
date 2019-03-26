@@ -775,20 +775,76 @@ public class HealthDB {
 			ResultSetMetaData rsmd = rs.getMetaData();
 
 			if(rs.next()){
-				test.add(rs.getString("cholesterol"));
-				test.add(rs.getString("HDLcholesterol"));
-				test.add(rs.getString("LDLcholesterol"));
-				test.add(rs.getString("triglycerides"));
-				test.add(rs.getString("whiteBloodCellCount"));
-				test.add(rs.getString("redBloodCellCount"));
-				test.add(rs.getString("hematocrit"));
-				test.add(rs.getString("plateletCount"));
-				test.add(rs.getString("NRBCPercent"));
-				test.add(rs.getString("NRBCAbsolute"));
-				test.add(rs.getString("sodium"));
-				test.add(rs.getString("glucose"));
-				test.add(rs.getString("phosphorus"));
-				test.add(rs.getString("labTechHID"));
+				if(rs.getString("cholesterol")!=null){
+					test.add(rs.getString("cholesterol") + "mg/dL");
+			  } else{
+					test.add("");
+				}
+				if(rs.getString("HDLcholesterol")!=null){
+					test.add(rs.getString("HDLcholesterol") + "mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("LDLcholesterol")!=null){
+					test.add(rs.getString("LDLcholesterol") + "mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("triglycerides")!=null){
+					test.add(rs.getString("triglycerides") + "mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("whiteBloodCellCount")!=null){
+					test.add(rs.getString("whiteBloodCellCount") + "/mcL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("redBloodCellCount")!=null){
+					test.add(rs.getString("redBloodCellCount") + "/mcL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("hematocrit")!=null){
+					test.add(rs.getString("hematocrit") + "%");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("plateletCount")!=null){
+					test.add(rs.getString("plateletCount") + "/mcL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("NRBCPercent")!=null){
+					test.add(rs.getString("NRBCPercent") + "%");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("NRBCAbsolute")!=null){
+					test.add(rs.getString("NRBCAbsolute"));
+				} else{
+					test.add("");
+				}
+				if(rs.getString("sodium")!=null){
+					test.add(rs.getString("sodium") + " mEq/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("glucose")!=null){
+					test.add(rs.getString("glucose") + " mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("phosphorus")!=null){
+					test.add(rs.getString("phosphorus") + " mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("labTechHID")!=null){
+					test.add(rs.getString("labTechHID"));
+				} else{
+					test.add("");
+				}
 			}
 			// Close the statement, the result set will be closed in the process.
 			stmt.close();
