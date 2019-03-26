@@ -819,8 +819,8 @@ public class HealthDB {
 													 String phosphorus, String labTechHID) {
 	 boolean success = false;
 	 try{
-	 	String test = "update labtest set cholesterol='" + cholesterol + ", HDLcholesterol="
-	 								+ HDLcholesterol + ", LDLcholesterol=" + LDLcholesterol + ", trigycerides="
+	 	String test = "update labtest set cholesterol=" + cholesterol + ", HDLcholesterol="
+	 								+ HDLcholesterol + ", LDLcholesterol=" + LDLcholesterol + ", triglycerides="
 									+ trigycerides + ", whiteBloodCellCount=" + whiteBloodCellCount +
 									", redBloodCellCount=" + redBloodCellCount + ", hematocrit=" + hematocrit +
 									", plateletCount=" + plateletCount + ", NRBCPercent=" + NRBCPercent +
