@@ -948,7 +948,7 @@ public class HealthDBUI extends JFrame {
 
                     int resp = JOptionPane.showConfirmDialog(frame, fields, "Create prescription for " + name, JOptionPane.OK_CANCEL_OPTION);
 
-                    if(resp == 0) {
+                    if(resp == JOptionPane.OK_OPTION) {
                         String medication = dMedication.getText();
                         String dosage = dDosage.getText();
                         String qty = dQty.getText();
@@ -1012,7 +1012,7 @@ public class HealthDBUI extends JFrame {
 
                     int resp = JOptionPane.showConfirmDialog(frame, fields, "Create referral for " + name, JOptionPane.OK_CANCEL_OPTION);
 
-                    if(resp == 0) {
+                    if(resp == JOptionPane.OK_OPTION) {
                         String drHIDInput = dDrHID.getText();
                         hdb.createReferral(patientID, drHID, drHIDInput);
                         System.out.println(drHIDInput);
@@ -1053,7 +1053,7 @@ public class HealthDBUI extends JFrame {
                             "Delete Patient " + name,
                             JOptionPane.YES_NO_OPTION);
 
-                    if(resp == 0)
+                    if(resp == JOptionPane.YES_OPTION)
                     {
                         hdb.deletePatient(patientID);
                         clearPanelData();
@@ -1386,6 +1386,7 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 1;
         gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panelTest.add(panelTestFinder, gbc);
 
         /* Row 2 */
@@ -1404,6 +1405,7 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 3;
         gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panelTest.add(panelTestInfo, gbc);
 
         /* Row 4 */
@@ -1415,7 +1417,6 @@ public class HealthDBUI extends JFrame {
         gbc.gridwidth = 2;
         gbc.gridx = 0; gbc.gridy = 4;
         panelTest.add(lbl, gbc);
-
 
         /* Row 5 */
         String cols[] = {"Test ID", "Ordered Date", "Performed Date", "Completed?"};
@@ -1683,11 +1684,63 @@ public class HealthDBUI extends JFrame {
         btnFillTest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int row = testTPTable.getSelectedRow();
-                int col = testTPTable.getSelectedColumn();
-                String val = testTPTableModel.getValueAt(row, col).toString();
+                JTextField dChol = new JTextField();
+                JTextField dHDL = new JTextField();
+                JTextField dLDL = new JTextField();
+                JTextField dTrig = new JTextField();
+                JTextField dWBcc = new JTextField();
+                JTextField dRBcc = new JTextField();
+                JTextField dHema = new JTextField();
+                JTextField dPlate = new JTextField();
+                JTextField dNRPer = new JTextField();
+                JTextField dNRAbs = new JTextField();
+                JTextField dSod = new JTextField();
+                JTextField dGlu = new JTextField();
+                JTextField dPhos = new JTextField();
+                JTextField dLabHID = new JTextField();
 
-                System.out.println(row + " " + col + " " + val);
+
+
+                if(patientArray.size() > 0)
+                {
+                    int row = testTPTable.getSelectedRow();
+                    String testID = testTPTableModel.getValueAt(row, 0).toString();
+
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    Object[] fields = {"Patient: " + name, "Test ID: " + testID, "Cholesterol", dChol, "HDL Cholesterol", dHDL, "LDL Choleterol", dLDL,
+                            "Triglycerides", dTrig, "White Blood Cell Count", dWBcc, "Red Blood Cell Count", dRBcc,
+                            "Hematocrit", dHema, "Platelet Count", dPlate, "NRBC Percent", dNRPer,
+                            "NRBC Absolute", dNRAbs, "Sodium", dSod, "Glucose", dGlu,
+                            "Phosphorus", dPhos, "Lab Tech ID", dLabHID};
+
+                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Edit Test for " + name, JOptionPane.OK_CANCEL_OPTION);
+
+                    if(resp == JOptionPane.OK_OPTION) {
+                        System.out.println(testID+ " " +dChol.getText()+ " " +dHDL.getText()+ " " +dLDL.getText()+ " " +dTrig.getText()
+                                        + " " +dWBcc.getText()+ " " + dRBcc.getText()+ " " +dHema.getText()+ " " +dPlate.getText()
+                                        + " " +dNRPer.getText() + " " + dNRAbs.getText()+ " " +dSod.getText()+ " " +dGlu.getText()
+                                + " " +dPhos.getText()+ " " + dLabHID.getText());
+                        if(hdb.updateTest(testID,
+                                dChol.getText(), dHDL.getText(),dLDL.getText(), dTrig.getText(),
+                                dWBcc.getText(), dRBcc.getText(), dHema.getText(), dPlate.getText(),
+                                dNRPer.getText(), dNRAbs.getText(), dSod.getText(), dGlu.getText(),
+                                dPhos.getText(), dLabHID.getText())) {
+                            JOptionPane.showMessageDialog(frame, "Test edited for " + name + "\nTest ID: " + testID,
+                                    "Edit Test for " + name,  JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(frame, "Failed to edit test for " + name + "\nTest ID: " + testID,
+                                    "Edit Test for " + name,  JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    else {
+                        System.out.println("No value entered");
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         btnFillTest.setText("Fill Out Test");
