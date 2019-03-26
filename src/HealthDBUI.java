@@ -686,7 +686,8 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryFinder = new JPanel();
         panelPatientSummaryFinder.setLayout(new FlowLayout());
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.weightx = 1.0; gbc.weighty = 1.0;
+	gbc.gridx = 0; gbc.gridy = 1;
         panelPatientSummary.add(panelPatientSummaryFinder, gbc);
 
         /* Row 2 */
@@ -725,8 +726,7 @@ public class HealthDBUI extends JFrame {
 
         panePatientSummaryPrescriptions = new JScrollPane(prescPSTable);
         panePatientSummaryPrescriptions.setLayout(new ScrollPaneLayout());
-        panePatientSummaryPrescriptions.add(prescPSTable);
-
+        
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
@@ -750,8 +750,7 @@ public class HealthDBUI extends JFrame {
 
         panePatientSummaryTests = new JScrollPane(testPSTable);
         panePatientSummaryTests.setLayout(new ScrollPaneLayout());
-        panePatientSummaryTests.add(testPSTable);
-
+        
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
@@ -775,8 +774,7 @@ public class HealthDBUI extends JFrame {
 
         panePatientSummaryReferrals = new JScrollPane(refPSTable);
         panePatientSummaryReferrals.setLayout(new ScrollPaneLayout());
-        panePatientSummaryReferrals.add(refPSTable);
-
+        
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
