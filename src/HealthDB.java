@@ -727,17 +727,6 @@ public class HealthDB {
 		}
 		return "";
 	}
-
-	/**
-	 * Finds a test and returns it
-	 * @param testID: ID of the test to be found
-	 * @return the tuple of the test with the ID provided
-	 */
-	public String findTest(String testID) {
-
-		/* TODO Return test */
-		return new String();
-	}
 	
 	/**
 	 * findPlanNum
