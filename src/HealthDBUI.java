@@ -1058,18 +1058,29 @@ public class HealthDBUI extends JFrame {
                 {
                     // Do a name search
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
-                    ArrayList<String> nameArr = new ArrayList<>();
+                    Object[] nameArr = {};
 
                     int row = 0; int col = 0;
                     for(ArrayList<String> tuple : names) {
-                        nameArr.add(tuple.get(0) + " " + tuple.get(1) + " - " + tuple.get(2));
-                    }
-
-                    for(String s : nameArr)
-                    {
-                        System.out.println(nameArr.get(row));
+                        nameArr[row] = tuple.get(0) + " " + tuple.get(1) + " - " + tuple.get(2);
                         row++;
                     }
+
+                    row = 0;
+                    for(Object obj : nameArr)
+                    {
+                        System.out.println(nameArr[row].toString());
+                        row++;
+                    }
+
+                    // Generate dialog
+                    String s = (String)JOptionPane.showInputDialog(frame,
+                            "Choose a patient with " + nameTxt + " in their name:",
+                            "Choose a Patient",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null,
+                            nameArr,
+                            null);
 
                     pidTxt = "12345678";
                     patientArray = hdb.findPatient(pidTxt);
