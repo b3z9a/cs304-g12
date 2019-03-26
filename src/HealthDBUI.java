@@ -240,6 +240,80 @@ public class HealthDBUI extends JFrame {
         invoiceHistoryGridTableModel.setRowCount(0);
     }
 
+    private void viewTestData(JTable table, DefaultTableModel tableModel) {
+        JTextField dChol = new JTextField();
+        JTextField dHDL = new JTextField();
+        JTextField dLDL = new JTextField();
+        JTextField dTrig = new JTextField();
+        JTextField dWBcc = new JTextField();
+        JTextField dRBcc = new JTextField();
+        JTextField dHema = new JTextField();
+        JTextField dPlate = new JTextField();
+        JTextField dNRPer = new JTextField();
+        JTextField dNRAbs = new JTextField();
+        JTextField dSod = new JTextField();
+        JTextField dGlu = new JTextField();
+        JTextField dPhos = new JTextField();
+        JTextField dLabHID = new JTextField();
+
+        if(patientArray.size() > 0) {
+            String name = patientArray.get(0) + " " + patientArray.get(1);
+
+            int row = table.getSelectedRow();
+
+            if(row >= 0) {
+                String testID = tableModel.getValueAt(row, 0).toString();
+                ArrayList<String> testData = hdb.findTest(testID);
+
+                dChol.setEditable(false);
+                dHDL.setEditable(false);
+                dLDL.setEditable(false);
+                dTrig.setEditable(false);
+                dWBcc.setEditable(false);
+                dRBcc.setEditable(false);
+                dHema.setEditable(false);
+                dPlate.setEditable(false);
+                dNRPer.setEditable(false);
+                dNRAbs.setEditable(false);
+                dSod.setEditable(false);
+                dGlu.setEditable(false);
+                dPhos.setEditable(false);
+                dLabHID.setEditable(false);
+
+                dChol.setText(testData.get(0));
+                dHDL.setText(testData.get(1));
+                dLDL.setText(testData.get(2));
+                dTrig.setText(testData.get(3));
+                dWBcc.setText(testData.get(4));
+                dRBcc.setText(testData.get(5));
+                dHema.setText(testData.get(6));
+                dPlate.setText(testData.get(7));
+                dNRPer.setText(testData.get(8));
+                dNRAbs.setText(testData.get(9));
+                dSod.setText(testData.get(10));
+                dGlu.setText(testData.get(11));
+                dPhos.setText(testData.get(12));
+                dLabHID.setText(testData.get(13));
+
+                Object[] data = {"Patient: " + name, "Test ID: " + testID, " ",
+                        "Cholesterol", dChol, "HDL Cholesterol", dHDL, "LDL Choleterol", dLDL,
+                        "Triglycerides", dTrig, "White Blood Cell Count", dWBcc, "Red Blood Cell Count", dRBcc,
+                        "Hematocrit", dHema, "Platelet Count", dPlate, "NRBC Percent", dNRPer,
+                        "NRBC Absolute", dNRAbs, "Sodium", dSod, "Glucose", dGlu,
+                        "Phosphorus", dPhos, "Lab Tech ID", dLabHID};
+
+                String s = testData.get(0);
+                JOptionPane.showMessageDialog(frame, data, "Test # " + testID + " for Patient " + name, JOptionPane.PLAIN_MESSAGE);
+            }
+            else {
+                JOptionPane.showMessageDialog(frame, "Please select a test from the Test table.", "Error",  JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     /**
      * Initializes the Oracle Login panel
      */
@@ -878,77 +952,7 @@ public class HealthDBUI extends JFrame {
         btnViewTest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JTextField dChol = new JTextField();
-                JTextField dHDL = new JTextField();
-                JTextField dLDL = new JTextField();
-                JTextField dTrig = new JTextField();
-                JTextField dWBcc = new JTextField();
-                JTextField dRBcc = new JTextField();
-                JTextField dHema = new JTextField();
-                JTextField dPlate = new JTextField();
-                JTextField dNRPer = new JTextField();
-                JTextField dNRAbs = new JTextField();
-                JTextField dSod = new JTextField();
-                JTextField dGlu = new JTextField();
-                JTextField dPhos = new JTextField();
-                JTextField dLabHID = new JTextField();
-
-                if(patientArray.size() > 0) {
-                    String name = patientArray.get(0) + " " + patientArray.get(1);
-
-                    int row = testPSTable.getSelectedRow();
-
-                    if(row >= 0) {
-                        String testID = testPSTableModel.getValueAt(row, 0).toString();
-                        ArrayList<String> testData = hdb.findTest(testID);
-
-                        dChol.setEditable(false);
-                        dHDL.setEditable(false);
-                        dLDL.setEditable(false);
-                        dTrig.setEditable(false);
-                        dWBcc.setEditable(false);
-                        dRBcc.setEditable(false);
-                        dHema.setEditable(false);
-                        dPlate.setEditable(false);
-                        dNRPer.setEditable(false);
-                        dNRAbs.setEditable(false);
-                        dSod.setEditable(false);
-                        dGlu.setEditable(false);
-                        dPhos.setEditable(false);
-                        dLabHID.setEditable(false);
-
-                        dChol.setText(testData.get(0));
-                        dHDL.setText(testData.get(1));
-                        dLDL.setText(testData.get(2));
-                        dTrig.setText(testData.get(3));
-                        dWBcc.setText(testData.get(4));
-                        dRBcc.setText(testData.get(5));
-                        dHema.setText(testData.get(6));
-                        dPlate.setText(testData.get(7));
-                        dNRPer.setText(testData.get(8));
-                        dNRAbs.setText(testData.get(9));
-                        dSod.setText(testData.get(10));
-                        dGlu.setText(testData.get(11));
-                        dPhos.setText(testData.get(12));
-                        dLabHID.setText(testData.get(13));
-
-                        Object[] data = {"Patient: " + name, "Test ID: " + testID, " ",
-                                "Cholesterol", dChol, "HDL Cholesterol", dHDL, "LDL Choleterol", dLDL,
-                                "Triglycerides", dTrig, "White Blood Cell Count", dWBcc, "Red Blood Cell Count", dRBcc,
-                                "Hematocrit", dHema, "Platelet Count", dPlate, "NRBC Percent", dNRPer,
-                                "NRBC Absolute", dNRAbs, "Sodium", dSod, "Glucose", dGlu,
-                                "Phosphorus", dPhos, "Lab Tech ID", dLabHID};
-
-                        String s = testData.get(0);
-                        JOptionPane.showMessageDialog(frame, data, "Test # " + testID + " for Patient " + name, JOptionPane.PLAIN_MESSAGE);
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(frame, "Please select a test from the Test table.", "Error",  JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-                else {
-                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
-                }
+                viewTestData(testPSTable, testPSTableModel);
             }
         });
         btnViewTest.setText("View Selected Test");
@@ -1848,82 +1852,13 @@ public class HealthDBUI extends JFrame {
         btnViewTest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JTextField dChol = new JTextField();
-                JTextField dHDL = new JTextField();
-                JTextField dLDL = new JTextField();
-                JTextField dTrig = new JTextField();
-                JTextField dWBcc = new JTextField();
-                JTextField dRBcc = new JTextField();
-                JTextField dHema = new JTextField();
-                JTextField dPlate = new JTextField();
-                JTextField dNRPer = new JTextField();
-                JTextField dNRAbs = new JTextField();
-                JTextField dSod = new JTextField();
-                JTextField dGlu = new JTextField();
-                JTextField dPhos = new JTextField();
-                JTextField dLabHID = new JTextField();
-
-                if(patientArray.size() > 0) {
-                    String name = patientArray.get(0) + " " + patientArray.get(1);
-
-                    int row = testPSTable.getSelectedRow();
-
-                    if(row >= 0) {
-                        String testID = testPSTableModel.getValueAt(row, 0).toString();
-                        ArrayList<String> testData = hdb.findTest(testID);
-
-                        dChol.setEditable(false);
-                        dHDL.setEditable(false);
-                        dLDL.setEditable(false);
-                        dTrig.setEditable(false);
-                        dWBcc.setEditable(false);
-                        dRBcc.setEditable(false);
-                        dHema.setEditable(false);
-                        dPlate.setEditable(false);
-                        dNRPer.setEditable(false);
-                        dNRAbs.setEditable(false);
-                        dSod.setEditable(false);
-                        dGlu.setEditable(false);
-                        dPhos.setEditable(false);
-                        dLabHID.setEditable(false);
-
-                        dChol.setText(testData.get(0));
-                        dHDL.setText(testData.get(1));
-                        dLDL.setText(testData.get(2));
-                        dTrig.setText(testData.get(3));
-                        dWBcc.setText(testData.get(4));
-                        dRBcc.setText(testData.get(5));
-                        dHema.setText(testData.get(6));
-                        dPlate.setText(testData.get(7));
-                        dNRPer.setText(testData.get(8));
-                        dNRAbs.setText(testData.get(9));
-                        dSod.setText(testData.get(10));
-                        dGlu.setText(testData.get(11));
-                        dPhos.setText(testData.get(12));
-                        dLabHID.setText(testData.get(13));
-
-                        Object[] data = {"Patient: " + name, "Test ID: " + testID, " ",
-                                "Cholesterol", dChol, "HDL Cholesterol", dHDL, "LDL Choleterol", dLDL,
-                                "Triglycerides", dTrig, "White Blood Cell Count", dWBcc, "Red Blood Cell Count", dRBcc,
-                                "Hematocrit", dHema, "Platelet Count", dPlate, "NRBC Percent", dNRPer,
-                                "NRBC Absolute", dNRAbs, "Sodium", dSod, "Glucose", dGlu,
-                                "Phosphorus", dPhos, "Lab Tech ID", dLabHID};
-
-                        String s = testData.get(0);
-                        JOptionPane.showMessageDialog(frame, data, "Test # " + testID + " for Patient " + name, JOptionPane.PLAIN_MESSAGE);
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(frame, "Please select a test from the Test table.", "Error",  JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-                else {
-                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
-                }
+                viewTestData(testTPTable, testTPTableModel);
             }
         });
         btnViewTest.setText("View Selected Test");
         panelTestActions.add(btnViewTest);
     }
+
 
     private void setPanelInvoice() {
         JLabel lbl = new JLabel("Invoice");
