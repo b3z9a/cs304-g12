@@ -974,7 +974,7 @@ public class HealthDBUI extends JFrame {
                         String qty = dQty.getText();
                         hdb.createPrescription(medication, dosage, qty, patientID, drHID);
 
-                        prescriptions = hdb.getPrescriptions(patientID, name);
+                        prescriptions = hdb.getPrescriptions(patientID);
                         updateTable(prescriptions, prescPSTableModel);
                     }
                     else {
