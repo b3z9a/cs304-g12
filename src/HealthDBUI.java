@@ -1385,6 +1385,7 @@ public class HealthDBUI extends JFrame {
         panelTestFinder.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 1;
+        gbc.weightx = 1.0;
         panelTest.add(panelTestFinder, gbc);
 
         /* Row 2 */
@@ -1402,6 +1403,7 @@ public class HealthDBUI extends JFrame {
         panelTestInfo.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 3;
+        gbc.weightx = 1.0;
         panelTest.add(panelTestInfo, gbc);
 
         /* Row 4 */
@@ -1683,8 +1685,9 @@ public class HealthDBUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int row = testTPTable.getSelectedRow();
                 int col = testTPTable.getSelectedColumn();
+                String val = testTPTableModel.getValueAt(row, col).toString();
 
-                System.out.println(row + " " + col);
+                System.out.println(row + " " + col + " " + val);
             }
         });
         btnFillTest.setText("Fill Out Test");
