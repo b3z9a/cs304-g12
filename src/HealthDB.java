@@ -607,8 +607,8 @@ public class HealthDB {
 		try{
 			String query = "select p.firstName, p.lastName, p.patientID, p.street,"+
 										 " pc.city, pc.province, pc.postalcode, pc.country, "+
-										 "p.homePhone, p.mobilePhone from patient p, postalcode"+
-										 " pc where p.postalcode = pc.postalcode and p.patientID = " + PID;
+										 "p.homePhone, p.mobilePhone from patient p left join postalcode"+
+										 " pc on p.postalcode = pc.postalcode where p.patientID = " + PID;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -632,8 +632,6 @@ public class HealthDB {
 	} catch (SQLException ex){
 		System.out.println("Failed to get patient personal info. " + ex.getMessage());
 	}
-	System.out.println("Patient summary tuple passed:");
-	printTuple(tuple);
 	return tuple;
 	}
 
