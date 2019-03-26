@@ -487,12 +487,12 @@ public class HealthDB {
 	public ArrayList<ArrayList<String>> getExtendedBenefits(String pid) {
 		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
 		try{
-			String query = "select chiropractic, chiroracticAnnualLimit, chiropracticYTD,"+
+			String query = "select chiropractic, chiropracticAnnualLimit, chiropracticYTD,"+
 										 " physiotherapy, physiotherapyAnnualLimit, physiotherapyYTD,"+
 										 " nonSurgicalPodiatry, nonSurgicalPodiatryAnnualLimit, "+
 										 "nonSurgicalPodiatryYTD, acupuncture, acupunctureAnnualLimit,"+
 										 " acupunctureYTD, medication, medicationAnnualLimit, "+
-										 "medicationYTD from ExtendedBenefitsPlan where patientID = "+ pid;
+										 "medicationYTD from ExtendedBenefitsPlan ebp, ProvincialHealthPlan php where ebp.planID = php.planID and php.patientID = "+ pid;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -502,7 +502,7 @@ public class HealthDB {
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
 				tuple.add(rs.getString("chiropractic"));
-				tuple.add(rs.getString("chiroracticAnnualLimit"));
+				tuple.add(rs.getString("chiropracticAnnualLimit"));
 				tuple.add(rs.getString("chiropracticYTD"));
 				tuple.add(rs.getString("physiotherapy"));
 				tuple.add(rs.getString("physiotherapyAnnualLimit"));
@@ -625,7 +625,7 @@ public class HealthDB {
 			// Close the statement, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
-			System.out.println("Failed to get provincial plan information " + ex.getMessage());
+			System.out.println("Failed to get invoice information " + ex.getMessage());
 		}
 		return tuples;
 	}
