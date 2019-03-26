@@ -1060,16 +1060,11 @@ public class HealthDBUI extends JFrame {
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
                     Object[] nameArr = new Object[names.size()];
 
-                    int row = 0; int col = 0;
+                    int row = 0;
+                    int index = 0;
+
                     for(ArrayList<String> tuple : names) {
                         nameArr[row] = tuple.get(0) + " " + tuple.get(1) + " - " + tuple.get(2);
-                        row++;
-                    }
-
-                    row = 0;
-                    for(Object obj : nameArr)
-                    {
-                        System.out.println(nameArr[row].toString());
                         row++;
                     }
 
@@ -1082,7 +1077,18 @@ public class HealthDBUI extends JFrame {
                             nameArr,
                             null);
 
-                    pidTxt = "12345678";
+                    // Find the index
+                    row = 0;
+                    for(Object obj : nameArr)
+                    {
+                        if(s.equals(nameArr[row]))
+                        {
+                            index = row;
+                        }
+                        row++;
+                    }
+
+                    pidTxt = names.get(index).get(2);
                     patientArray = hdb.findPatient(pidTxt);
                 }
                 else if(!pidTxt.isEmpty()) {
