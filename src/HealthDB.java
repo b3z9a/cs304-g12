@@ -763,22 +763,94 @@ public class HealthDB {
 	 */
 	public ArrayList<String> findTest(String testID) {
 		ArrayList<String> test = new ArrayList<>();
+		try{
+			String query = "select cholesterol, HDLcholesterol, LDLcholesterol, triglycerides,"+
+					"whiteBloodCellCount, redBloodCellCount, hematocrit, plateletCount,"+
+					"NRBCPercent, NRBCAbsolute, sodium, glucose, phosphorus, labTechHID "+
+					"from labtest where testID=" + testID;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
 
-		test.add("cholesterol");
-		test.add("HDLcholesterol");
-		test.add("LDLcholesterol");
-		test.add("trigycerides");
-		test.add("whiteBloodCellCount");
-		test.add("redBloodCellCount");
-		test.add("hematocrit");
-		test.add("plateletCount");
-		test.add("NRBCPercent");
-		test.add("NRBCAbsolute");
-		test.add("sodium");
-		test.add("glucose");
-		test.add("phosphorus");
-		test.add("labTechHID");
-
+			if(rs.next()){
+				if(rs.getString("cholesterol")!=null){
+					test.add(rs.getString("cholesterol") + "mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("HDLcholesterol")!=null){
+					test.add(rs.getString("HDLcholesterol") + "mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("LDLcholesterol")!=null){
+					test.add(rs.getString("LDLcholesterol") + "mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("triglycerides")!=null){
+					test.add(rs.getString("triglycerides") + "mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("whiteBloodCellCount")!=null){
+					test.add(rs.getString("whiteBloodCellCount") + "/mcL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("redBloodCellCount")!=null){
+					test.add(rs.getString("redBloodCellCount") + "/mcL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("hematocrit")!=null){
+					test.add(rs.getString("hematocrit") + "%");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("plateletCount")!=null){
+					test.add(rs.getString("plateletCount") + "/mcL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("NRBCPercent")!=null){
+					test.add(rs.getString("NRBCPercent") + "%");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("NRBCAbsolute")!=null){
+					test.add(rs.getString("NRBCAbsolute"));
+				} else{
+					test.add("");
+				}
+				if(rs.getString("sodium")!=null){
+					test.add(rs.getString("sodium") + " mEq/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("glucose")!=null){
+					test.add(rs.getString("glucose") + " mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("phosphorus")!=null){
+					test.add(rs.getString("phosphorus") + " mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("labTechHID")!=null){
+					test.add(rs.getString("labTechHID"));
+				} else{
+					test.add("");
+				}
+			}
+			// Close the statement, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get test summary. " + ex.getMessage());
+		}
 		return test;
 	}
 
@@ -788,23 +860,59 @@ public class HealthDB {
      * @return the patientID associated with the invoice. If no tuple is found
 		 * 				returns the empty string.
      */
-    public String findInvoice(String invoiceID) {
-			try{
-				String query = "select patientID from Invoice where invoiceID = " + invoiceID;
-				Statement stmt = con.createStatement();
-				// Execute each query.
-				ResultSet rs = stmt.executeQuery(query);
-				ResultSetMetaData rsmd = rs.getMetaData();
+    public ArrayList<String> findInvoice(String invoiceID) {
+		ArrayList<String> tuple = new ArrayList<String>();
+		try{
+			String query = "find the patientID and planID from Invoice where invoiceID = " + invoiceID;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
 
-				if(rs.next()){
-					return rs.getString("patientID");
-				}
-
-			} catch (SQLException ex){
-					System.out.println("Error finding invoice. " + ex.getMessage());
+			while(rs.next()){
+				tuple.add(rs.getString("patientID"));
+				tuple.add(rs.getString("planID"));
 			}
-			return "";
+			stmt.close();
+
+		} catch (SQLException ex){
+			System.out.println("Failed to get invoice info. " + ex.getMessage());
+		}
+		return tuple;
     }
+
+	/**
+	 * findPlanNum
+	 * Finds a plan number in the database, stores tuple information in a data structure
+	 * tuple[] = {0 planID, 1 policyType, 2 startDate, 3 endDate, 4 patientID}
+	 * @param planID
+	 * @return the single tuple for the plan with the given planID
+	 */
+	public ArrayList<String> findPlanNumber(String planID) {
+		ArrayList<String> tuple = new ArrayList<String>();
+		try{
+			String query = "find the policyType, startDate, endDate, and patientID from ProvincialHealthPlan where planID = " + planID;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				tuple.add(rs.getString("planID"));
+				tuple.add(rs.getString("policyType"));
+				tuple.add(rs.getString("startDate"));
+				tuple.add(rs.getString("endDate"));
+				tuple.add(rs.getString("patientID"));
+			}
+			stmt.close();
+
+		} catch (SQLException ex){
+			System.out.println("Failed to get plan info. " + ex.getMessage());
+		}
+		return tuple;
+	}
 
     /**
      * updateX methods: Updates an existing X tuple with given data
