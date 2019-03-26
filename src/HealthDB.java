@@ -766,6 +766,30 @@ public class HealthDB {
 	 * @return the tuple of the test with the ID provided if no tuple is found
 	 * 				returns the empty string.
 	 */
+	public String findPIDfromTest(String testID) {
+		try{
+			String query = "select patientID from LabTest where testID = " + testID;
+			Statement stmt = con.createStatement();
+			// Execute each query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			if(rs.next()){
+				return rs.getString("patientID");
+			}
+
+		} catch (SQLException ex){
+			System.out.println("Error finding test. " + ex.getMessage());
+		}
+		return "";
+	}
+
+	/**
+	 * Finds the patientID associated with a test and returns it
+	 * @param testID: ID of the test to be found
+	 * @return the tuple of the test with the ID provided if no tuple is found
+	 * 				returns the empty string.
+	 */
 	public ArrayList<String> findTest(String testID) {
 		ArrayList<String> test = new ArrayList<>();
 		try{

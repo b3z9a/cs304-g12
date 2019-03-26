@@ -1466,7 +1466,7 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                String pid = hdb.findTest(txtTest.getText());
+                String pid = hdb.findPIDfromTest(txtTest.getText());
 
                 patientArray = hdb.findPatient(pid);
 
