@@ -2,8 +2,10 @@
 /* SQL query for patient info for all views. */
 select p.firstName, p.lastName, p.patientID, p.street, pc.city, pc.province,
 pc.postalcode, pc.country, p.homePhone, p.mobilePhone
-from patient p, postalcode pc
-where p.postalcode = pc.postalcode and p.patientID = 'PASSED PARAMETER';
+from patient p
+left join postalcode pc
+on p.postalcode = pc.postalcode
+where p.patientID = 'PASSED PARAMETER';
 
 /* ----- IMPLEMENTED -----*/
 /* SQL query for prescription info for doctor and pharmacist views. */

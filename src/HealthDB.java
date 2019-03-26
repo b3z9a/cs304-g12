@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.*;
+import java.text.*;
 
 /**
  * <h2>HealthDB</h2>
@@ -32,9 +33,10 @@ public class HealthDB {
 	 * testID
 	 * invoiceID
 	 */
-	private Integer prescriptionIDCounter = 400000;
-	private Integer testIDCounter = 800000;
-	private Integer invoiceIDCounter = 150000;
+	static Integer prescriptionIDCounter = 400000;
+	static Integer testIDCounter = 800000;
+	static Integer invoiceIDCounter = 150000;
+	private DateFormat format = new SimpleDateFormat("MMMM dd yyyy");
 
 	/**
 	 * HealthDB Constructor
@@ -98,11 +100,10 @@ public class HealthDB {
 	public boolean createPrescription(String medication, String dosage, String quantity,
 																 String patientID, String drHID) {
 		try {
-			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
-			prescriptionIDCounter = prescriptionIDCounter++;
 			String query ="insert into prescription (prescriptionID, medication, dosage, quantity, patientID,"
 							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication + "', " + dosage
-							+ ", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today + "', 'YYY-MM-DD'))";
+							+ ", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today() + "', 'YYY-MM-DD'))";
+			prescriptionIDCounter = prescriptionIDCounter++;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -126,10 +127,11 @@ public class HealthDB {
 	 */
 	public boolean createTest(String patientID, String drHID) {
 		try {
-			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
-			testIDCounter = testIDCounter++;
+			System.out.println("TestID Counter Pre-Creation: " + testIDCounter);
 			String query = "insert into labtest (testID, patientID, drHID, orderedDate) values (" + testIDCounter + ", "
-							+ patientID + ", " + drHID + ", " + "to_date('" + today + "', 'YYY-MM-DD'))";
+							+ patientID + ", " + drHID + ", " + today() + ")";
+			testIDCounter++;
+			System.out.println("TestID Counter Post-Creation: " + testIDCounter);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -155,9 +157,8 @@ public class HealthDB {
 	 */
 	public boolean createReferral(String patientID, String referrerHID, String referreeHID) {
 		try {
-			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			String query = "insert into referral (patientID, referrerHID, referreeHID, referredDate) values ("
-							+ patientID + ", " + referrerHID + ", " + referreeHID + ", " + "to_date('" + today + "', 'YYY-MM-DD'))";
+							+ patientID + ", " + referrerHID + ", " + referreeHID + ", " + "to_date('" + today() + "', 'YYY-MM-DD'))";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -193,13 +194,11 @@ public class HealthDB {
 														String paymentDate, String paymentMethod, String amountOwing, String paymentID, String planID) {
 		try {
 			// Oracle will insert null if you insert an empty string. Therefore do not need to check if optional values are empty strings
-
-			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
-			invoiceIDCounter = invoiceIDCounter++;
 			String query = "insert into invoice (invoiceID, patientID, invoiceItem, creationDate, dueDate, paymentStatus, "
 							+ "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
-							+ patientID + ", " + "to_date('" + today + "', 'YYY-MM-DD'), " + dueDate + ", " + paymentStatus + ", "
+							+ patientID + ", " + "to_date('" + today() + "', 'YYY-MM-DD'), " + dueDate + ", " + paymentStatus + ", "
 							+ paymentDate + ", " + paymentMethod + ", " + amountOwing + ", " + paymentID + ", " + planID + ")";
+			invoiceIDCounter = invoiceIDCounter++;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -252,8 +251,9 @@ public class HealthDB {
 		try{
 			String query = "select p.firstName, p.lastName, p.patientID, p.street, "
 							+ "pc.city, pc.province, pc.postalcode, pc.country, "
-							+ "p.homePhone, p.mobilePhone from patient p, postalcode pc "
-							+ "where (p.firstName like '" + name + "%'" + " or p.lastName like '" + name + "%') and p.postalcode = pc.postalcode" ;
+							+ "p.homePhone, p.mobilePhone from patient p left join postalcode pc "
+							+ "on p.postalcode = pc.postalcode " + "where (p.firstName like '%"
+							+ name + "%'" + " or p.lastName like '%" + name + "%')" ;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -291,7 +291,7 @@ public class HealthDB {
 	 * @param pid- the PID of the selected Patient, cannot be null
 	 * @return prescription data
 	 */
-	public ArrayList<ArrayList<String>> getPrescriptions(String pid, String name) {
+	public ArrayList<ArrayList<String>> getPrescriptions(String pid) {
 		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
 		try{
 			String query = "select pr.prescriptionID, pr.prescribedDate, m.medication,"+
@@ -307,12 +307,28 @@ public class HealthDB {
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
 				tuple.add(rs.getString("prescriptionID"));
-				tuple.add(rs.getString("prescribedDate"));
+				if (rs.getDate("prescribedDate")!=null){
+					tuple.add(format.format(rs.getDate("prescribedDate")));
+			  } else{
+					tuple.add("");
+			  }
 				tuple.add(rs.getString("medication"));
 				tuple.add(rs.getString("dosage"));
 				tuple.add(rs.getString("dosageMeasure"));
 				tuple.add(rs.getString("quantity"));
-				tuple.add(rs.getString("filledDate"));
+				if (rs.getDate("filledDate")!=null){
+					tuple.add(format.format(rs.getDate("filledDate")));
+				} else{
+					tuple.add("");
+				}
+
+				if(rs.getString("filledDate") == null) {
+                    tuple.add("No");
+                }
+				else {
+				    tuple.add("Yes");
+                }
+
 				tuples.add(tuple);
 			}
 
@@ -345,8 +361,23 @@ public class HealthDB {
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
 				tuple.add(rs.getString("testID"));
-				tuple.add(rs.getString("orderedDate"));
-				tuple.add(rs.getString("performedDate"));
+				if (rs.getDate("orderedDate")!=null){
+					tuple.add(format.format(rs.getDate("orderedDate")));
+				} else{
+					tuple.add("");
+				}
+				if (rs.getDate("performedDate")!=null){
+					tuple.add(format.format(rs.getDate("performedDate")));
+			  } else{
+					tuple.add("");
+			  }
+
+                if(rs.getString("performedDate") == null) {
+                    tuple.add("No");
+                }
+                else {
+                    tuple.add("Yes");
+                }
 				tuples.add(tuple);
 			}
 
@@ -384,7 +415,11 @@ public class HealthDB {
 				tuple.add(rs.getString("firstName"));
 				tuple.add(rs.getString("lastName"));
 				tuple.add(rs.getString("specialization"));
-				tuple.add(rs.getString("referredDate"));
+				if (rs.getDate("referredDate")!=null){
+					tuple.add(format.format(rs.getDate("referredDate")));
+				} else{
+					tuple.add("");
+				}
 				tuples.add(tuple);
 			}
 
@@ -407,7 +442,7 @@ public class HealthDB {
 	public ArrayList<String> getPlan(String pid) {
 		ArrayList<String> tuple = new ArrayList<String>();
 		try{
-			String query = "select planID, planType, startDate, endDate from "+
+			String query = "select planID, policyType, startDate, endDate from "+
 										 "ProvincialHealthPlan where patientID = " + pid;
 			// Create a statement
 			Statement stmt = con.createStatement();
@@ -417,9 +452,17 @@ public class HealthDB {
 
 			while(rs.next()){
 				tuple.add(rs.getString("planID"));
-				tuple.add(rs.getString("planType"));
-				tuple.add(rs.getString("startDate"));
-				tuple.add(rs.getString("endDate"));
+				tuple.add(rs.getString("policyType"));
+				if (rs.getDate("startDate")!=null){
+					tuple.add(format.format(rs.getDate("startDate")));
+				} else{
+					tuple.add("");
+				}
+				if (rs.getDate("endDate")!=null){
+					tuple.add(format.format(rs.getDate("endDate")));
+			  } else {
+					tuple.add("");
+			  }
 			}
 
 			// Close the statement, the result set will be closed in the process.
@@ -441,12 +484,12 @@ public class HealthDB {
 	public ArrayList<ArrayList<String>> getExtendedBenefits(String pid) {
 		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
 		try{
-			String query = "select chiropractic, chiroracticAnnualLimit, chiropracticYTD,"+
+			String query = "select chiropractic, chiropracticAnnualLimit, chiropracticYTD,"+
 										 " physiotherapy, physiotherapyAnnualLimit, physiotherapyYTD,"+
 										 " nonSurgicalPodiatry, nonSurgicalPodiatryAnnualLimit, "+
 										 "nonSurgicalPodiatryYTD, acupuncture, acupunctureAnnualLimit,"+
 										 " acupunctureYTD, medication, medicationAnnualLimit, "+
-										 "medicationYTD from ExtendedBenefitsPlan where patientID = "+ pid;
+										 "medicationYTD from ExtendedBenefitsPlan ebp, ProvincialHealthPlan php where ebp.planID = php.planID and php.patientID = "+ pid;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -456,7 +499,7 @@ public class HealthDB {
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
 				tuple.add(rs.getString("chiropractic"));
-				tuple.add(rs.getString("chiroracticAnnualLimit"));
+				tuple.add(rs.getString("chiropracticAnnualLimit"));
 				tuple.add(rs.getString("chiropracticYTD"));
 				tuple.add(rs.getString("physiotherapy"));
 				tuple.add(rs.getString("physiotherapyAnnualLimit"));
@@ -487,19 +530,19 @@ public class HealthDB {
 	 * @param pid - the PID of the selected Patient
 	 * @return total unpaid amount owing
 	 */
-	public ArrayList<String> getAmountOwing(String pid) {
-		ArrayList<String> tuple = new ArrayList<String>();
+	public double getAmountOwing(String pid) {
+		double amountOwing = 0;
 		try{
 			String query = "select sum(amountOwing) as amountOwing from Invoice where "+
-										 "patientID = " + pid + " and paymentStatus = 'Unpaid";
+										 "patientID = " + pid + " and paymentStatus = 'Unpaid'";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
 
-			while(rs.next()){
-				tuple.add(rs.getString("amountOwing"));
+			if(rs.next()){
+				amountOwing = rs.getDouble("amountOwing");
 			}
 
 			// Close the statement, the result set will be closed in the process.
@@ -507,37 +550,37 @@ public class HealthDB {
 		} catch (SQLException ex){
 			System.out.println("Failed to get amount owing " + ex.getMessage());
 		}
-		return tuple;
+		return amountOwing;
 	}
 
 	/**
-	 * Returns total OVERDUE unpaid amount owing for specified patient
+	 * Returns total OVERDUE unpaid amount owing for specified patient.
 	 *
 	 * @param pid - the PID of the selected Patient
 	 * @return total OVERDUE unpaid amount owing
 	 */
-	public ArrayList<String> getOverdueAmountOwing(String pid) {
-		ArrayList<String> tuple = new ArrayList<String>();
+	public double getOverdueAmountOwing(String pid) {
+		double amountOverdue = 0;
 		try{
-			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			String query = "select sum(amountOwing) as overdueAmountOwing from Invoice "+
-										 "where patientID = " + pid + "and paymentStatus = 'Unpaid and dueDate < " + today;
+										 "where patientID = " + pid + "and paymentStatus = 'Unpaid' and dueDate < " + today();
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
 
-			while(rs.next()){
-				tuple.add(rs.getString("overdueAmountOwing"));
+			if(rs.next()){
+				amountOverdue = rs.getDouble("overdueAmountOwing");
 			}
 
 			// Close the statement, the result set will be closed in the process.
 			stmt.close();
+			return amountOverdue;
 		} catch (SQLException ex){
 			System.out.println("Failed to get overdue amount owing " + ex.getMessage());
 		}
-		return tuple;
+		return amountOverdue;
 	}
 
 	/**
@@ -561,8 +604,16 @@ public class HealthDB {
 				ArrayList<String> tuple = new ArrayList<String>();
 				tuple.add(rs.getString("invoiceID"));
 				tuple.add(rs.getString("invoiceItem"));
-				tuple.add(rs.getString("creationDate"));
-				tuple.add(rs.getString("dueDate"));
+				if (rs.getDate("creationDate")!=null){
+					tuple.add(format.format(rs.getDate("creationDate")));
+				} else{
+					tuple.add("");
+				}
+				if (rs.getDate("dueDate")!=null){
+					tuple.add(format.format(rs.getDate("dueDate")));
+				} else{
+					tuple.add("");
+				}
 				tuple.add(rs.getString("paymentStatus"));
 				tuple.add(rs.getString("amountOwing"));
 				tuples.add(tuple);
@@ -571,7 +622,7 @@ public class HealthDB {
 			// Close the statement, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
-			System.out.println("Failed to get provincial plan information " + ex.getMessage());
+			System.out.println("Failed to get invoice information " + ex.getMessage());
 		}
 		return tuples;
 	}
@@ -592,8 +643,8 @@ public class HealthDB {
 		try{
 			String query = "select p.firstName, p.lastName, p.patientID, p.street,"+
 										 " pc.city, pc.province, pc.postalcode, pc.country, "+
-										 "p.homePhone, p.mobilePhone from patient p, postalcode"+
-										 " pc where p.postalcode = pc.postalcode and p.patientID = " + PID;
+										 "p.homePhone, p.mobilePhone from patient p left join postalcode"+
+										 " pc on p.postalcode = pc.postalcode where p.patientID = " + PID;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -722,5 +773,25 @@ public class HealthDB {
     public Object findPlan(String text) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private void printTuple(ArrayList<String> tuple){
+			StringBuilder sb = new StringBuilder();
+				for (String s : tuple){
+					sb.append(" '");
+					sb.append(s);
+					sb.append("', ");
+				}
+			System.out.println(sb.toString());
+	}
+
+/**
+* Helper method that generates todays date in the proper format to submit in a query.
+* @return today's date as a string in SQL query format.
+*/
+	static String today(){
+		DateFormat sqlDate = new SimpleDateFormat("yyyy-MM-dd");
+		java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+		return "TO_DATE('"+ sqlDate.format(today) +"','YYYY-MM-DD')";
 	}
 }
