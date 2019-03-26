@@ -10,9 +10,12 @@ public class HealthDBTest{
       test = new HealthDBTest();
 
       hdb = new HealthDB();
-      hdb.connectToDB("ora_k1j8", "a30442115");
-
-      test.findPatient();
+      hdb.connectToDB("ora_k1j8", "a30442115")
+      ;
+      System.out.println("Test findPatient");
+      System.out.println(hdb.findPatient("2"));
+      System.out.println(hdb.findPatient("3"));
+      System.out.println("\n");
 
       System.out.println("Test findInvoice");
       System.out.println("  Expected: 32118954");
@@ -32,18 +35,22 @@ public class HealthDBTest{
       StringBuilder sb = new StringBuilder();
       for (ArrayList<String> list : tuples){
         for (String s : list){
+          sb.append("'");
           sb.append(s);
-          sb.append(", ");
+          sb.append("', ");
         }
         sb.append("\n");
       }
       System.out.println(sb.toString());
   }
 
-  private void findPatient(){
-    ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
-    ArrayList<String> tuple = hdb.findPatient("12345678");
-    list.add(tuple);
-    test.printTuples(list);
+  private void printTuple(ArrayList<String> tuple){
+      StringBuilder sb = new StringBuilder();
+        for (String s : tuple){
+          sb.append(" '");
+          sb.append(s);
+          sb.append("', ");
+        }
+      System.out.println(sb.toString());
   }
 }

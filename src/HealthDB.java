@@ -101,8 +101,9 @@ public class HealthDB {
 			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			prescriptionIDCounter = prescriptionIDCounter++;
 			String query ="insert into prescription (prescriptionID, medication, dosage, quantity, patientID,"
-							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication + "', " + dosage
-							+ ", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today + "', 'YYY-MM-DD'))";
+							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ", '" + medication + "', " + dosage
+							+ ", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today + "', 'YYYY-MM-DD'))";
+			System.out.println("createPrescription query: "+ query);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -129,7 +130,7 @@ public class HealthDB {
 			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			testIDCounter = testIDCounter++;
 			String query = "insert into labtest (testID, patientID, drHID, orderedDate) values (" + testIDCounter + ", "
-							+ patientID + ", " + drHID + ", " + "to_date('" + today + "', 'YYY-MM-DD'))";
+							+ patientID + ", " + drHID + ", " + "to_date('" + today + "', 'YYYY-MM-DD'))";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -157,7 +158,7 @@ public class HealthDB {
 		try {
 			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			String query = "insert into referral (patientID, referrerHID, referreeHID, referredDate) values ("
-							+ patientID + ", " + referrerHID + ", " + referreeHID + ", " + "to_date('" + today + "', 'YYY-MM-DD'))";
+							+ patientID + ", " + referrerHID + ", " + referreeHID + ", " + "to_date('" + today + "', 'YYYY-MM-DD'))";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -198,7 +199,7 @@ public class HealthDB {
 			invoiceIDCounter = invoiceIDCounter++;
 			String query = "insert into invoice (invoiceID, patientID, invoiceItem, creationDate, dueDate, paymentStatus, "
 							+ "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
-							+ patientID + ", " + "to_date('" + today + "', 'YYY-MM-DD'), " + dueDate + ", " + paymentStatus + ", "
+							+ patientID + ", " + "to_date('" + today + "', 'YYYY-MM-DD'), " + dueDate + ", " + paymentStatus + ", "
 							+ paymentDate + ", " + paymentMethod + ", " + amountOwing + ", " + paymentID + ", " + planID + ")";
 			// Create a statement
 			Statement stmt = con.createStatement();
@@ -607,8 +608,8 @@ public class HealthDB {
 		try{
 			String query = "select p.firstName, p.lastName, p.patientID, p.street,"+
 										 " pc.city, pc.province, pc.postalcode, pc.country, "+
-										 "p.homePhone, p.mobilePhone from patient p, postalcode"+
-										 " pc where p.postalcode = pc.postalcode and p.patientID = " + PID;
+										 "p.homePhone, p.mobilePhone from patient p left join postalcode"+
+										 " pc on p.postalcode = pc.postalcode where p.patientID = " + PID;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -632,8 +633,6 @@ public class HealthDB {
 	} catch (SQLException ex){
 		System.out.println("Failed to get patient personal info. " + ex.getMessage());
 	}
-	System.out.println("Patient summary tuple passed:");
-	printTuple(tuple);
 	return tuple;
 	}
 
