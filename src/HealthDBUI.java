@@ -184,7 +184,7 @@ public class HealthDBUI extends JFrame {
      */
     private void initialize() {
         frame = new JFrame("Integrated Healthcare Database");
-        frame.setBounds(0, 0, width, height);
+        frame.setBounds(50, 0, width, height);
         panelRoot.setLayout(new CardLayout(0, 0));
         frame.setContentPane(panelRoot);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -949,7 +949,7 @@ public class HealthDBUI extends JFrame {
 
                     Object[] fields = {"Patient: " + name, "Medication", dMedication, "Dosage", dDosage, "Quantity", dQty};
 
-                    int resp = JOptionPane.showConfirmDialog(null, fields, "Create prescription for " + name, JOptionPane.OK_CANCEL_OPTION);
+                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Create prescription for " + name, JOptionPane.OK_CANCEL_OPTION);
 
                     if(resp == 0) {
                         String medication = dMedication.getText();
@@ -963,7 +963,7 @@ public class HealthDBUI extends JFrame {
                     }
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -979,14 +979,14 @@ public class HealthDBUI extends JFrame {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
                     if(hdb.createTest(patientID, drHID)) {
-                        JOptionPane.showMessageDialog(null, "Test created for " + name, "Create test for " + name,  JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(frame, "Test created for " + name, "Create test for " + name,  JOptionPane.INFORMATION_MESSAGE);
                     }
                     else {
-                        JOptionPane.showMessageDialog(null, "Failed to create test for " + name, "Create test for " + name,  JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(frame, "Failed to create test for " + name, "Create test for " + name,  JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -1004,7 +1004,7 @@ public class HealthDBUI extends JFrame {
 
                     Object[] fields = {"Patient: " + name, "Doctor ID for Referral", dDrHID};
 
-                    int resp = JOptionPane.showConfirmDialog(null, fields, "Create referral for " + name, JOptionPane.OK_CANCEL_OPTION);
+                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Create referral for " + name, JOptionPane.OK_CANCEL_OPTION);
 
                     if(resp == 0) {
                         String drHIDInput = dDrHID.getText();
@@ -1016,7 +1016,7 @@ public class HealthDBUI extends JFrame {
                     }
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -1038,22 +1038,20 @@ public class HealthDBUI extends JFrame {
                                 "Error",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                    int response = JOptionPane.showConfirmDialog(
+                    int resp = JOptionPane.showConfirmDialog(
                             frame,
                             "Are you sure you would like to delete " + name + "?",
                             "Delete Patient " + name,
                             JOptionPane.YES_NO_OPTION);
 
-                    System.out.println(response);
-
-                    if(false)
+                    if(resp == 0)
                     {
                         hdb.deletePatient(patientID);
                     }
                 }
                 else {
                     JOptionPane.showMessageDialog(frame,
-                            "No patient selected",
+                            "No patient selected!",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
