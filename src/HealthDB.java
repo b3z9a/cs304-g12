@@ -747,28 +747,71 @@ public class HealthDB {
 	 * @return the single tuple for the plan with the given planID
 	 */
 	public ArrayList<String> findPlanNumber(String planID) {
-		ArrayList<String> tuple = new ArrayList<String>();
+        ArrayList<String> tuple = new ArrayList<String>();
+        try {
+            String query = "find the policyType, startDate, endDate, and patientID from ProvincialHealthPlan where planID = " + planID;
+            // Create a statement
+            Statement stmt = con.createStatement();
+            // Execute the query.
+            ResultSet rs = stmt.executeQuery(query);
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            while (rs.next()) {
+                tuple.add(rs.getString("planID"));
+                tuple.add(rs.getString("policyType"));
+                tuple.add(rs.getString("startDate"));
+                tuple.add(rs.getString("endDate"));
+                tuple.add(rs.getString("patientID"));
+            }
+            stmt.close();
+
+        } catch (SQLException ex) {
+            System.out.println("Failed to get plan info. " + ex.getMessage());
+        }
+        return tuple;
+    }
+
+	/**
+	 * Finds the patientID associated with a test and returns it
+	 * @param testID: ID of the test to be found
+	 * @return the tuple of the test with the ID provided if no tuple is found
+	 * 				returns the empty string.
+	 */
+	public ArrayList<String> findTest(String testID) {
+		ArrayList<String> test = new ArrayList<>();
 		try{
-			String query = "find the policyType, startDate, endDate, and patientID from ProvincialHealthPlan where planID = " + planID;
+			String query = "select cholesterol, HDLcholesterol, LDLcholesterol, triglycerides,"+
+										 "whiteBloodCellCount, redBloodCellCount, hematocrit, plateletCount,"+
+										 "NRBCPercent, NRBCAbsolute, sodium, glucose, phosphorus, labTechHID "+
+										 "from labtest where testID=" + testID;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
 
-			while(rs.next()){
-				tuple.add(rs.getString("planID"));
-				tuple.add(rs.getString("policyType"));
-				tuple.add(rs.getString("startDate"));
-				tuple.add(rs.getString("endDate"));
-				tuple.add(rs.getString("patientID"));
+			if(rs.next()){
+				test.add(rs.getString("cholesterol"));
+				test.add(rs.getString("HDLcholesterol"));
+				test.add(rs.getString("LDLcholesterol"));
+				test.add(rs.getString("triglycerides"));
+				test.add(rs.getString("whiteBloodCellCount"));
+				test.add(rs.getString("redBloodCellCount"));
+				test.add(rs.getString("hematocrit"));
+				test.add(rs.getString("plateletCount"));
+				test.add(rs.getString("NRBCPercent"));
+				test.add(rs.getString("NRBCAbsolute"));
+				test.add(rs.getString("sodium"));
+				test.add(rs.getString("glucose"));
+				test.add(rs.getString("phosphorus"));
+				test.add(rs.getString("labTechHID"));
 			}
+			// Close the statement, the result set will be closed in the process.
 			stmt.close();
-
-	} catch (SQLException ex){
-		System.out.println("Failed to get plan info. " + ex.getMessage());
-	}
-		return tuple;
+		} catch (SQLException ex){
+			System.out.println("Failed to get test summary. " + ex.getMessage());
+		}
+		return test;
 	}
 
 	/**
