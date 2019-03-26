@@ -261,7 +261,8 @@ public class HealthDB {
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
-			ResultSet rs = stmt.executeQuery(query);
+			int result = stmt.executeUpdate(query);
+			System.out.println(result);
 			stmt.close();
 			System.out.println("Patient successfully deleted");
 			return true;
@@ -329,7 +330,7 @@ public class HealthDB {
 			String query = "select pr.prescriptionID, pr.prescribedDate, m.medication,"+
 										 " pr.dosage, m.dosageMeasure, pr.quantity, pr.filledDate"+
 										 " from prescription pr, medication m where pr.medication ="+
-										 " m.medication and pr.patientID = "+ pid;
+										 " m.medication and pr.patientID = "+ pid + " order by pr.prescribedDate desc";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -383,7 +384,8 @@ public class HealthDB {
 	public ArrayList<ArrayList<String>> getTests(String pid) {
 		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
 		try{
-			String query = "select testID, orderedDate, performedDate from LabTest where patientID = " + pid;
+			String query = "select testID, orderedDate, performedDate from LabTest where patientID = " + pid
+										 + " order by orderedDate desc";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -435,7 +437,7 @@ public class HealthDB {
 			String query = "select h.firstName, h.lastName, d.specialization,"+
 										 " r.referredDate from Referral r, HealthcareProfessional h,"+
 										 " Doctor d where r.referreeHID = h.HID and d.HID = h.hid"+
-										 " and r.patientID = " + pid;
+										 " and r.patientID = " + pid + " order by referredDate desc";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -625,7 +627,8 @@ public class HealthDB {
 		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
 		try{
 			String query = "select invoiceID, invoiceItem, creationDate, dueDate, "+
-										 "paymentStatus, amountOwing from Invoice where patientID = " + pid;
+										 "paymentStatus, amountOwing from Invoice where patientID = " + pid
+										 + " order by creationDate desc";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute each query.
@@ -802,7 +805,9 @@ public class HealthDB {
         return true;
     }
 
-
+/**
+* Helper method that prints a single tuples
+*/
 	private void printTuple(ArrayList<String> tuple){
 			StringBuilder sb = new StringBuilder();
 				for (String s : tuple){

@@ -80,7 +80,7 @@ public class HealthDBTest{
       test.printTuples(hdb.getExtendedBenefits("3"));
       test.printTuples(hdb.getExtendedBenefits("4"));
       test.printTuples(hdb.getExtendedBenefits("lychee"));
-      */
+
 
       System.out.println("Test getAmountOwing");
       System.out.println("PID=1 Expected: 300, Actual: " + hdb.getAmountOwing("1"));
@@ -94,6 +94,8 @@ public class HealthDBTest{
       System.out.println("PID=2 Expected: 0, Actual: " + hdb.getOverdueAmountOwing("2"));
       System.out.println("PID=3 Expected: 150, Actual: " + hdb.getOverdueAmountOwing("3"));
       System.out.println("PID=4 Expected: 37.31, Actual: " + hdb.getOverdueAmountOwing("4"));
+      */
+
   }
 
   private void printTuples(ArrayList<ArrayList<String>> tuples){
