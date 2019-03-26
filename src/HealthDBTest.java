@@ -33,7 +33,7 @@ public class HealthDBTest{
       */
 
       // Test get methods //
-      System.out.println("Test getPatients");
+      /*System.out.println("Test getPatients");
       test.printTuples(hdb.getPatients("John"));
       test.printTuples(hdb.getPatients("Mary"));
       test.printTuples(hdb.getPatients("john"));
@@ -67,12 +67,12 @@ public class HealthDBTest{
       test.printTuples(hdb.getReferrals("peach"));
 
       System.out.println("Test getPlan");
-      test.printTuples(hdb.getReferrals("1"));
-      test.printTuples(hdb.getReferrals("2"));
-      test.printTuples(hdb.getReferrals("3"));
-      test.printTuples(hdb.getReferrals("4"));
-      test.printTuples(hdb.getReferrals("38583233"));
-      test.printTuples(hdb.getReferrals("kiwi"));
+      test.printTuple(hdb.getPlan("1"));
+      test.printTuple(hdb.getPlan("2"));
+      test.printTuple(hdb.getPlan("3"));
+      test.printTuple(hdb.getPlan("4"));
+      test.printTuple(hdb.getPlan("38583233"));
+      test.printTuple(hdb.getPlan("kiwi"));
 
       System.out.println("Test getExtendedBenefits");
       test.printTuples(hdb.getExtendedBenefits("1"));
@@ -80,7 +80,20 @@ public class HealthDBTest{
       test.printTuples(hdb.getExtendedBenefits("3"));
       test.printTuples(hdb.getExtendedBenefits("4"));
       test.printTuples(hdb.getExtendedBenefits("lychee"));
+      */
 
+      System.out.println("Test getAmountOwing");
+      System.out.println("PID=1 Expected: 300, Actual: " + hdb.getAmountOwing("1"));
+      System.out.println("PID=2 Expected: 0, Actual: " + hdb.getAmountOwing("2"));
+      System.out.println("PID=3 Expected: 350, Actual: " + hdb.getAmountOwing("3"));
+      System.out.println("PID=4 Expected: 237.31, Actual: " + hdb.getAmountOwing("4"));
+
+
+      System.out.println("Test getAmountOverdue");
+      System.out.println("PID=1 Expected: 200, Actual: " + hdb.getOverdueAmountOwing("1"));
+      System.out.println("PID=2 Expected: 0, Actual: " + hdb.getOverdueAmountOwing("2"));
+      System.out.println("PID=3 Expected: 150, Actual: " + hdb.getOverdueAmountOwing("3"));
+      System.out.println("PID=4 Expected: 37.31, Actual: " + hdb.getOverdueAmountOwing("4"));
   }
 
   private void printTuples(ArrayList<ArrayList<String>> tuples){
@@ -105,4 +118,5 @@ public class HealthDBTest{
         }
       System.out.println(sb.toString());
   }
+
 }
