@@ -973,8 +973,18 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                hdb.createTest(drHID, patientID);
+                if(patientArray.size() > 0)
+                {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
 
+                    if(hdb.createTest(drHID, patientID)) {
+                        JOptionPane.showMessageDialog(null, "Test created for " + name, "Create test for " + name,  JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Failed to create test for " + name, "Create test for " + name,  JOptionPane.ERROR_MESSAGE);
+
+                    }
+                }
             }
         });
         btnCreateTest.setText("Create New Test");
@@ -984,9 +994,25 @@ public class HealthDBUI extends JFrame {
         btnCreateReferral.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String referreeHID = "54337"; // TODO create dialog to ask for referree
+                JTextField dDrHID = new JTextField();
 
-                hdb.createReferral(patientID, drHID, referreeHID);
+                if(patientArray.size() > 0)
+                {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    Object[] fields = {"Patient: " + name, "Doctor ID for Referral", dDrHID};
+
+                    int resp = JOptionPane.showConfirmDialog(null, fields, "Create referral for " + name, JOptionPane.OK_CANCEL_OPTION);
+
+                    if(resp == 0) {
+                        String drHIDInput = dDrHID.getText();
+                        hdb.createReferral(patientID, drHID, drHIDInput);
+                        System.out.println(drHIDInput);
+                    }
+                    else {
+                        System.out.println("No values entered");
+                    }
+                }
 
             }
         });
