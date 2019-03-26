@@ -1688,7 +1688,7 @@ public class HealthDBUI extends JFrame {
             }
         });
         btnFillTest.setText("Fill Out Test");
-        panelPatientSummaryActions.add(btnFillTest);
+        panelTestActions.add(btnFillTest);
     }
 
     private void setPanelInvoice() {
