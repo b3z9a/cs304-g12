@@ -33,9 +33,9 @@ public class HealthDB {
 	 * testID
 	 * invoiceID
 	 */
-	static Integer prescriptionIDCounter = 400000;
-	static Integer testIDCounter = 800000;
-	static Integer invoiceIDCounter = 150000;
+	static Integer prescriptionIDCounter;
+	static Integer testIDCounter;
+	static Integer invoiceIDCounter;
 	private DateFormat format = new SimpleDateFormat("MMMM dd yyyy");
 
 	/**
@@ -76,6 +76,34 @@ public class HealthDB {
 		try {
 			con = DriverManager.getConnection(connectURL,username,password);
 			System.out.println("\nConnected to Oracle!");
+
+
+			// Set counters
+			String maxTest = "select max(testID) as max from labtest";
+			String maxInvoice = "select max(invoiceID) as max from invoice";
+			String maxPrescription = "select max(prescriptionID) as max from prescription";
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(maxTest);
+			if(rs.next()){
+				testIDCounter = rs.getInt("max") + 1;
+			}
+
+			rs = stmt.executeQuery(maxInvoice);
+			if(rs.next()){
+				invoiceIDCounter = rs.getInt("max") +1;
+			}
+
+			rs = stmt.executeQuery(maxPrescription);
+			if(rs.next()){
+				prescriptionIDCounter = rs.getInt("max") + 1;
+			}
+			System.out.println("invoiceIDCounter: " + invoiceIDCounter);
+			System.out.println("prescriptionIDCounter: " + prescriptionIDCounter);
+			System.out.println("testIDCounter: " + testIDCounter);
+
+			stmt.close();
+
 			return true;}
 		catch (SQLException ex){
 			System.out.println("Error connecting to Oracle: " + ex.getMessage());
@@ -100,10 +128,12 @@ public class HealthDB {
 	public boolean createPrescription(String medication, String dosage, String quantity,
 																 String patientID, String drHID) {
 		try {
+			System.out.println("PrescriptionID Counter pre: " + prescriptionIDCounter);
 			String query ="insert into prescription (prescriptionID, medication, dosage, quantity, patientID,"
 							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication + "', " + dosage
-							+ ", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today() + "', 'YYY-MM-DD'))";
-			prescriptionIDCounter = prescriptionIDCounter++;
+							+ ", " + quantity +", " + patientID +", " + drHID + "," + today() + ")";
+			prescriptionIDCounter++;
+			System.out.println("prescriptionID Counter post: " + prescriptionIDCounter);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -127,11 +157,11 @@ public class HealthDB {
 	 */
 	public boolean createTest(String patientID, String drHID) {
 		try {
-			System.out.println("TestID Counter Pre-Creation: " + testIDCounter);
+			System.out.println("TestID Counter pre: " + testIDCounter);
 			String query = "insert into labtest (testID, patientID, drHID, orderedDate) values (" + testIDCounter + ", "
 							+ patientID + ", " + drHID + ", " + today() + ")";
 			testIDCounter++;
-			System.out.println("TestID Counter Post-Creation: " + testIDCounter);
+			System.out.println("TestID Counter post: " + testIDCounter);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -158,7 +188,7 @@ public class HealthDB {
 	public boolean createReferral(String patientID, String referrerHID, String referreeHID) {
 		try {
 			String query = "insert into referral (patientID, referrerHID, referreeHID, referredDate) values ("
-							+ patientID + ", " + referrerHID + ", " + referreeHID + ", " + "to_date('" + today() + "', 'YYY-MM-DD'))";
+							+ patientID + ", " + referrerHID + ", " + referreeHID + ", " + today() + ")";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -193,12 +223,14 @@ public class HealthDB {
 	public boolean createInvoice(String patientID, String invoiceItem, String dueDate, String paymentStatus,
 														String paymentDate, String paymentMethod, String amountOwing, String paymentID, String planID) {
 		try {
+			System.out.println("invoiceID Counter pre: " + invoiceIDCounter);
 			// Oracle will insert null if you insert an empty string. Therefore do not need to check if optional values are empty strings
 			String query = "insert into invoice (invoiceID, patientID, invoiceItem, creationDate, dueDate, paymentStatus, "
 							+ "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
-							+ patientID + ", " + "to_date('" + today() + "', 'YYY-MM-DD'), " + dueDate + ", " + paymentStatus + ", "
+							+ patientID + ", " + today() + ", " + dueDate + ", " + paymentStatus + ", "
 							+ paymentDate + ", " + paymentMethod + ", " + amountOwing + ", " + paymentID + ", " + planID + ")";
-			invoiceIDCounter = invoiceIDCounter++;
+			invoiceIDCounter++;
+			System.out.println("invoiceID Counter post: " + invoiceIDCounter);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -770,10 +802,6 @@ public class HealthDB {
         return true;
     }
 
-    public Object findPlan(String text) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	private void printTuple(ArrayList<String> tuple){
 			StringBuilder sb = new StringBuilder();
