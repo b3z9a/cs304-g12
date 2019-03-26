@@ -1048,7 +1048,33 @@ public class HealthDBUI extends JFrame {
         btnfindPatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                patientArray = hdb.findPatient(txtPID.getText());
+
+                String pidTxt = txtPID.getText();
+                String nameTxt = txtName.getText();
+
+                if(pidTxt == "" && nameTxt != "")
+                {
+                    // Do a name search
+                    ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
+                    ArrayList<String> nameArr = new ArrayList<>();
+
+                    int row = 0; int col = 0;
+                    for(ArrayList<String> tuple : names) {
+                        nameArr.add(tuple.get(0) + " " + tuple.get(1) + " - " + tuple.get(2));
+                    }
+
+                    for(String s : nameArr)
+                    {
+                        System.out.println(nameArr.get(row));
+                        row++;
+                    }
+
+                    pidTxt = "12345678";
+                    patientArray = hdb.findPatient(pidTxt);
+                }
+                else if(pidTxt != "") {
+                    patientArray = hdb.findPatient(pidTxt);
+                }
 
                 if(patientArray.size() > 0) {
 
