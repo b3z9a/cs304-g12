@@ -9,7 +9,7 @@
 * Turn tables into scrollable type using JScrollPane
 * ~~Clear tables when new patient entered~~
 * ~~Change phone number array index from country to phone number~~ 
-*
+* Add view test button to Patient Summary
 *
 *
 *
