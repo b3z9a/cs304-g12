@@ -902,6 +902,21 @@ public class HealthDBUI extends JFrame {
                         String testID = testPSTableModel.getValueAt(row, 0).toString();
                         ArrayList<String> testData = hdb.findTest(testID);
 
+                        dChol.setEditable(false);
+                        dHDL.setEditable(false);
+                        dLDL.setEditable(false);
+                        dTrig.setEditable(false);
+                        dWBcc.setEditable(false);
+                        dRBcc.setEditable(false);
+                        dHema.setEditable(false);
+                        dPlate.setEditable(false);
+                        dNRPer.setEditable(false);
+                        dNRAbs.setEditable(false);
+                        dSod.setEditable(false);
+                        dGlu.setEditable(false);
+                        dPhos.setEditable(false);
+                        dLabHID.setEditable(false);
+
                         dChol.setText(testData.get(0));
                         dHDL.setText(testData.get(1));
                         dLDL.setText(testData.get(2));
