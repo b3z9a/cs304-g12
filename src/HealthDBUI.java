@@ -59,11 +59,12 @@ public class HealthDBUI extends JFrame {
 
     private JPanel panelPrescriptionFinder;
     private JPanel panelPrescriptionInfo;
-    private JPanel panelPrescriptionPrescriptions;
+    private JScrollPane panePrescriptionPrescriptions;
 
     private JPanel panelTestFinder;
     private JPanel panelTestInfo;
-    private JPanel panelTestTests;
+    private JScrollPane paneTestTests;
+    private JPanel panelTestActions;
 
     private JPanel panelInvoiceFinder;
     private JPanel panelInvoiceInfo;
@@ -156,20 +157,16 @@ public class HealthDBUI extends JFrame {
         setPanelPatientSummary();
         setPanelPatientSummaryFinder();
         setPanelPatientSummaryInfo();
-        setPanelPatientSummaryPrescriptions();
-        setPanelPatientSummaryTests();
-        setPanelPatientSummaryReferrals();
         setPanelPatientSummaryActions();
 
         setPanelPrescription();
         setPanelPrescriptionFinder();
         setPanelPrescriptionInfo();
-        setPanelPrescriptionPrescriptions();
 
         setPanelTest();
         setPanelTestFinder();
         setPanelTestInfo();
-        setPanelTestTests();
+        setPanelTestActions();
 
         setPanelInvoice();
         setPanelInvoiceFinder();
@@ -705,7 +702,7 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryInfo = new JPanel();
         panelPatientSummaryInfo.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
-        gbc.weightx = 1.0; 
+        gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0; gbc.gridy = 3;
         panelPatientSummary.add(panelPatientSummaryInfo, gbc);
@@ -935,19 +932,6 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 3; gbc.gridy = 6;
         panelPatientSummaryInfo.add(txtDocHomeNum, gbc);
     }
-    private void setPanelPatientSummaryPrescriptions() {
-
-    }
-    private void setPanelPatientSummaryTests() {
-
-
-
-    }
-    private void setPanelPatientSummaryReferrals() {
-
-
-
-    }
     private void setPanelPatientSummaryActions() {
         JButton btnCreatePrescription = new JButton();
         btnCreatePrescription.addActionListener(new ActionListener() {
@@ -1133,13 +1117,19 @@ public class HealthDBUI extends JFrame {
 
 
         /* Row 5 */
-        panelPrescriptionPrescriptions = new JPanel();
-        panelPrescriptionPrescriptions.setLayout(new BorderLayout());
+        String cols[] = {"ID", "Date", "Medication", "Dosage", "Dosage Unit", "Quantity", "Filled Date", "Filled?"};
+        String data[][] = {};
+        prescPPTableModel = new DefaultTableModel(data, cols);
+        prescPPTable = new JTable(prescPPTableModel);
+
+        panePrescriptionPrescriptions = new JScrollPane(prescPPTable);
+        panePrescriptionPrescriptions.setLayout(new ScrollPaneLayout());
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 5;
-        panelPrescription.add(panelPrescriptionPrescriptions, gbc);
+        panelPrescription.add(panePrescriptionPrescriptions, gbc);
     }
     private void setPanelPrescriptionFinder() {
         JTextField txtPID = new JTextField(10);
@@ -1380,14 +1370,6 @@ public class HealthDBUI extends JFrame {
         panelPrescriptionInfo.add(txtPharmHomeNum, gbc);
 
     }
-    private void setPanelPrescriptionPrescriptions() {
-        String cols[] = {"ID", "Date", "Medication", "Dosage", "Dosage Unit", "Quantity", "Filled Date", "Filled?"};
-        String data[][] = {};
-        prescPPTableModel = new DefaultTableModel(data, cols);
-        prescPPTable = new JTable(prescPPTableModel);
-        panelPrescriptionPrescriptions.add(prescPPTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPrescriptionPrescriptions.add(prescPPTable, BorderLayout.CENTER);
-    }
 
     private void setPanelTest() {
         JLabel lbl = new JLabel("Test Information");
@@ -1434,13 +1416,26 @@ public class HealthDBUI extends JFrame {
 
 
         /* Row 5 */
-        panelTestTests = new JPanel();
-        panelTestTests.setLayout(new BorderLayout());
+        String cols[] = {"Test ID", "Ordered Date", "Performed Date", "Completed?"};
+        String data[][] = {};
+        testTPTableModel = new DefaultTableModel(data, cols);
+        testTPTable = new JTable(testTPTableModel);
+
+        paneTestTests = new JScrollPane(testTPTable);
+        paneTestTests.setLayout(new ScrollPaneLayout());
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 5;
-        panelTest.add(panelTestTests, gbc);
+        panelTest.add(paneTestTests, gbc);
+
+        /* Row 6 */
+        panelTestActions = new JPanel();
+        panelTestActions.setLayout(new FlowLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 6;
+        panelTest.add(panelTestInfo, gbc);
     }
     private void setPanelTestFinder() {
         JTextField txtPID = new JTextField(10);
@@ -1681,13 +1676,19 @@ public class HealthDBUI extends JFrame {
         panelTestInfo.add(txtLabHomeNum, gbc);
 
     }
-    private void setPanelTestTests() {
-        String cols[] = {"Test ID", "Ordered Date", "Performed Date", "Completed?"};
-        String data[][] = {};
-        testTPTableModel = new DefaultTableModel(data, cols);
-        testTPTable = new JTable(testTPTableModel);
-        panelTestTests.add(testTPTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelTestTests.add(testTPTable, BorderLayout.CENTER);
+    private void setPanelTestActions() {
+        JButton btnFillTest= new JButton();
+        btnFillTest.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = testTPTable.getSelectedRow();
+                int col = testTPTable.getSelectedColumn();
+
+                System.out.println(row + " " + col);
+            }
+        });
+        btnFillTest.setText("Fill Out Test");
+        panelPatientSummaryActions.add(btnFillTest);
     }
 
     private void setPanelInvoice() {
