@@ -1052,7 +1052,9 @@ public class HealthDBUI extends JFrame {
                 String pidTxt = txtPID.getText();
                 String nameTxt = txtName.getText();
 
-                if(pidTxt == "" && nameTxt != "")
+                System.out.println(pidTxt + " " + nameTxt);
+
+                if(pidTxt.equals("") && !nameTxt.isEmpty())
                 {
                     // Do a name search
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
@@ -1072,7 +1074,7 @@ public class HealthDBUI extends JFrame {
                     pidTxt = "12345678";
                     patientArray = hdb.findPatient(pidTxt);
                 }
-                else if(pidTxt != "") {
+                else if(!pidTxt.isEmpty()) {
                     patientArray = hdb.findPatient(pidTxt);
                 }
 
