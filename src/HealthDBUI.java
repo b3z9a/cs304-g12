@@ -686,9 +686,10 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryFinder = new JPanel();
         panelPatientSummaryFinder.setLayout(new FlowLayout());
         gbc = new GridBagConstraints();
-        gbc.weightx = 1.0; gbc.weighty = 1.0;
-	gbc.gridx = 0; gbc.gridy = 1;
-        panelPatientSummary.add(panelPatientSummaryFinder, gbc);
+        gbc.weightx = 1.0;
+	    gbc.gridx = 0; gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+	    panelPatientSummary.add(panelPatientSummaryFinder, gbc);
 
         /* Row 2 */
         lbl = new JLabel("Personal Information", SwingConstants.LEADING);
@@ -704,6 +705,8 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryInfo = new JPanel();
         panelPatientSummaryInfo.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
+        gbc.weightx = 1.0; 
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0; gbc.gridy = 3;
         panelPatientSummary.add(panelPatientSummaryInfo, gbc);
 
