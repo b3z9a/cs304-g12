@@ -745,9 +745,27 @@ public class HealthDB {
      * @return
      */
     public ArrayList<String> findInvoice(String invoiceID) {
-        /* TODO Return invoice */
-        return new ArrayList<String>();
-    }
+    	ArrayList<String> tuple = new ArrayList<String>();
+		try{
+			String query = "find the patientID and planID from Invoice where invoiceID = " + invoiceID;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				tuple.add(rs.getString("patientID"));
+				tuple.add(rs.getString("planID"));
+			}
+			stmt.close();
+
+	} catch (SQLException ex){
+		System.out.println("Failed to get invoice info. " + ex.getMessage());
+	}
+	return tuple;
+	}
+    
 
     /**
      * updateX methods: Updates an existing X tuple with given data
@@ -821,5 +839,37 @@ public class HealthDB {
 		DateFormat sqlDate = new SimpleDateFormat("yyyy-MM-dd");
 		java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 		return "TO_DATE('"+ sqlDate.format(today) +"','YYYY-MM-DD')";
+	}
+	
+	/**
+	 * findPlanNum
+	 * Finds a plan number in the database, stores tuple information in a data structure
+	 * tuple[] = {0 planID, 1 policyType, 2 startDate, 3 endDate, 4 patientID}
+	 * @param plandID
+	 * @return the single tuple for the plan with the given planID
+	 */
+	public ArrayList<String> findPlanNumber(String planID) {
+		ArrayList<String> tuple = new ArrayList<String>();
+		try{
+			String query = "find the policyType, startDate, endDate, and patientID from ProvincialHealthPlan where planID = " + planID;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				tuple.add(rs.getString("planID"));
+				tuple.add(rs.getString("policyType"));
+				tuple.add(rs.getString("startDate"));
+				tuple.add(rs.getString("endDate"));
+				tuple.add(rs.getString("patientID"));
+			}
+			stmt.close();
+
+	} catch (SQLException ex){
+		System.out.println("Failed to get plan info. " + ex.getMessage());
+	}
+	return tuple;
 	}
 }
