@@ -82,6 +82,9 @@ public class HealthDBUI extends JFrame {
     private JTextField txtPlanSumAddress;
     private JTextField txtPlanSumMobilePhone;
     private JTextField txtPlanSumHomePhone;
+    
+    private JTextField txtTotalUnpaid;
+    private JTextField txtTotalOverDue;
 
     private JTextField txtPlanID;
     private JTextField txtStartDate;
@@ -241,6 +244,9 @@ public class HealthDBUI extends JFrame {
         txtPlanSumAddress.setText("");
         txtPlanSumMobilePhone.setText("");
         txtPlanSumHomePhone.setText("");
+        
+        txtTotalUnpaid.setText("");
+        txtTotalOverDue.setText("");
         
         extendedBenefitsTableModel.setRowCount(0);
         invoiceHistoryGridTableModel.setRowCount(0);
@@ -2246,7 +2252,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 0;
         panelInvoiceHistory.add(lbl, gbc);
 
-        JTextField txtTotalUnpaid = new JTextField(10);
+        txtTotalUnpaid = new JTextField(10);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
         gbc.gridx = 1; gbc.gridy = 0;
@@ -2259,7 +2265,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 2; gbc.gridy = 0;
         panelInvoiceHistory.add(lbl, gbc);
 
-        JTextField txtTotalOverDue = new JTextField(12);
+        txtTotalOverDue = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
         gbc.gridx = 3; gbc.gridy = 0;
@@ -2366,10 +2372,8 @@ public class HealthDBUI extends JFrame {
                     
                     txtName.setText("");
                     txtPID.setText("");
-                    
-                    
-                    // txtTotalUnpaid.setText(hdb.getAmountOwing(patientID));
-                    // txtTotalOverdue.setText(hdb.getOverdueAmountOwing(patientID));
+                    txtTotalUnpaid.setText(Double.toString((hdb.getAmountOwing(patientID))));
+                    txtTotalOverDue.setText(Double.toString(hdb.getOverdueAmountOwing(patientID)));
                     
                     // TODO: get "Total Unpaid" and "Total Overdue"
 
@@ -2444,9 +2448,9 @@ public class HealthDBUI extends JFrame {
                     }
                     
                     txtNum.setText("");
-                    // txtTotalUnpaid.setText(hdb.getAmountOwing(patientID));
-                    // txtTotalOverdue.setText(hdb.getOverdueAmountOwing(patientID));
-
+                    txtTotalUnpaid.setText(Double.toString((hdb.getAmountOwing(patientID))));
+                    txtTotalOverDue.setText(Double.toString(hdb.getOverdueAmountOwing(patientID)));
+                    
                 } else {
                     txtNum.setText("");
 
@@ -2518,9 +2522,9 @@ public class HealthDBUI extends JFrame {
                     
                     txtInvoiceNumber.setText("");
 
-                    // txtTotalUnpaid.setText(hdb.getAmountOwing(patientID));
-                    // txtTotalOverdue.setText(hdb.getOverdueAmountOwing(patientID));
-
+                    txtTotalUnpaid.setText(Double.toString((hdb.getAmountOwing(patientID))));
+                    txtTotalOverDue.setText(Double.toString(hdb.getOverdueAmountOwing(patientID)));
+                    
                 } else {
                 	txtInvoiceNumber.setText("");
 
