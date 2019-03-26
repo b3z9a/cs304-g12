@@ -256,7 +256,6 @@ insert into Doctor values (53211, 932111, 'Family Doctor');
 insert into Doctor values (58377, 926433, 'Family Doctor');
 insert into Doctor values (52942, 985744, 'Family Doctor');
 insert into Doctor values (54242, 928355, 'Family Doctor');
-insert into Doctor values (54976, 924274, 'Family Doctor');
 insert into Doctor values (58739, 939583, 'Anesthesiologist');
 insert into Doctor values (58572, 919384, 'Dermatologist');
 insert into Doctor values (56483, 995824, 'Gastroenterologist');
