@@ -977,7 +977,7 @@ public class HealthDBUI extends JFrame {
                 {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
-                    if(hdb.createTest(drHID, patientID)) {
+                    if(hdb.createTest(patientID, drHID)) {
                         JOptionPane.showMessageDialog(null, "Test created for " + name, "Create test for " + name,  JOptionPane.INFORMATION_MESSAGE);
                     }
                     else {
