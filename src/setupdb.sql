@@ -1,5 +1,6 @@
 /* Drops all tables */
 DROP TABLE PostalCode CASCADE constraints;
+DROP TABLE Invoice CASCADE constraints;
 DROP TABLE HealthcareProfessional CASCADE constraints;
 DROP TABLE LabTechnician CASCADE constraints;
 DROP TABLE Pharmacist CASCADE constraints;
@@ -10,7 +11,6 @@ DROP TABLE Prescription CASCADE constraints;
 DROP TABLE LabTest CASCADE constraints;
 DROP TABLE ProvincialHealthPlan CASCADE constraints;
 DROP TABLE ExtendedBenefitsPlan CASCADE constraints;
-DROP TABLE Invoice CASCADE constraints;
 DROP TABLE Patient CASCADE constraints;
 
 /* Create the tables.*/
@@ -75,7 +75,7 @@ CREATE TABLE Referral (
     referreeHID			integer,
     referredDate		date not null,
     PRIMARY KEY (patientID, referrerHID, referreeHID),
-    FOREIGN KEY (patientID) REFERENCES Patient,
+    FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE,
     FOREIGN KEY (referrerHID) REFERENCES Doctor,
     FOREIGN KEY (referreeHID) REFERENCES Doctor
 );
@@ -89,7 +89,7 @@ CREATE TABLE Medication (
 CREATE TABLE Prescription (
     prescriptionID 	integer,
     medication 		varchar2(40),
-    dosage 			decimal not null,
+    dosage 			decimal(10,2) not null,
     quantity 		integer not null,
     patientID		integer not null,
     drHID			integer not null,
@@ -97,36 +97,36 @@ CREATE TABLE Prescription (
     prescribedDate	date not null,
     filledDate		date,
     PRIMARY KEY (prescriptionID),
-    FOREIGN KEY (medication) REFERENCES Medication,
-    FOREIGN KEY (patientID) REFERENCES Patient,
-    FOREIGN KEY (drHID) REFERENCES Doctor,
-    FOREIGN KEY (pharmHID) REFERENCES Pharmacist
+    FOREIGN KEY (medication) REFERENCES Medication ON DELETE CASCADE,
+    FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE,
+    FOREIGN KEY (drHID) REFERENCES Doctor ON DELETE SET NULL,
+    FOREIGN KEY (pharmHID) REFERENCES Pharmacist ON DELETE SET NULL
 );
 
 CREATE TABLE LabTest (
     testID 			integer,
-    cholesterol 	decimal,
-    HDLcholesterol 	decimal,
-    LDLcholesterol 	decimal,
-    triglycerides 	decimal,
-    whiteBloodCellCount 	decimal,
-    redBloodCellCount 		decimal,
-    hematocrit 		decimal,
-    plateletCount 	decimal,
-    NRBCpercent 	decimal,
-    NRBCabsolute 	decimal,
-    sodium 			decimal,
-    phosphorus 		decimal,
-    glucose 		decimal,
+    cholesterol 	decimal(10,3),
+    HDLcholesterol 	decimal(10,3),
+    LDLcholesterol 	decimal(10,3),
+    triglycerides 	decimal(10,3),
+    whiteBloodCellCount 	decimal(10,3),
+    redBloodCellCount 		decimal(10,3),
+    hematocrit 		decimal(10,3),
+    plateletCount 	decimal(10,3),
+    NRBCpercent 	decimal(10,3),
+    NRBCabsolute 	decimal(10,3),
+    sodium 			decimal(10,3),
+    phosphorus 		decimal(10,3),
+    glucose 		decimal(10,3),
     patientID		integer not null,
     drHID			integer not null,
     labTechHID		integer,
     orderedDate		date not null,
     performedDate	date,
     PRIMARY KEY(testID),
-    FOREIGN KEY (patientID) REFERENCES Patient,
-    FOREIGN KEY (drHID) REFERENCES Doctor,
-    FOREIGN KEY (labTechHID) REFERENCES LabTechnician
+    FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE,
+    FOREIGN KEY (drHID) REFERENCES Doctor ON DELETE SET NULL,
+    FOREIGN KEY (labTechHID) REFERENCES LabTechnician ON DELETE SET NULL
 );
 
 CREATE TABLE ProvincialHealthPlan (
@@ -136,7 +136,7 @@ CREATE TABLE ProvincialHealthPlan (
     endDate		date not null,
     patientID	integer not null,
     PRIMARY KEY(planID),
-    FOREIGN KEY (patientID) REFERENCES Patient
+    FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE
 );
 
 CREATE TABLE ExtendedBenefitsPlan (
@@ -150,20 +150,20 @@ CREATE TABLE ExtendedBenefitsPlan (
     massageTherapy			varchar(1) CHECK (massageTherapy IN ('Y', 'N')),
     acupuncture 	varchar(1) CHECK (acupuncture IN ('Y', 'N')),
     medication 		varchar(1) CHECK (medication IN ('Y', 'N')),
-    physiotherapyAnnualLimit 	decimal,
-    physiotherapyYTD	 	decimal,
-    nonSurgicalPodiatryAnnualLimit 	decimal,
-    nonSurgicalPodiatryYTD	 	decimal,
-    chiropracticAnnualLimit		decimal,
-    chiropracticYTD			decimal,
-    massageTherapyAnnualLimit	decimal,
-    massageTherapyYTD		decimal,
-    acupunctureAnnualLimit 	decimal,
-    acupunctureYTD			decimal,
-    medicationAnnualLimit 	decimal,
-    medicationYTD			decimal,
+    physiotherapyAnnualLimit 	decimal(15,2),
+    physiotherapyYTD	 	decimal(15,2),
+    nonSurgicalPodiatryAnnualLimit 	decimal(15,2),
+    nonSurgicalPodiatryYTD	 	decimal(15,2),
+    chiropracticAnnualLimit		decimal(15,2),
+    chiropracticYTD			decimal(15,2),
+    massageTherapyAnnualLimit	decimal(15,2),
+    massageTherapyYTD		decimal(15,2),
+    acupunctureAnnualLimit 	decimal(15,2),
+    acupunctureYTD			decimal(15,2),
+    medicationAnnualLimit 	decimal(15,2),
+    medicationYTD			decimal(15,2),
     PRIMARY KEY(EBPID),
-    FOREIGN KEY (planID) REFERENCES ProvincialHealthPlan
+    FOREIGN KEY (planID) REFERENCES ProvincialHealthPlan ON DELETE CASCADE
 );
 
 CREATE TABLE Invoice (
@@ -175,11 +175,11 @@ CREATE TABLE Invoice (
     paymentStatus   VARCHAR(10) CHECK (paymentStatus IN ('Paid', 'Unpaid')) not null,
     paymentDate 		date,
     paymentMethod       VARCHAR(20) CHECK (paymentMethod IN ('Credit\Debit', 'Cash', 'Cheque')),
-    amountOwing 		decimal not null,
+    amountOwing 		decimal(15,2) not null,
     paymentID			integer,
     planID				integer not null,
     PRIMARY KEY(invoiceID),
-    FOREIGN KEY (patientID) REFERENCES Patient,
+    FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE,
     FOREIGN KEY (planID) REFERENCES ProvincialHealthPlan
 );
 

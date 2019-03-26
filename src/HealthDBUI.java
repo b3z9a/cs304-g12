@@ -2366,6 +2366,8 @@ public class HealthDBUI extends JFrame {
                     
                     txtName.setText("");
                     txtPID.setText("");
+                    
+                    
                     // txtTotalUnpaid.setText(hdb.getAmountOwing(patientID));
                     // txtTotalOverdue.setText(hdb.getOverdueAmountOwing(patientID));
                     
