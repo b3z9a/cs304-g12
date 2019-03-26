@@ -240,6 +240,41 @@ public class HealthDBUI extends JFrame {
         invoiceHistoryGridTableModel.setRowCount(0);
     }
 
+    private String getPIDfromName(ArrayList<ArrayList<String>> names, String nameTxt) {
+        // Do a name search
+        Object[] nameArr = new Object[names.size()];
+
+        int row = 0;
+        int index = 0;
+
+        for(ArrayList<String> tuple : names) {
+            nameArr[row] = tuple.get(0) + " " + tuple.get(1) + " - " + tuple.get(2);
+            row++;
+        }
+
+        // Generate dialog
+        String s = (String)JOptionPane.showInputDialog(frame,
+                "Choose a patient with " + nameTxt + " in their name:",
+                "Choose a Patient",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                nameArr,
+                null);
+
+        // Find the index
+        row = 0;
+        for(Object obj : nameArr)
+        {
+            if(s.equals(nameArr[row]))
+            {
+                index = row;
+            }
+            row++;
+        }
+
+        return names.get(index).get(2);
+    }
+
     private void viewTestData(JTable table, DefaultTableModel tableModel) {
         JTextField dChol = new JTextField();
         JTextField dHDL = new JTextField();
@@ -1031,6 +1066,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 13;
         panelPatientSummary.add(panelPatientSummaryRefBtn, gbc);
     }
+
     private void setPanelPatientSummaryFinder() {
         JLabel lblPID = new JLabel("PID:", SwingConstants.LEADING);
         panelPatientSummaryFinder.add(lblPID, gbc);
@@ -1056,39 +1092,9 @@ public class HealthDBUI extends JFrame {
 
                 if(pidTxt.equals("") && !nameTxt.isEmpty())
                 {
-                    // Do a name search
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
-                    Object[] nameArr = new Object[names.size()];
+                    pidTxt = getPIDfromName(names, nameTxt);
 
-                    int row = 0;
-                    int index = 0;
-
-                    for(ArrayList<String> tuple : names) {
-                        nameArr[row] = tuple.get(0) + " " + tuple.get(1) + " - " + tuple.get(2);
-                        row++;
-                    }
-
-                    // Generate dialog
-                    String s = (String)JOptionPane.showInputDialog(frame,
-                            "Choose a patient with " + nameTxt + " in their name:",
-                            "Choose a Patient",
-                            JOptionPane.PLAIN_MESSAGE,
-                            null,
-                            nameArr,
-                            null);
-
-                    // Find the index
-                    row = 0;
-                    for(Object obj : nameArr)
-                    {
-                        if(s.equals(nameArr[row]))
-                        {
-                            index = row;
-                        }
-                        row++;
-                    }
-
-                    pidTxt = names.get(index).get(2);
                     patientArray = hdb.findPatient(pidTxt);
                 }
                 else if(!pidTxt.isEmpty()) {
