@@ -732,24 +732,51 @@ public class HealthDB {
 	}
 
 	/**
-	 * Finds a test and returns it
+	 * Finds the patientID associated with a test and returns it
 	 * @param testID: ID of the test to be found
-	 * @return the tuple of the test with the ID provided
+	 * @return the tuple of the test with the ID provided if no tuple is found
+	 * 				returns the empty string.
 	 */
 	public String findTest(String testID) {
+		try{
+			String query = "select patientID from LabTest where testID = " + testID;
+			Statement stmt = con.createStatement();
+			// Execute each query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
 
-		/* TODO Return test */
-		return new String();
+			if(rs.next()){
+				return rs.getString("patientID");
+			}
+
+		} catch (SQLException ex){
+				System.out.println("Error finding test. " + ex.getMessage());
+		}
+		return "";
 	}
 
 	/**
-     * Finds an invoice and returns it
+     * Finds the patientID associated with an invoice
      * @param invoiceID
-     * @return
+     * @return the patientID associated with the invoice. If no tuple is found
+		 * 				returns the empty string.
      */
-    public ArrayList<String> findInvoice(String invoiceID) {
-        /* TODO Return invoice */
-        return new ArrayList<String>();
+    public String findInvoice(String invoiceID) {
+			try{
+				String query = "select patientID from Invoice where invoiceID = " + invoiceID;
+				Statement stmt = con.createStatement();
+				// Execute each query.
+				ResultSet rs = stmt.executeQuery(query);
+				ResultSetMetaData rsmd = rs.getMetaData();
+
+				if(rs.next()){
+					return rs.getString("patientID");
+				}
+
+			} catch (SQLException ex){
+					System.out.println("Error finding invoice. " + ex.getMessage());
+			}
+			return "";
     }
 
     /**
@@ -757,16 +784,25 @@ public class HealthDB {
      */
 
 	/**
-	* Updates a prescription in the database.
-	* @param hid: HID of the doctor making the prescription
-	* @param pid: PID of the patient the prescription is for
-	* @param medication: name of medication being prescribed
-	* @param dosage: numeric quantity for the doage without units
-	* @param quantity: number of pills/units of the medication prescribed
+	* Allows pharmacists to mark a prescription as filled.
+	* @param hid: HID of the pharmacist filling the prescription
+	* @param prescriptionID: the ID of the prescription being filled
 	*/
-	public boolean updatePrescription(String hid, String pid, String medication, String dosage, String quantity){
-		/* TODO Updates an existing prescription. */
-		return true;
+	public boolean updatePrescription(String hid, String prescriptionID){
+		boolean success = false;
+		try{
+			String prescription = "update prescription set pharmHID=" + hid +
+														", filledDate=" + today() + ", where prescriptionID="
+														+ prescriptionID;
+
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(prescription);
+			success = true;
+
+		} catch (SQLException ex){
+				System.out.println("Error updating prescription. " + ex.getMessage());
+		}
+		return success;
 	}
 
 	/**
@@ -780,12 +816,26 @@ public class HealthDB {
 													 String LDLcholesterol, String trigycerides, String whiteBloodCellCount,
 													 String redBloodCellCount, String hematocrit, String plateletCount,
 													 String NRBCPercent, String NRBCAbsolute, String sodium, String glucose,
-													 String phosphorus, String labTechID) {
+													 String phosphorus, String labTechHID) {
+	 boolean success = false;
+	 try{
+	 	String test = "update labtest set cholesterol='" + cholesterol + ", HDLcholesterol="
+	 								+ HDLcholesterol + ", LDLcholesterol=" + LDLcholesterol + ", trigycerides="
+									+ trigycerides + ", whiteBloodCellCount=" + whiteBloodCellCount +
+									", redBloodCellCount=" + redBloodCellCount + ", hematocrit=" + hematocrit +
+									", plateletCount=" + plateletCount + ", NRBCPercent=" + NRBCPercent +
+									", NRBCAbsolute=" + NRBCAbsolute + ", sodium=" + sodium + ", glucose="
+									+ glucose + ", phosphorus=" + phosphorus + ", labTechHID=" + labTechHID +
+									" where testID=" + testID;
 
-			/* TODO submit test data */
-			// old createTest query to repurpose for updateTest
-			//String query = "insert into labtest values (" + testID + ", " +  cholesterol +", " + HDLcholesterol +", " + LDLcholesterol +", " + triglycerides +", " + whiteBloodCellCount +", " + redBloodCellCount +", " + hematocrit +", " + plateletCount +", " + NRBCpercent +", " + NRBCabsolute +", " + sodium +", " + phosphorus +", " + glucose +", " + patientID +", " + drHID +", " + labTechHID +", " + orderedDate +", " + performedDate +")";
-			return true;
+	 	Statement stmt = con.createStatement();
+	 	stmt.executeUpdate(test);
+	 	success = true;
+
+	 } catch (SQLException ex){
+	 		System.out.println("Error updating test. " + ex.getMessage());
+	 }
+	 return success;
 	}
 
 		/**
@@ -800,11 +850,24 @@ public class HealthDB {
     public boolean updateInvoice(String invoiceID, String dueDate, String invoiceItem,
                                 String paymentStatus, String paymentDate, String paymentMethod,
 																String amountOwing) {
+			boolean success = false;
+			try{
+				String invoice = "update invoice set dueDate= to_date('" + dueDate +
+															"', 'yyyy-MM-dd'), invoiceItem=" + invoiceItem +
+															", paymentStatus=" + paymentStatus + ", paymentMethod="
+															+ "amountOwing=" + amountOwing + ", paymentDate=to_date('" +
+															paymentDate + ", 'yyyy-MM-dd') where invoiceID=" + invoiceID;
 
-        /* TODO Update invoice. */
-        return true;
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate(invoice);
+				success = true;
+
+			} catch (SQLException ex){
+					System.out.println("Error updating invoice. " + ex.getMessage());
+			}
+			return success;
     }
-
+ 
 /**
 * Helper method that prints a single tuples
 */
