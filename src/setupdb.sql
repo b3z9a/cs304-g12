@@ -317,7 +317,7 @@ insert into Patient values (29562774, 'David', 'Chen', '1114 Lameys Mill Rd.', '
 insert into Patient values (31857372, 'Winny', 'Zhu', '4491 W 4th Ave', 'V6S0J9', '778-291-3753', '778-981-3722');
 insert into Patient values (31274656, 'Antar', 'Atwal', 'Apt. 117, 8833 Hazelbridge Way', 'V6Y2V7', '604-233-4713', '604-233-8172');
 insert into Patient values (32485737, 'Alex', 'Grossman', '271 Pike St.', '98226', '206-775-9312', '206-744-2713');
-insert into Patient values (31572742, 'Mary', 'Cornwall', '4532 Lakeview Way', 'T5A0A1', '', '780-555-4031');
+insert into Patient values (31572742, 'Mary', 'Berjohn', '4532 Lakeview Way', 'T5A0A1', '', '780-555-4031');
 insert into Patient values (38577324, 'Malek', 'Banu Moosa', '5772 177b St', 'V3V6A8', '855-294-2844', '250-865-3853');
 insert into Patient values (34873524, 'Emma', 'Johnson', '14880 108 Ave', 'V3V6A8', '673-495-3445', '250-865-3853');
 insert into Patient values (38475018, 'Janice', 'Roberts', '', 'V3R7C1', '673-574-3421', '250-865-3853');
@@ -413,10 +413,10 @@ insert into ExtendedBenefitsPlan values (273284, 125724, TO_DATE('2019-01-01', '
 insert into ExtendedBenefitsPlan values (294742, 127828, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2021-01-01', 'YYYY-MM-DD'), 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1000.0, 0.0, 1000.0, 225.50, 1000.0, 0.0, 1000.0, 125.25, 1000.0, 100.0, 2500.00, 225.00);
 insert into ExtendedBenefitsPlan values (274633, 127828, TO_DATE('2018-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'Y', 'N', 'N', 'N', 'N', 'Y', 1000.0, 125.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1500.00, 500.00);
 insert into ExtendedBenefitsPlan values (258291, 121738, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'N', 'N', 'N', 'N', 'N', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2500.00, 0.00);
-  insert into ExtendedBenefitsPlan values (283735, 128471, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'Y', 'N', 'N', 'N', 'N', 'Y', 1000.0, 200.0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2000.00, 103.00);
-  insert into ExtendedBenefitsPlan values (238580, 124324, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'N', 'N', 'N', 'N', 'Y', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 500.0, 0.0, 1500.00, 369.00);
-  insert into ExtendedBenefitsPlan values (285739, 124324, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'Y', 'Y', 'Y', 'N', 'N', 'N', 500.0, 0.0, 500.0, 0.0, 500.0, 150.21, NULL, NULL, NULL, NULL, NULL, NULL);
-  insert into ExtendedBenefitsPlan values (205930, 128472, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'N', 'N', 'Y', 'N', 'N', 'Y', NULL, NULL, NULL, NULL, 1000.00, 1000.00, NULL, NULL, NULL, NULL, 1250.00, 0.0);
+insert into ExtendedBenefitsPlan values (283735, 128471, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'Y', 'N', 'N', 'N', 'N', 'Y', 1000.0, 200.0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2000.00, 103.00);
+insert into ExtendedBenefitsPlan values (238580, 124324, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'N', 'N', 'N', 'N', 'Y', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 500.0, 0.0, 1500.00, 369.00);
+insert into ExtendedBenefitsPlan values (285739, 124324, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'Y', 'Y', 'Y', 'N', 'N', 'N', 500.0, 0.0, 500.0, 0.0, 500.0, 150.21, NULL, NULL, NULL, NULL, NULL, NULL);
+insert into ExtendedBenefitsPlan values (205930, 128472, TO_DATE('2019-01-01', 'YYYY-MM-DD'), TO_DATE('2020-01-01', 'YYYY-MM-DD'), 'N', 'N', 'Y', 'N', 'N', 'Y', NULL, NULL, NULL, NULL, 1000.00, 1000.00, NULL, NULL, NULL, NULL, 1250.00, 0.0);
 
 insert into Invoice values (119274, 32118954, 'Annual exam', TO_DATE('2018-11-02','YYYY-MM-DD'), TO_DATE('2018-12-02','YYYY-MM-DD'), 'Paid', TO_DATE('2018-11-27','YYYY-MM-DD'), 'Credit\Debit', 0.0, 628462, 128473);
 insert into Invoice values (183746, 12345678, 'Annual exam', TO_DATE('2018-11-02','YYYY-MM-DD'), TO_DATE('2018-12-02','YYYY-MM-DD'), 'Paid', TO_DATE('2018-11-27','YYYY-MM-DD'), 'Credit\Debit', 0.0, 628462, 128473);
