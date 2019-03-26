@@ -245,6 +245,11 @@ public class HealthDBUI extends JFrame {
         txtPlanSumMobilePhone.setText("");
         txtPlanSumHomePhone.setText("");
         
+        txtPlanID.setText("");
+        txtPolicyType.setText("");
+        txtStartDate.setText("");
+        txtEndDate.setText("");
+        
         txtTotalUnpaid.setText("");
         txtTotalOverDue.setText("");
         
@@ -2182,7 +2187,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 1; gbc.gridy = 3;
         panelProvincialPlan.add(txtPlanID, gbc);
 
-        lbl = new JLabel("Policy Type:");
+        lbl = new JLabel("Start Date:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets= new Insets(0,5,0,0);
@@ -2197,7 +2202,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 3; gbc.gridy = 3;
         panelProvincialPlan.add(txtPolicyType, gbc);
 
-        lbl = new JLabel("Start Date:");
+        lbl = new JLabel("Policy Type:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets= new Insets(0,5,0,0);
@@ -2229,7 +2234,10 @@ public class HealthDBUI extends JFrame {
 
     }
     private void setPanelExtendedBenefits() {
-    	String cols[] = {"Benefit", "Annual Maximum", "YTD"};
+    	String cols[] = {"Chiropractic", "Chiropractic Annual Limit", "Chiropractic YTD","Physiotherapy", "Physiotherapy Annual Limit", "Physiotherapy YTD",
+    			"Non-Surgical Podiatry", "Non-Surgical Podiatry Annual Limit", "Non-Surgical Podiatry YTD", "Acupuncture", "Acupuncture Annual Limit", "Acupuncture YTD", 
+    			"Medication", "Medication Annual Limit", "Medication YTD"};
+    	
         String data[][] = {};
         extendedBenefitsTableModel = new DefaultTableModel (data, cols);
         extendedBenefitsTable = new JTable(extendedBenefitsTableModel);
@@ -2270,6 +2278,30 @@ public class HealthDBUI extends JFrame {
         gbc.insets = new Insets(0, 5, 0, 0);
         gbc.gridx = 3; gbc.gridy = 0;
         panelInvoiceHistory.add(txtTotalOverDue, gbc);
+        
+     // ----------------------------------------------------------------------------------
+        // TODO: FIX UPDATE BUTTON FUNCTIONALITY
+       
+        JButton btnUpdateInvoiceTotals = new JButton();
+        btnUpdateInvoiceTotals.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	System.out.println(patientID);
+            	
+            	txtTotalUnpaid.setText(Double.toString((hdb.getAmountOwing(patientID))));
+                txtTotalOverDue.setText(Double.toString(hdb.getOverdueAmountOwing(patientID)));
+            }
+        });
+        btnUpdateInvoiceTotals.setText("Update Totals");
+        gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 0);
+        gbc.gridwidth = 2;
+        gbc.gridx = 4; gbc.gridy = 0;
+        panelInvoiceHistory.add(btnUpdateInvoiceTotals, gbc);
+        
+        // ----------------------------------------------------------------------------------
+        
     }
     private void setPanelPlanSummaryFinder() {
         JLabel lbl = new JLabel("PID:", SwingConstants.LEADING);
@@ -2278,7 +2310,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 0;
         panelPlanSummaryFinder.add(lbl, gbc);
 
-        JTextField txtPID = new JTextField(10);
+        JTextField txtPID = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
         gbc.gridx = 1; gbc.gridy = 0;
@@ -2316,7 +2348,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 2;
         panelPlanSummaryFinder.add(lbl, gbc);
 
-        JTextField txtInvoiceNumber = new JTextField(10);
+        JTextField txtInvoiceNumber = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
         gbc.gridx = 1; gbc.gridy = 2;
@@ -2335,7 +2367,7 @@ public class HealthDBUI extends JFrame {
                 	extendedBenefitsTableModel.setRowCount(0);
                 	invoiceHistoryGridTableModel.setRowCount(0);
                 	
-                	String patientID = patientArray.get(2);
+                	patientID = patientArray.get(2);
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
                     String mobile = patientArray.get(9);
@@ -2409,7 +2441,7 @@ public class HealthDBUI extends JFrame {
                 	extendedBenefitsTableModel.setRowCount(0);
                 	invoiceHistoryGridTableModel.setRowCount(0);
                 	
-                	String patientID = planNumArray.get(4);
+                	patientID = planNumArray.get(4);
                 	
                 	patientArray = hdb.findPatient(patientID);
 
@@ -2482,7 +2514,7 @@ public class HealthDBUI extends JFrame {
                 	extendedBenefitsTableModel.setRowCount(0);
                 	invoiceHistoryGridTableModel.setRowCount(0);
                 
-                	String patientID = planInvoiceArray.get(0);
+                	patientID = planInvoiceArray.get(0);
                 	
                 	patientArray = hdb.findPatient(patientID);
 
@@ -2576,6 +2608,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 3; gbc.gridy = 3;
         panelPlanSummaryInfo.add(txtPlanSumPID, gbc);
 
+        // address
         lbl = new JLabel("Address:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
@@ -2583,14 +2616,14 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 4;
         panelPlanSummaryInfo.add(lbl, gbc);
 
-        txtPlanSumAddress = new JTextField(12);
+        txtPlanSumAddress = new JTextField(20);
         txtPlanSumAddress.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.insets= new Insets(0,5,0,0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 1; gbc.gridy = 4;
         panelPlanSummaryInfo.add(txtPlanSumAddress, gbc);
-
+        
         // mobile
         lbl = new JLabel("Mobile Phone:");
         gbc = new GridBagConstraints();
