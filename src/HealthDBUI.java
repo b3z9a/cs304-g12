@@ -76,17 +76,13 @@ public class HealthDBUI extends JFrame {
     private JPanel panelInvoiceHistory;
     private JPanel panelInvoiceHistoryGrid;
     private JPanel panelPlanSummaryActions;
-<<<<<<< HEAD
     
     private JTextField txtPlanSumName;
     private JTextField txtPlanSumPID;
     private JTextField txtPlanSumAddress;
     private JTextField txtPlanSumMobilePhone;
     private JTextField txtPlanSumHomePhone;
-    
-=======
 
->>>>>>> 026118d2535e5260032cdfd19a515e8ea6b8b938
     private JTextField txtPlanID;
     private JTextField txtStartDate;
     private JTextField txtPolicyType;
@@ -1049,19 +1045,6 @@ public class HealthDBUI extends JFrame {
         btnDeletePatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
-
-            	if (hdb.deletePatient(patientID)) {
-            		int dialogButton = JOptionPane.showConfirmDialog(frame, "Are you sure you would like to delete?" + patientID, "Delete Patient", JOptionPane.YES_NO_OPTION);
-            		if (dialogButton == JOptionPane.YES_OPTION) {
-            			// TODO delete patient
-            			}
-                } else {
-                    System.out.println("Delete Patient Failed!");
-                    JOptionPane.showMessageDialog(frame, "Patient does not exist", "Error", JOptionPane.ERROR_MESSAGE);
-=======
-                // TODO Add error dialog box when empty patient
-
                 if(patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
@@ -1088,7 +1071,6 @@ public class HealthDBUI extends JFrame {
                             "No patient selected!",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
->>>>>>> 026118d2535e5260032cdfd19a515e8ea6b8b938
                 }
             }
         });
@@ -2417,7 +2399,7 @@ public class HealthDBUI extends JFrame {
         btnFindPlanInvoiceNum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.findPlan(txtPlanID.getText());
+                Object obj = hdb.getPlan(txtPlanID.getText());
 
                 /* TODO get tests */
             }
@@ -2523,18 +2505,13 @@ public class HealthDBUI extends JFrame {
                 String amountOwing = "";
                 String paymentID = "";
                 String planID = "";
-<<<<<<< HEAD
-                
+
                 /* Switch to next view only if click createInvoice */
                 if (hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus, 
                 		paymentDate, paymentMethod, amountOwing, paymentID, planID)) {
                 
                     switchToInvoicePanel();
                 }
-=======
-                hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus,
-                		paymentDate, paymentMethod, amountOwing, paymentID, planID);
->>>>>>> 026118d2535e5260032cdfd19a515e8ea6b8b938
             }
         });
         btnCreateInvoice.setText("Create Invoice");
