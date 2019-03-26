@@ -965,7 +965,8 @@ public class HealthDBUI extends JFrame {
                         String qty = dQty.getText();
                         hdb.createPrescription(medication, dosage, qty, patientID, drHID);
 
-                        clearPanelData();
+                        // Clear and update the table with new data
+                        prescPSTableModel.setRowCount(0);
                         prescriptions = hdb.getPrescriptions(patientID);
                         updateTable(prescriptions, prescPSTableModel);
                     }
@@ -990,7 +991,9 @@ public class HealthDBUI extends JFrame {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
                     if(hdb.createTest(patientID, drHID)) {
-                        clearPanelData();
+
+                        // Clear and update the table with new data
+                        testPSTableModel.setRowCount(0);
                         tests = hdb.getTests(patientID);
                         updateTable(tests, testPSTableModel);
                         JOptionPane.showMessageDialog(frame, "Test created for " + name, "Create test for " + name,  JOptionPane.INFORMATION_MESSAGE);
@@ -1025,7 +1028,8 @@ public class HealthDBUI extends JFrame {
                         hdb.createReferral(patientID, drHID, drHIDInput);
                         System.out.println(drHIDInput);
 
-                        clearPanelData();
+                        // Clear and update the table with new data
+                        refPSTableModel.setRowCount(0);
                         referrals = hdb.getReferrals(patientID);
                         updateTable(referrals, refPSTableModel);
                     }
