@@ -763,22 +763,38 @@ public class HealthDB {
 	 */
 	public ArrayList<String> findTest(String testID) {
 		ArrayList<String> test = new ArrayList<>();
+		try{
+			String query = "select cholesterol, HDLcholesterol, LDLcholesterol, triglycerides,"+
+										 "whiteBloodCellCount, redBloodCellCount, hematocrit, plateletCount,"+
+										 "NRBCPercent, NRBCAbsolute, sodium, glucose, phosphorus, labTechHID "+
+										 "from labtest where testID=" + testID;
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
 
-		test.add("cholesterol");
-		test.add("HDLcholesterol");
-		test.add("LDLcholesterol");
-		test.add("trigycerides");
-		test.add("whiteBloodCellCount");
-		test.add("redBloodCellCount");
-		test.add("hematocrit");
-		test.add("plateletCount");
-		test.add("NRBCPercent");
-		test.add("NRBCAbsolute");
-		test.add("sodium");
-		test.add("glucose");
-		test.add("phosphorus");
-		test.add("labTechHID");
-
+			if(rs.next()){
+				test.add(rs.getString("cholesterol"));
+				test.add(rs.getString("HDLcholesterol"));
+				test.add(rs.getString("LDLcholesterol"));
+				test.add(rs.getString("triglycerides"));
+				test.add(rs.getString("whiteBloodCellCount"));
+				test.add(rs.getString("redBloodCellCount"));
+				test.add(rs.getString("hematocrit"));
+				test.add(rs.getString("plateletCount"));
+				test.add(rs.getString("NRBCPercent"));
+				test.add(rs.getString("NRBCAbsolute"));
+				test.add(rs.getString("sodium"));
+				test.add(rs.getString("glucose"));
+				test.add(rs.getString("phosphorus"));
+				test.add(rs.getString("labTechHID"));
+			}
+			// Close the statement, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get test summary. " + ex.getMessage());
+		}
 		return test;
 	}
 
