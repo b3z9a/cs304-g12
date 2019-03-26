@@ -55,7 +55,6 @@ public class HealthDBUI extends JFrame {
     private JScrollPane panePatientSummaryPrescriptions;
     private JScrollPane panePatientSummaryTests;
     private JScrollPane panePatientSummaryReferrals;
-    private JPanel panelPatientSummaryActions;
 
     private JPanel panelPrescriptionFinder;
     private JPanel panelPrescriptionInfo;
@@ -157,7 +156,6 @@ public class HealthDBUI extends JFrame {
         setPanelPatientSummary();
         setPanelPatientSummaryFinder();
         setPanelPatientSummaryInfo();
-        setPanelPatientSummaryActions();
 
         setPanelPrescription();
         setPanelPrescriptionFinder();
@@ -190,6 +188,7 @@ public class HealthDBUI extends JFrame {
     private void initialize() {
         frame = new JFrame("Integrated Healthcare Database");
         frame.setBounds(50, 0, width, height);
+        frame.setMinimumSize(new Dimension(720, 720));
         panelRoot.setLayout(new CardLayout(0, 0));
         frame.setContentPane(panelRoot);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -707,6 +706,48 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 3;
         panelPatientSummary.add(panelPatientSummaryInfo, gbc);
 
+        JButton btnDeletePatient = new JButton();
+        btnDeletePatient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(patientArray.size() > 0) {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    if (patientID == "") {
+                        JOptionPane.showMessageDialog(frame,
+                                "Patient ID does not exist",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                    int resp = JOptionPane.showConfirmDialog(
+                            frame,
+                            "Are you sure you would like to delete " + name + "?",
+                            "Delete Patient " + name,
+                            JOptionPane.YES_NO_OPTION);
+
+                    if(resp == JOptionPane.YES_OPTION)
+                    {
+                        hdb.deletePatient(patientID);
+                        clearPanelData();
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame,
+                            "No patient selected!",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        btnDeletePatient.setText("Delete Patient");
+
+        JPanel panelPatientSummaryPatBtn = new JPanel();
+        panelPatientSummaryPatBtn.setLayout(new FlowLayout());
+        panelPatientSummaryPatBtn.add(btnDeletePatient);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 4;
+        panelPatientSummary.add(panelPatientSummaryPatBtn, gbc);
+
         /* Row 4 */
         lbl = new JLabel("Prescriptions", SwingConstants.LEADING);
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
@@ -714,7 +755,7 @@ public class HealthDBUI extends JFrame {
         gbc.insets= new Insets(10,0,0,0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridx = 0; gbc.gridy = 5;
         panelPatientSummary.add(lbl, gbc);
 
 
@@ -730,8 +771,53 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 5;
+        gbc.gridx = 0; gbc.gridy = 6;
         panelPatientSummary.add(panePatientSummaryPrescriptions, gbc);
+
+        /* Row 6 */
+        JButton btnCreatePrescription = new JButton();
+        btnCreatePrescription.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTextField dMedication = new JTextField();
+                JTextField dDosage = new JTextField();
+                JTextField dQty = new JTextField();
+
+                if(patientArray.size() > 0) {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    Object[] fields = {"Patient: " + name, "Medication", dMedication, "Dosage", dDosage, "Quantity", dQty};
+
+                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Create prescription for " + name, JOptionPane.OK_CANCEL_OPTION);
+
+                    if(resp == JOptionPane.OK_OPTION) {
+                        String medication = dMedication.getText();
+                        String dosage = dDosage.getText();
+                        String qty = dQty.getText();
+                        hdb.createPrescription(medication, dosage, qty, patientID, drHID);
+
+                        // Clear and update the table with new data
+                        prescPSTableModel.setRowCount(0);
+                        prescriptions = hdb.getPrescriptions(patientID);
+                        updateTable(prescriptions, prescPSTableModel);
+                    }
+                    else {
+                        System.out.println("No values entered");
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        btnCreatePrescription.setText("Create New Prescription");
+
+        JPanel panelPatientSummaryPresBtn = new JPanel();
+        panelPatientSummaryPresBtn.setLayout(new FlowLayout());
+        panelPatientSummaryPresBtn.add(btnCreatePrescription);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 7;
+        panelPatientSummary.add(panelPatientSummaryPresBtn, gbc);
 
         /* Row 6 */
         lbl = new JLabel("Tests", SwingConstants.LEADING);
@@ -740,7 +826,7 @@ public class HealthDBUI extends JFrame {
         gbc.insets= new Insets(10,0,0,0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 6;
+        gbc.gridx = 0; gbc.gridy = 8;
         panelPatientSummary.add(lbl, gbc);
 
         /* Row 7 */
@@ -754,8 +840,42 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 7;
+        gbc.gridx = 0; gbc.gridy = 9;
         panelPatientSummary.add(panePatientSummaryTests, gbc);
+
+        JButton btnCreateTest= new JButton();
+        btnCreateTest.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(patientArray.size() > 0) {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    if(hdb.createTest(patientID, drHID)) {
+
+                        // Clear and update the table with new data
+                        testPSTableModel.setRowCount(0);
+                        tests = hdb.getTests(patientID);
+                        updateTable(tests, testPSTableModel);
+                        JOptionPane.showMessageDialog(frame, "Test created for " + name, "Create test for " + name,  JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(frame, "Failed to create test for " + name, "Create test for " + name,  JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        btnCreateTest.setText("Create New Test");
+
+        JPanel panelPatientSummaryTestsBtn = new JPanel();
+        panelPatientSummaryTestsBtn.setLayout(new FlowLayout());
+        panelPatientSummaryTestsBtn.add(btnCreateTest);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 10;
+        panelPatientSummary.add(panelPatientSummaryTestsBtn, gbc);
 
         /* Row 8 */
         lbl = new JLabel("Referrals", SwingConstants.LEADING);
@@ -764,7 +884,7 @@ public class HealthDBUI extends JFrame {
         gbc.insets= new Insets(10,0,0,0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 8;
+        gbc.gridx = 0; gbc.gridy = 11;
         panelPatientSummary.add(lbl, gbc);
 
         /* Row 9 */
@@ -778,15 +898,50 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 9;
+        gbc.gridx = 0; gbc.gridy = 12;
         panelPatientSummary.add(panePatientSummaryReferrals, gbc);
 
+        JButton btnCreateReferral = new JButton();
+        btnCreateReferral.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTextField dDrHID = new JTextField();
+
+                if(patientArray.size() > 0) {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    Object[] fields = {"Patient: " + name, "Doctor ID for Referral", dDrHID};
+
+                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Create referral for " + name, JOptionPane.OK_CANCEL_OPTION);
+
+                    if(resp == JOptionPane.OK_OPTION) {
+                        String drHIDInput = dDrHID.getText();
+                        hdb.createReferral(patientID, drHID, drHIDInput);
+                        System.out.println(drHIDInput);
+
+                        // Clear and update the table with new data
+                        refPSTableModel.setRowCount(0);
+                        referrals = hdb.getReferrals(patientID);
+                        updateTable(referrals, refPSTableModel);
+                    }
+                    else {
+                        System.out.println("No values entered");
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        btnCreateReferral.setText("Create New Referral");
+
         /* Row 10 */
-        panelPatientSummaryActions= new JPanel();
-        panelPatientSummaryActions.setLayout(new FlowLayout());
+        JPanel panelPatientSummaryRefBtn = new JPanel();
+        panelPatientSummaryRefBtn.setLayout(new FlowLayout());
+        panelPatientSummaryRefBtn.add(btnCreateReferral);
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 10;
-        panelPatientSummary.add(panelPatientSummaryActions, gbc);
+        gbc.gridx = 0; gbc.gridy = 13;
+        panelPatientSummary.add(panelPatientSummaryRefBtn, gbc);
     }
     private void setPanelPatientSummaryFinder() {
         JLabel lblPID = new JLabel("PID:", SwingConstants.LEADING);
@@ -931,145 +1086,6 @@ public class HealthDBUI extends JFrame {
         gbc.insets= new Insets(0,5,0,0);
         gbc.gridx = 3; gbc.gridy = 6;
         panelPatientSummaryInfo.add(txtDocHomeNum, gbc);
-    }
-    private void setPanelPatientSummaryActions() {
-        JButton btnCreatePrescription = new JButton();
-        btnCreatePrescription.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JTextField dMedication = new JTextField();
-                JTextField dDosage = new JTextField();
-                JTextField dQty = new JTextField();
-
-                if(patientArray.size() > 0) {
-                    String name = patientArray.get(0) + " " + patientArray.get(1);
-
-                    Object[] fields = {"Patient: " + name, "Medication", dMedication, "Dosage", dDosage, "Quantity", dQty};
-
-                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Create prescription for " + name, JOptionPane.OK_CANCEL_OPTION);
-
-                    if(resp == JOptionPane.OK_OPTION) {
-                        String medication = dMedication.getText();
-                        String dosage = dDosage.getText();
-                        String qty = dQty.getText();
-                        hdb.createPrescription(medication, dosage, qty, patientID, drHID);
-
-                        // Clear and update the table with new data
-                        prescPSTableModel.setRowCount(0);
-                        prescriptions = hdb.getPrescriptions(patientID);
-                        updateTable(prescriptions, prescPSTableModel);
-                    }
-                    else {
-                        System.out.println("No values entered");
-                    }
-                }
-                else {
-                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        btnCreatePrescription.setText("Create New Prescription");
-        panelPatientSummaryActions.add(btnCreatePrescription);
-
-        JButton btnCreateTest= new JButton();
-        btnCreateTest.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                if(patientArray.size() > 0) {
-                    String name = patientArray.get(0) + " " + patientArray.get(1);
-
-                    if(hdb.createTest(patientID, drHID)) {
-
-                        // Clear and update the table with new data
-                        testPSTableModel.setRowCount(0);
-                        tests = hdb.getTests(patientID);
-                        updateTable(tests, testPSTableModel);
-                        JOptionPane.showMessageDialog(frame, "Test created for " + name, "Create test for " + name,  JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(frame, "Failed to create test for " + name, "Create test for " + name,  JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-                else {
-                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        btnCreateTest.setText("Create New Test");
-        panelPatientSummaryActions.add(btnCreateTest);
-
-        JButton btnCreateReferral = new JButton();
-        btnCreateReferral.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JTextField dDrHID = new JTextField();
-
-                if(patientArray.size() > 0) {
-                    String name = patientArray.get(0) + " " + patientArray.get(1);
-
-                    Object[] fields = {"Patient: " + name, "Doctor ID for Referral", dDrHID};
-
-                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Create referral for " + name, JOptionPane.OK_CANCEL_OPTION);
-
-                    if(resp == JOptionPane.OK_OPTION) {
-                        String drHIDInput = dDrHID.getText();
-                        hdb.createReferral(patientID, drHID, drHIDInput);
-                        System.out.println(drHIDInput);
-
-                        // Clear and update the table with new data
-                        refPSTableModel.setRowCount(0);
-                        referrals = hdb.getReferrals(patientID);
-                        updateTable(referrals, refPSTableModel);
-                    }
-                    else {
-                        System.out.println("No values entered");
-                    }
-                }
-                else {
-                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        btnCreateReferral.setText("Create New Referral");
-        panelPatientSummaryActions.add(btnCreateReferral);
-
-        JButton btnDeletePatient = new JButton();
-        btnDeletePatient.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(patientArray.size() > 0) {
-                    String name = patientArray.get(0) + " " + patientArray.get(1);
-
-                    if (patientID == "") {
-                        JOptionPane.showMessageDialog(frame,
-                                "Patient ID does not exist",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
-                    int resp = JOptionPane.showConfirmDialog(
-                            frame,
-                            "Are you sure you would like to delete " + name + "?",
-                            "Delete Patient " + name,
-                            JOptionPane.YES_NO_OPTION);
-
-                    if(resp == JOptionPane.YES_OPTION)
-                    {
-                        hdb.deletePatient(patientID);
-                        clearPanelData();
-                    }
-                }
-                else {
-                    JOptionPane.showMessageDialog(frame,
-                            "No patient selected!",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        btnDeletePatient.setText("Delete Patient");
-        panelPatientSummaryActions.add(btnDeletePatient);
-
     }
 
     private void setPanelPrescription() {
