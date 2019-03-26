@@ -27,7 +27,7 @@ public class HealthDBUI extends JFrame {
     private String paymentMethod[] = {"Cash", "Credit/Debit", "Cheque"};
 
     private static JFrame frame;
-    private static int width = 720;
+    private static int width = 900;
     private static int height = 720;
 
     GridBagConstraints gbc;
@@ -642,7 +642,7 @@ public class HealthDBUI extends JFrame {
     }
 
     private void updateTable(ArrayList<ArrayList<String>> arr, DefaultTableModel tableModel) {
-        printTuples(arr);
+        //printTuples(arr);
         if(arr.size() > 0)
         {
             String[][] data = createData(arr);
@@ -792,43 +792,14 @@ public class HealthDBUI extends JFrame {
                     prescriptions = hdb.getPrescriptions(patientArray.get(2));
                     printTuples(prescriptions);
                     updateTable(prescriptions, prescPSTableModel);
-                    /*
-                    if(prescriptions.size() > 0)
-                    {
-                        String[][] data = createData(prescriptions);
-                        for(int row = 0; row < data.length; row++)
-                        {
-                            prescPSTableModel.addRow(data[row]);
-                        }
-                    }*/
-
 
                     tests = hdb.getTests(patientArray.get(2));
                     printTuples(tests);
                     updateTable(tests, testPSTableModel);
-                    /*
-                    if(tests.size() > 0)
-                    {
-                        String[][] data = createData(tests);
-                        for(int row = 0; row < data.length; row++)
-                        {
-                            testPSTableModel.addRow(data[row]);
-                        }
-                    }*/
-
 
                     referrals = hdb.getReferrals(patientArray.get(2));
                     printTuples(referrals);
                     updateTable(referrals, refPSTableModel);
-                    /*
-                    if(referrals.size() > 0)
-                    {
-                        String[][] data = createData(referrals);
-                        for(int row = 0; row < data.length; row++)
-                        {
-                            refPSTableModel.addRow(data[row]);
-                        }
-                    }*/
 
                     txtPID.setText("");
                     txtName.setText("");
@@ -974,6 +945,7 @@ public class HealthDBUI extends JFrame {
                         String qty = dQty.getText();
                         hdb.createPrescription(medication, dosage, qty, patientID, drHID);
 
+                        clearPanelData();
                         prescriptions = hdb.getPrescriptions(patientID);
                         updateTable(prescriptions, prescPSTableModel);
                     }
@@ -998,6 +970,7 @@ public class HealthDBUI extends JFrame {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
                     if(hdb.createTest(patientID, drHID)) {
+                        clearPanelData();
                         tests = hdb.getTests(patientID);
                         updateTable(tests, testPSTableModel);
                         JOptionPane.showMessageDialog(frame, "Test created for " + name, "Create test for " + name,  JOptionPane.INFORMATION_MESSAGE);
@@ -1032,6 +1005,7 @@ public class HealthDBUI extends JFrame {
                         hdb.createReferral(patientID, drHID, drHIDInput);
                         System.out.println(drHIDInput);
 
+                        clearPanelData();
                         referrals = hdb.getReferrals(patientID);
                         updateTable(referrals, refPSTableModel);
                     }
