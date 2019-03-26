@@ -944,8 +944,7 @@ public class HealthDBUI extends JFrame {
                 JTextField dDosage = new JTextField();
                 JTextField dQty = new JTextField();
 
-                if(patientArray.size() > 0)
-                {
+                if(patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
                     Object[] fields = {"Patient: " + name, "Medication", dMedication, "Dosage", dDosage, "Quantity", dQty};
@@ -963,6 +962,9 @@ public class HealthDBUI extends JFrame {
                         System.out.println("No values entered");
                     }
                 }
+                else {
+                    JOptionPane.showMessageDialog(null, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         btnCreatePrescription.setText("Create New Prescription");
@@ -973,8 +975,7 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(patientArray.size() > 0)
-                {
+                if(patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
                     if(hdb.createTest(patientID, drHID)) {
@@ -982,8 +983,10 @@ public class HealthDBUI extends JFrame {
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "Failed to create test for " + name, "Create test for " + name,  JOptionPane.ERROR_MESSAGE);
-
                     }
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -996,8 +999,7 @@ public class HealthDBUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JTextField dDrHID = new JTextField();
 
-                if(patientArray.size() > 0)
-                {
+                if(patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
                     Object[] fields = {"Patient: " + name, "Doctor ID for Referral", dDrHID};
@@ -1013,7 +1015,9 @@ public class HealthDBUI extends JFrame {
                         System.out.println("No values entered");
                     }
                 }
-
+                else {
+                    JOptionPane.showMessageDialog(null, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         btnCreateReferral.setText("Create New Referral");
@@ -1024,19 +1028,35 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO Add error dialog box when empty patient
-                hdb.deletePatient(patientID);
-            	if (patientID == "") {
-            		JOptionPane.showMessageDialog(frame,
-            			    "Patient does not exist",
-            			    "Error",
-            			    JOptionPane.ERROR_MESSAGE);
-            	}
 
-                JOptionPane.showConfirmDialog(
-                	frame,
-                    "Are you sure you would like to delete?",
-               	    "Delete Patient",
-               	    JOptionPane.YES_NO_OPTION);
+                if(patientArray.size() > 0) {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    if (patientID == "") {
+                        JOptionPane.showMessageDialog(frame,
+                                "Patient ID does not exist",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                    int response = JOptionPane.showConfirmDialog(
+                            frame,
+                            "Are you sure you would like to delete " + name + "?",
+                            "Delete Patient " + name,
+                            JOptionPane.YES_NO_OPTION);
+
+                    System.out.println(response);
+
+                    if(false)
+                    {
+                        hdb.deletePatient(patientID);
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame,
+                            "No patient selected",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         btnDeletePatient.setText("Delete Patient");
