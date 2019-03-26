@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.*;
+import java.text.*;
 
 /**
  * <h2>HealthDB</h2>
@@ -32,9 +33,10 @@ public class HealthDB {
 	 * testID
 	 * invoiceID
 	 */
-	private Integer prescriptionIDCounter = 400000;
-	private Integer testIDCounter = 800000;
-	private Integer invoiceIDCounter = 150000;
+	static Integer prescriptionIDCounter = 400000;
+	static Integer testIDCounter = 800000;
+	static Integer invoiceIDCounter = 150000;
+	private DateFormat format = new SimpleDateFormat("MM dd yyyy");
 
 	/**
 	 * HealthDB Constructor
@@ -101,9 +103,8 @@ public class HealthDB {
 			java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 			prescriptionIDCounter = prescriptionIDCounter++;
 			String query ="insert into prescription (prescriptionID, medication, dosage, quantity, patientID,"
-							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ", '" + medication + "', " + dosage
-							+ ", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today + "', 'YYYY-MM-DD'))";
-			System.out.println("createPrescription query: "+ query);
+							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication + "', " + dosage
+							+ ", " + quantity +", " + patientID +", " + drHID +", " + "to_date('" + today + "', 'YYY-MM-DD'))";
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -253,8 +254,9 @@ public class HealthDB {
 		try{
 			String query = "select p.firstName, p.lastName, p.patientID, p.street, "
 							+ "pc.city, pc.province, pc.postalcode, pc.country, "
-							+ "p.homePhone, p.mobilePhone from patient p, postalcode pc "
-							+ "where (p.firstName like '" + name + "%'" + " or p.lastName like '" + name + "%') and p.postalcode = pc.postalcode" ;
+							+ "p.homePhone, p.mobilePhone from patient p left join postalcode pc "
+							+ "on p.postalcode = pc.postalcode " + "where (p.firstName like '%"
+							+ name + "%'" + " or p.lastName like '%" + name + "%')" ;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -292,7 +294,7 @@ public class HealthDB {
 	 * @param pid- the PID of the selected Patient, cannot be null
 	 * @return prescription data
 	 */
-	public ArrayList<ArrayList<String>> getPrescriptions(String pid, String name) {
+	public ArrayList<ArrayList<String>> getPrescriptions(String pid) {
 		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
 		try{
 			String query = "select pr.prescriptionID, pr.prescribedDate, m.medication,"+
@@ -308,12 +310,20 @@ public class HealthDB {
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
 				tuple.add(rs.getString("prescriptionID"));
-				tuple.add(rs.getString("prescribedDate"));
+				if (rs.getDate("prescribedDate")!=null){
+					tuple.add(format.format(rs.getDate("prescribedDate")));
+			  } else{
+					tuple.add("");
+			  }
 				tuple.add(rs.getString("medication"));
 				tuple.add(rs.getString("dosage"));
 				tuple.add(rs.getString("dosageMeasure"));
 				tuple.add(rs.getString("quantity"));
-				tuple.add(rs.getString("filledDate"));
+				if (rs.getDate("filledDate")!=null){
+					tuple.add(format.format(rs.getDate("filledDate")));
+				} else{
+					tuple.add("");
+				}
 
 				if(rs.getString("filledDate") == null) {
                     tuple.add("No");
@@ -354,8 +364,16 @@ public class HealthDB {
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
 				tuple.add(rs.getString("testID"));
-				tuple.add(rs.getString("orderedDate"));
-				tuple.add(rs.getString("performedDate"));
+				if (rs.getDate("orderedDate")!=null){
+					tuple.add(format.format(rs.getDate("orderedDate")));
+				} else{
+					tuple.add("");
+				}
+				if (rs.getDate("performedDate")!=null){
+					tuple.add(format.format(rs.getDate("performedDate")));
+			  } else{
+					tuple.add("");
+			  }
 
                 if(rs.getString("performedDate") == null) {
                     tuple.add("No");
@@ -400,7 +418,11 @@ public class HealthDB {
 				tuple.add(rs.getString("firstName"));
 				tuple.add(rs.getString("lastName"));
 				tuple.add(rs.getString("specialization"));
-				tuple.add(rs.getString("referredDate"));
+				if (rs.getDate("referredDate")!=null){
+					tuple.add(format.format(rs.getDate("referredDate")));
+				} else{
+					tuple.add("");
+				}
 				tuples.add(tuple);
 			}
 
@@ -434,8 +456,16 @@ public class HealthDB {
 			while(rs.next()){
 				tuple.add(rs.getString("planID"));
 				tuple.add(rs.getString("planType"));
-				tuple.add(rs.getString("startDate"));
-				tuple.add(rs.getString("endDate"));
+				if (rs.getDate("startDate")!=null){
+					tuple.add(format.format(rs.getDate("startDate")));
+				} else{
+					tuple.add("");
+				}
+				if (rs.getDate("endDate")!=null){
+					tuple.add(format.format(rs.getDate("endDate")));
+			  } else {
+					tuple.add("");
+			  }
 			}
 
 			// Close the statement, the result set will be closed in the process.
@@ -577,8 +607,16 @@ public class HealthDB {
 				ArrayList<String> tuple = new ArrayList<String>();
 				tuple.add(rs.getString("invoiceID"));
 				tuple.add(rs.getString("invoiceItem"));
-				tuple.add(rs.getString("creationDate"));
-				tuple.add(rs.getString("dueDate"));
+				if (rs.getDate("creationDate")!=null){
+					tuple.add(format.format(rs.getDate("creationDate")));
+				} else{
+					tuple.add("");
+				}
+				if (rs.getDate("dueDate")!=null){
+					tuple.add(format.format(rs.getDate("dueDate")));
+				} else{
+					tuple.add("");
+				}
 				tuple.add(rs.getString("paymentStatus"));
 				tuple.add(rs.getString("amountOwing"));
 				tuples.add(tuple);

@@ -317,7 +317,7 @@ insert into Patient values (29562774, 'David', 'Chen', '1114 Lameys Mill Rd.', '
 insert into Patient values (31857372, 'Winny', 'Zhu', '4491 W 4th Ave', 'V6S0J9', '778-291-3753', '778-981-3722');
 insert into Patient values (31274656, 'Antar', 'Atwal', 'Apt. 117, 8833 Hazelbridge Way', 'V6Y2V7', '604-233-4713', '604-233-8172');
 insert into Patient values (32485737, 'Alex', 'Grossman', '271 Pike St.', '98226', '206-775-9312', '206-744-2713');
-insert into Patient values (31572742, 'Mary', 'Cornwall', '4532 Lakeview Way', 'T5A0A1', '', '780-555-4031');
+insert into Patient values (31572742, 'Mary', 'Berjohn', '4532 Lakeview Way', 'T5A0A1', '', '780-555-4031');
 insert into Patient values (38577324, 'Malek', 'Banu Moosa', '5772 177b St', 'V3V6A8', '855-294-2844', '250-865-3853');
 insert into Patient values (34873524, 'Emma', 'Johnson', '14880 108 Ave', 'V3V6A8', '673-495-3445', '250-865-3853');
 insert into Patient values (38475018, 'Janice', 'Roberts', '', 'V3R7C1', '673-574-3421', '250-865-3853');

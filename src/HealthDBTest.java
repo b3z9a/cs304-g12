@@ -29,6 +29,24 @@ public class HealthDBTest{
       System.out.println("  Expected: 12345678");
       System.out.println("  Actual: " + hdb.findInvoice("183746") + "\n");
 
+      System.out.println("Test getPatients");
+      test.printTuples(hdb.getPatients("John"));
+      test.printTuples(hdb.getPatients("Mary"));
+      test.printTuples(hdb.getPatients("john"));
+
+      System.out.println("Test getPrescriptions");
+      test.printTuples(hdb.getPrescriptions("1"));
+      test.printTuples(hdb.getPrescriptions("2"));
+      test.printTuples(hdb.getPrescriptions("3"));
+      test.printTuples(hdb.getPrescriptions("4"));
+      test.printTuples(hdb.getPrescriptions("pineapple"));
+
+      System.out.println("Test getTests");
+      test.printTuples(hdb.getTests("1"));
+      test.printTuples(hdb.getTests("2"));
+      test.printTuples(hdb.getTests("3"));
+      test.printTuples(hdb.getTests("4"));
+      test.printTuples(hdb.getTests("John"));
   }
 
   private void printTuples(ArrayList<ArrayList<String>> tuples){

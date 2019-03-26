@@ -777,7 +777,7 @@ public class HealthDBUI extends JFrame {
                     txtDocHomeNum.setText(patientArray.get(8));
                     txtDocMobileNum.setText(patientArray.get(9));
 
-                    prescriptions = hdb.getPrescriptions(patientArray.get(2), name);
+                    prescriptions = hdb.getPrescriptions(patientArray.get(2));
                     printTuples(prescriptions);
                     if(prescriptions.size() > 0)
                     {
@@ -1116,7 +1116,7 @@ public class HealthDBUI extends JFrame {
                     txtPharmHomeNum.setText(patientArray.get(7));
                     txtPharmMobileNum.setText(patientArray.get(8));
 
-                    prescriptions = hdb.getPrescriptions(patientArray.get(2), name);
+                    prescriptions = hdb.getPrescriptions(patientArray.get(2));
                     printTuples(prescriptions);
                     if(prescriptions.size() > 0) {
                         String[][] data = createData(prescriptions);
@@ -1199,7 +1199,7 @@ public class HealthDBUI extends JFrame {
                     txtPharmHomeNum.setText(patientArray.get(8));
                     txtPharmMobileNum.setText(patientArray.get(9));
 
-                    prescriptions = hdb.getPrescriptions(patientArray.get(2), name);
+                    prescriptions = hdb.getPrescriptions(patientArray.get(2));
                     printTuples(prescriptions);
                     if(prescriptions.size() > 0)
                     {
