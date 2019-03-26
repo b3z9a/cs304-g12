@@ -718,8 +718,15 @@ public class HealthDBUI extends JFrame {
 
 
         /* Row 5 */
-        panePatientSummaryPrescriptions = new JScrollPane();
+        String colsP[] = {"ID", "Date", "Medication", "Dosage", "Dosage Unit", "Quantity", "Filled Date", "Filled?"};
+        String data[][] = {};
+        prescPSTableModel = new DefaultTableModel(data, colsP);
+        prescPSTable = new JTable(prescPSTableModel);
+
+        panePatientSummaryPrescriptions = new JScrollPane(prescPSTable);
         panePatientSummaryPrescriptions.setLayout(new ScrollPaneLayout());
+        panePatientSummaryPrescriptions.add(prescPSTable);
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
@@ -737,8 +744,14 @@ public class HealthDBUI extends JFrame {
         panelPatientSummary.add(lbl, gbc);
 
         /* Row 7 */
-        panePatientSummaryTests = new JScrollPane();
+        String colsT[] = {"Test ID", "Ordered Date", "Performed Date", "Completed?"};
+        testPSTableModel = new DefaultTableModel(data, colsT);
+        testPSTable = new JTable(testPSTableModel);
+
+        panePatientSummaryTests = new JScrollPane(testPSTable);
         panePatientSummaryTests.setLayout(new ScrollPaneLayout());
+        panePatientSummaryTests.add(testPSTable);
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
@@ -756,8 +769,14 @@ public class HealthDBUI extends JFrame {
         panelPatientSummary.add(lbl, gbc);
 
         /* Row 9 */
-        panePatientSummaryReferrals = new JScrollPane();
+        String colsR[] = {"First Name", "Last Name", "Specialization", "Date"};
+        refPSTableModel = new DefaultTableModel(data, colsR);
+        refPSTable = new JTable(refPSTableModel);
+
+        panePatientSummaryReferrals = new JScrollPane(refPSTable);
         panePatientSummaryReferrals.setLayout(new ScrollPaneLayout());
+        panePatientSummaryReferrals.add(refPSTable);
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
@@ -916,28 +935,16 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryInfo.add(txtDocHomeNum, gbc);
     }
     private void setPanelPatientSummaryPrescriptions() {
-        String cols[] = {"ID", "Date", "Medication", "Dosage", "Dosage Unit", "Quantity", "Filled Date", "Filled?"};
-        String data[][] = {};
-        prescPSTableModel = new DefaultTableModel(data, cols);
-        prescPSTable = new JTable(prescPSTableModel);
-        panePatientSummaryPrescriptions.add(prescPSTable);
+
     }
     private void setPanelPatientSummaryTests() {
 
-        String cols[] = {"Test ID", "Ordered Date", "Performed Date", "Completed?"};
-        String data[][] = {};
-        testPSTableModel = new DefaultTableModel(data, cols);
-        testPSTable = new JTable(testPSTableModel);
-        panePatientSummaryTests.add(testPSTable);
+
 
     }
     private void setPanelPatientSummaryReferrals() {
 
-        String cols[] = {"First Name", "Last Name", "Specialization", "Date"};
-        String data[][] = {};
-        refPSTableModel = new DefaultTableModel(data, cols);
-        refPSTable = new JTable(refPSTableModel);
-        panePatientSummaryReferrals.add(refPSTable);
+
 
     }
     private void setPanelPatientSummaryActions() {
