@@ -881,7 +881,7 @@ public class HealthDBUI extends JFrame {
                     String testID = testPSTableModel.getValueAt(row, 0).toString();
                     ArrayList<String> testData = hdb.findTest(testID);
 
-                    Object[] data = {"Patient: " + name, "Test ID: " + testID, "Cholesterol: " + testData.get(0), "HDL Cholesterol: " + testData.get(1),
+                    Object[] data = {"Patient: " + name, "Test ID: " + testID, " ", "Cholesterol: " + testData.get(0), "HDL Cholesterol: " + testData.get(1),
                             "LDL Choleterol: " + testData.get(2), "Triglycerides: " + testData.get(3), "White Blood Cell Count: " + testData.get(4),
                             "Red Blood Cell Count: " + testData.get(5), "Hematocrit: " + testData.get(6), "Platelet Count: " + testData.get(7),
                             "NRBC Percent: " + testData.get(8), "NRBC Absolute: " + testData.get(9), "Sodium: " + testData.get(10),
