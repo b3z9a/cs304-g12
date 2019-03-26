@@ -1058,7 +1058,7 @@ public class HealthDBUI extends JFrame {
                 {
                     // Do a name search
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
-                    Object[] nameArr = {};
+                    Object[] nameArr = new Object[names.size()];
 
                     int row = 0; int col = 0;
                     for(ArrayList<String> tuple : names) {
