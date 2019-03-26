@@ -184,7 +184,7 @@ public class HealthDBUI extends JFrame {
      */
     private void initialize() {
         frame = new JFrame("Integrated Healthcare Database");
-        frame.setBounds(0, 0, width, height);
+        frame.setBounds(50, 0, width, height);
         panelRoot.setLayout(new CardLayout(0, 0));
         frame.setContentPane(panelRoot);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -944,13 +944,12 @@ public class HealthDBUI extends JFrame {
                 JTextField dDosage = new JTextField();
                 JTextField dQty = new JTextField();
 
-                if(patientArray.size() > 0)
-                {
+                if(patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
                     Object[] fields = {"Patient: " + name, "Medication", dMedication, "Dosage", dDosage, "Quantity", dQty};
 
-                    int resp = JOptionPane.showConfirmDialog(null, fields, "Create prescription for " + name, JOptionPane.OK_CANCEL_OPTION);
+                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Create prescription for " + name, JOptionPane.OK_CANCEL_OPTION);
 
                     if(resp == 0) {
                         String medication = dMedication.getText();
@@ -963,6 +962,9 @@ public class HealthDBUI extends JFrame {
                         System.out.println("No values entered");
                     }
                 }
+                else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         btnCreatePrescription.setText("Create New Prescription");
@@ -973,8 +975,19 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                hdb.createTest(drHID, patientID);
+                if(patientArray.size() > 0) {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
 
+                    if(hdb.createTest(patientID, drHID)) {
+                        JOptionPane.showMessageDialog(frame, "Test created for " + name, "Create test for " + name,  JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(frame, "Failed to create test for " + name, "Create test for " + name,  JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         btnCreateTest.setText("Create New Test");
@@ -984,10 +997,27 @@ public class HealthDBUI extends JFrame {
         btnCreateReferral.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String referreeHID = "54337"; // TODO create dialog to ask for referree
+                JTextField dDrHID = new JTextField();
 
-                hdb.createReferral(patientID, drHID, referreeHID);
+                if(patientArray.size() > 0) {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
 
+                    Object[] fields = {"Patient: " + name, "Doctor ID for Referral", dDrHID};
+
+                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Create referral for " + name, JOptionPane.OK_CANCEL_OPTION);
+
+                    if(resp == 0) {
+                        String drHIDInput = dDrHID.getText();
+                        hdb.createReferral(patientID, drHID, drHIDInput);
+                        System.out.println(drHIDInput);
+                    }
+                    else {
+                        System.out.println("No values entered");
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         btnCreateReferral.setText("Create New Referral");
@@ -998,19 +1028,33 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO Add error dialog box when empty patient
-                hdb.deletePatient(patientID);
-            	if (patientID == "") {
-            		JOptionPane.showMessageDialog(frame,
-            			    "Patient does not exist",
-            			    "Error",
-            			    JOptionPane.ERROR_MESSAGE);
-            	}
 
-                JOptionPane.showConfirmDialog(
-                	frame,
-                    "Are you sure you would like to delete?",
-               	    "Delete Patient",
-               	    JOptionPane.YES_NO_OPTION);
+                if(patientArray.size() > 0) {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    if (patientID == "") {
+                        JOptionPane.showMessageDialog(frame,
+                                "Patient ID does not exist",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                    int resp = JOptionPane.showConfirmDialog(
+                            frame,
+                            "Are you sure you would like to delete " + name + "?",
+                            "Delete Patient " + name,
+                            JOptionPane.YES_NO_OPTION);
+
+                    if(resp == 0)
+                    {
+                        hdb.deletePatient(patientID);
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame,
+                            "No patient selected!",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         btnDeletePatient.setText("Delete Patient");

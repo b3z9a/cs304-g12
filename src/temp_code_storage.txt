@@ -1,0 +1,41 @@
+public void actionPerformed(ActionEvent e) {
+                JTextField dChol = new JTextField();
+                JTextField dHDL = new JTextField();
+                JTextField dLDL = new JTextField();
+                JTextField dTrig = new JTextField();
+                JTextField dWBcc = new JTextField();
+                JTextField dRBcc = new JTextField();
+                JTextField dHema = new JTextField();
+                JTextField dPlate = new JTextField();
+                JTextField dNRPer = new JTextField();
+                JTextField dNRAbs = new JTextField();
+                JTextField dSod = new JTextField();
+                JTextField dGlu = new JTextField();
+                JTextField dPhos = new JTextField();
+                JTextField dLabHID = new JTextField();
+
+                //if(patientArray.size() > 0)
+                if(Boolean.TRUE)
+                {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    Object[] fields = {"Patient: " + name, "Cholesterol", dChol, "HDL Cholesterol", dHDL, "LDL Choleterol", dLDL
+                            "Triglycerides", dTrig, "White Blood Cell Count", dWBcc, "Red Blood Cell Count", dRBcc,
+                            "Hematocrit", dHema, "Platelet Count", dPlate, "NRBC Percent", dNRPer,
+                            "NRBC Absolute", dNRAbs, "Sodium", dSod, "Glucose", dGlu
+                            "Phosphorus", dPhos, "Lab Tech ID", dLabHID};
+
+                    int resp = JOptionPane.showConfirmDialog(null, fields, "Create test for " + name, JOptionPane.OK_CANCEL_OPTION);
+
+                    if(resp == 0) {
+                        hdb.createTest(medication, dosage, qty, patientID, drHID);
+                        System.out.println(medication + " " + dosage + " " + qty);
+                    }
+                    else {
+                        System.out.println("No values entered");
+                    }
+                }
+
+                hdb.createTest(drHID, patientID);
+
+            }
