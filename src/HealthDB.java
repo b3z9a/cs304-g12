@@ -819,7 +819,7 @@ public class HealthDB {
 													 String phosphorus, String labTechHID) {
 	 boolean success = false;
 	 try{
-	 	String test = "update labtest set cholesterol='" + cholesterol + ", HDLcholesterol="
+	 	String test = "update labtest set cholesterol=" + cholesterol + ", HDLcholesterol="
 	 								+ HDLcholesterol + ", LDLcholesterol=" + LDLcholesterol + ", trigycerides="
 									+ trigycerides + ", whiteBloodCellCount=" + whiteBloodCellCount +
 									", redBloodCellCount=" + redBloodCellCount + ", hematocrit=" + hematocrit +
@@ -867,7 +867,7 @@ public class HealthDB {
 			}
 			return success;
     }
- 
+
 /**
 * Helper method that prints a single tuples
 */
