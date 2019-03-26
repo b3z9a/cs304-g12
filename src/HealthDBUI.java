@@ -1,3 +1,5 @@
+import jdk.nashorn.internal.scripts.JO;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -870,9 +872,38 @@ public class HealthDBUI extends JFrame {
         });
         btnCreateTest.setText("Create New Test");
 
+        JButton btnViewTest= new JButton();
+        btnViewTest.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(patientArray.size() > 0) {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    int row = testTPTable.getSelectedRow();
+                    String testID = testPSTableModel.getValueAt(row, 0).toString();
+                    ArrayList<String> testData = hdb.findTest(testID);
+
+                    Object[] data = {"Patient: " + name, "Test ID: " + testID, "Cholesterol: " + testData.get(0), "HDL Cholesterol: " + testData.get(1),
+                            "LDL Choleterol: " + testData.get(2), "Triglycerides: " + testData.get(3), "White Blood Cell Count: " + testData.get(4),
+                            "Red Blood Cell Count: " + testData.get(5), "Hematocrit: " + testData.get(6), "Platelet Count: " + testData.get(7),
+                            "NRBC Percent: " + testData.get(8), "NRBC Absolute: " + testData.get(9), "Sodium: " + testData.get(10),
+                            "Glucose: " + testData.get(11), "Phosphorus: " + testData.get(12), "Lab Tech ID: " + testData.get(13)};
+
+
+                    JOptionPane.showMessageDialog(frame, data, "Test # " + testID + " for Patient " + name, JOptionPane.PLAIN_MESSAGE);
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        btnViewTest.setText("View Selected Test");
+
         JPanel panelPatientSummaryTestsBtn = new JPanel();
         panelPatientSummaryTestsBtn.setLayout(new FlowLayout());
         panelPatientSummaryTestsBtn.add(btnCreateTest);
+        panelPatientSummaryTestsBtn.add(btnViewTest);
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 10;
         panelPatientSummary.add(panelPatientSummaryTestsBtn, gbc);
@@ -1479,7 +1510,7 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                String pid = hdb.findTest(txtTest.getText());
+                String pid = hdb.findPIDfromTest(txtTest.getText());
 
                 patientArray = hdb.findPatient(pid);
 
