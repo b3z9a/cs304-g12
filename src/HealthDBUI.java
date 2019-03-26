@@ -58,7 +58,7 @@ public class HealthDBUI extends JFrame {
 
     private JPanel panelPrescriptionFinder;
     private JPanel panelPrescriptionInfo;
-    private JPanel panelPrescriptionPrescriptions;
+    private JScrollPane panePrescriptionPrescriptions;
 
     private JPanel panelTestFinder;
     private JPanel panelTestInfo;
@@ -1239,7 +1239,6 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryInfo.add(txtDocHomeNum, gbc);
     }
 
-
     private void setPanelPrescription() {
         JLabel lbl = new JLabel("Prescription Information");
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
@@ -1285,13 +1284,19 @@ public class HealthDBUI extends JFrame {
 
 
         /* Row 5 */
-        panelPrescriptionPrescriptions = new JPanel();
-        panelPrescriptionPrescriptions.setLayout(new BorderLayout());
+        String cols[] = {"ID", "Date", "Medication", "Dosage", "Dosage Unit", "Quantity", "Filled Date", "Filled?"};
+        String data[][] = {};
+        prescPPTableModel = new DefaultTableModel(data, cols);
+        prescPPTable = new JTable(prescPPTableModel);
+
+        panePrescriptionPrescriptions = new JScrollPane(prescPPTable);
+        panePrescriptionPrescriptions.setLayout(new ScrollPaneLayout());
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 5;
-        panelPrescription.add(panelPrescriptionPrescriptions, gbc);
+        panelPrescription.add(panePrescriptionPrescriptions, gbc);
     }
     private void setPanelPrescriptionFinder() {
         JTextField txtPID = new JTextField(10);
@@ -1530,15 +1535,6 @@ public class HealthDBUI extends JFrame {
         gbc.insets= new Insets(0,5,0,0);
         gbc.gridx = 3; gbc.gridy = 6;
         panelPrescriptionInfo.add(txtPharmHomeNum, gbc);
-
-    }
-    private void setPanelPrescriptionPrescriptions() {
-        String cols[] = {"ID", "Date", "Medication", "Dosage", "Dosage Unit", "Quantity", "Filled Date", "Filled?"};
-        String data[][] = {};
-        prescPPTableModel = new DefaultTableModel(data, cols);
-        prescPPTable = new JTable(prescPPTableModel);
-        panelPrescriptionPrescriptions.add(prescPPTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelPrescriptionPrescriptions.add(prescPPTable, BorderLayout.CENTER);
     }
 
     private void setPanelTest() {
