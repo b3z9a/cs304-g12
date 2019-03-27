@@ -242,6 +242,7 @@ public class HealthDB {
                     + "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
                     + patientID + ", '" + invoiceItem + "', " + today() + ", " + "to_date('" + dueDate + "', 'yyyy-MM-dd'), '" + paymentStatus + "', "
                     + paymentDateValue + ", '" + paymentMethod + "', " + amountOwing + ", " + paymentIDCounter + ", " + planID + ")";
+            System.out.println(query);
             invoiceIDCounter++;
             paymentIDCounter++;
             System.out.println("invoiceID Counter post: " + invoiceIDCounter);
