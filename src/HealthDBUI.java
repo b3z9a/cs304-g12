@@ -21,6 +21,7 @@ public class HealthDBUI extends JFrame {
 
     private final String drHID = "52731";   // Dr. Melissa Clark
     private String patientID;
+    private String planID;
 
     private String userClass[] = {"Patient Summary", "Plan Summary", "Prescriptions", "Tests"};
     private String paymentStatus[] = {"Paid", "Unpaid"};
@@ -131,9 +132,16 @@ public class HealthDBUI extends JFrame {
     private DefaultTableModel refPSTableModel;
     private JTable prescPPTable;
     private DefaultTableModel prescPPTableModel;
+    
+    // view tables
     private JTable testTPTable;
     private DefaultTableModel testTPTableModel;
+    private JTable invoiceTPTable;
+    private DefaultTableModel invoiceTPTableModel;
     
+    
+    
+    // 
     private JTable extendedBenefitsTable;
     private DefaultTableModel extendedBenefitsTableModel;
     private JTable invoiceHistoryGridTable;
@@ -214,6 +222,7 @@ public class HealthDBUI extends JFrame {
         testPSTableModel.setRowCount(0);
         testTPTableModel.setRowCount(0);
         refPSTableModel.setRowCount(0);
+        // invoiceTPTableModel.setRowCount(0);
 
         txtDocName.setText("");
         txtDocPID.setText("");
@@ -2960,31 +2969,142 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 3; gbc.gridy = 5;
         panelPlanSummaryInfo.add(txtPlanSumHomePhone, gbc);
     }
+
     private void setPanelPlanSummaryActions() {
         JButton btnCreateInvoice = new JButton();
         btnCreateInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String patientID = "";
-                String invoiceItem = "";
-                String dueDate = "";
-                String paymentStatus = "";
-                String paymentDate = "";
-                String paymentMethod = "";
-                String amountOwing = "";
-                String paymentID = "";
-                String planID = "";
-
-                /* Switch to next view only if click createInvoice */
-                if (hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus, 
-                		paymentDate, paymentMethod, amountOwing, paymentID, planID)) {
+                // JTextField aPatientID = new JTextField();
+                // JTextField aInvoiceID = new JTextField();
+                JTextField aInvoiceItem = new JTextField();
+                JTextField aDueDate = new JTextField();
+                JTextField aPaymentStatus = new JTextField();
+                JTextField aPaymentDate = new JTextField();
+                JTextField aPaymentMethod = new JTextField();
+                JTextField aAmountOwing = new JTextField();
+                JTextField aPaymentID = new JTextField();
+                JTextField aPlanID = new JTextField();
+                // JTextField aCreationDate = new JTextField();
                 
-                    switchToInvoicePanel();
+                if(patientArray.size() > 0) {
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+                    
+
+                    Object[] fields = {"Patient: " + name, "Invoice Item: ", aInvoiceItem, "Due Date: ", aDueDate, "Payment Status: ", aPaymentStatus, "Payment Date: ",
+                    		aPaymentDate, "Payment Method: ", aPaymentMethod, "Amount Owing: ", aAmountOwing, "Payment ID: ", aPaymentID};
+                    
+        
+                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Create invoice for " + name, JOptionPane.OK_CANCEL_OPTION);
+                    
+                    if(resp == JOptionPane.OK_OPTION) {
+                        
+                    	String invoiceItem = aInvoiceItem.getText();
+                        String dueDate = aDueDate.getText(); 
+                        String paymentStatus = aPaymentStatus.getText();
+                        String paymentDate = aPaymentDate.getText();
+                        String paymentMethod = aPaymentMethod.getText(); 
+                        String amountOwing = aAmountOwing.getText(); 
+                        String paymentID = aPaymentID.getText();
+                        planID = hdb.getPlan(patientID).get(0);
+                        
+                        hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus, 
+                        		paymentDate, paymentMethod, amountOwing, paymentID, planID);
+                        
+                     // Clear and update the table with new data
+                        invoiceHistoryGridTableModel.setRowCount(0);
+                        invoiceHistoryGridArray = hdb.getInvoices(patientID);
+                        updateTable(invoiceHistoryGridArray, invoiceHistoryGridTableModel);
+                    }
+                    else {
+                        System.out.println("No values entered");
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame, "No Invoice selected!", "Error",  JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
         btnCreateInvoice.setText("Create Invoice");
         panelPlanSummaryActions.add(btnCreateInvoice);
+        
+        JButton btnViewInvoice= new JButton();
+        btnViewInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
+            }
+        });
+        btnViewInvoice.setText("View Selected Invoice");
+        panelPlanSummaryActions.add(btnViewInvoice);
+        
+    }
+    
+    private void viewInvoiceData(JTable table, DefaultTableModel tableModel) {        
+        JTextField aPatientID = new JTextField();
+        JTextField aInvoiceID = new JTextField();
+        JTextField aInvoiceItem = new JTextField();
+        JTextField aDueDate = new JTextField();
+        JTextField aPaymentStatus = new JTextField();
+        JTextField aPaymentDate = new JTextField();
+        JTextField aPaymentMethod = new JTextField();
+        JTextField aAmountOwing = new JTextField();
+        JTextField aPaymentID = new JTextField();
+        JTextField aPlanID = new JTextField();
+        JTextField aCreationDate = new JTextField();
+        
+
+        if(patientArray.size() > 0) {
+        	String name = patientArray.get(0);
+            patientID = patientArray.get(2);
+            String invoiceID = hdb.getInvoices(patientID).get(0).get(0);
+
+            int row = table.getSelectedRow();
+
+            if(row >= 0) {
+                //String invoiceID = tableModel.getValueAt(row, 0).toString();
+                ArrayList<String> testData = hdb.findInvoice(invoiceID);
+
+                aPatientID.setEditable(false);
+                aInvoiceID.setEditable(false);
+                aInvoiceItem.setEditable(false);
+                aDueDate.setEditable(false);
+                aPaymentStatus.setEditable(false);
+                aPaymentDate.setEditable(false);
+                aPaymentMethod.setEditable(false);
+                aAmountOwing.setEditable(false);
+                aPaymentID.setEditable(false);
+                aPlanID.setEditable(false);
+                aCreationDate.setEditable(false);
+                
+                aPatientID.setText(testData.get(0));
+                aInvoiceID.setText(testData.get(1));
+                aInvoiceItem.setText(testData.get(2));
+                aDueDate.setText(testData.get(3));
+                aPaymentStatus.setText(testData.get(4));
+                aPaymentDate.setText(testData.get(5));
+                aPaymentMethod.setText(testData.get(6));
+                aAmountOwing.setText(testData.get(7));
+                aPaymentID.setText(testData.get(8));
+                aPlanID.setText(testData.get(9));
+                aCreationDate.setText(testData.get(10));
+                
+
+                Object[] data = {"Invoice ID: " + invoiceID, "PatientID: " + aPatientID, " ",
+                        "Invoice Item: ", aInvoiceItem, "Due Date: ", aDueDate, "Payment Status: ", aPaymentStatus,
+                        "Payment Date: ", aPaymentDate, "Payment Method: ", aPaymentMethod, "Amount Owing: ", aAmountOwing,
+                        "Payment ID: ", aPaymentID, "Plan ID: ", aPlanID, "Creation Date: ", aCreationDate};
+
+                String s = testData.get(0);
+                JOptionPane.showMessageDialog(frame, data, "Invoice ID # " + invoiceID + " for Patient " + name, JOptionPane.PLAIN_MESSAGE);
+            }
+            else {
+                JOptionPane.showMessageDialog(frame, "Please select an invoice from the Invoice table.", "Error",  JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(frame, "No invoice selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void switchToUserSelectPanel() {
