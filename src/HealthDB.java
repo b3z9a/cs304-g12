@@ -912,21 +912,30 @@ public class HealthDB {
 		return tuple;
 	}
 
-    /**
+	/**
      * updateX methods: Updates an existing X tuple with given data
      */
 
 	/**
-	* Updates a prescription in the database.
-	* @param hid: HID of the doctor making the prescription
-	* @param pid: PID of the patient the prescription is for
-	* @param medication: name of medication being prescribed
-	* @param dosage: numeric quantity for the doage without units
-	* @param quantity: number of pills/units of the medication prescribed
+	* Allows pharmacists to mark a prescription as filled.
+	* @param hid: HID of the pharmacist filling the prescription
+	* @param prescriptionID: the ID of the prescription being filled
 	*/
-	public boolean updatePrescription(String hid, String pid, String medication, String dosage, String quantity){
-		/* TODO Updates an existing prescription. */
-		return true;
+	public boolean updatePrescription(String hid, String prescriptionID){
+		boolean success = false;
+		try{
+			String prescription = "update prescription set pharmHID=" + hid +
+														", filledDate=" + today() + ", where prescriptionID="
+														+ prescriptionID;
+
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(prescription);
+			success = true;
+
+		} catch (SQLException ex){
+				System.out.println("Error updating prescription. " + ex.getMessage());
+		}
+		return success;
 	}
 
 	/**
@@ -937,15 +946,63 @@ public class HealthDB {
 	* @param Rest: Lab test values
 	*/
 	public boolean updateTest(String testID, String cholesterol, String HDLcholesterol,
-													 String LDLcholesterol, String trigycerides, String whiteBloodCellCount,
+													 String LDLcholesterol, String triglycerides, String whiteBloodCellCount,
 													 String redBloodCellCount, String hematocrit, String plateletCount,
 													 String NRBCPercent, String NRBCAbsolute, String sodium, String glucose,
-													 String phosphorus, String labTechID) {
+													 String phosphorus, String labTechHID) {
+	 boolean success = false;
+	 try{
+	 	StringBuilder test = new StringBuilder();
+		test.append("update labtest set ");
+		if(!cholesterol.isEmpty()){
+			test.append("cholesterol=" + cholesterol + ", ");
+		}
+		if(!HDLcholesterol.isEmpty()){
+			test.append("HDLcholesterol=" + HDLcholesterol + ", ");
+		}
+		if(!LDLcholesterol.isEmpty()){
+			test.append("LDLcholesterol=" + LDLcholesterol + ", ");
+		}
+		if(!triglycerides.isEmpty()){
+			test.append("triglycerides=" + triglycerides + ", ");
+		}
+		if(!whiteBloodCellCount.isEmpty()){
+			test.append("whiteBloodCellCount=" + whiteBloodCellCount + ", ");
+		}
+		if(!redBloodCellCount.isEmpty()){
+			test.append("redBloodCellCount=" + redBloodCellCount + ", ");
+		}
+		if(!hematocrit.isEmpty()){
+			test.append("hematocrit=" + hematocrit + ", ");
+		}
+		if(!plateletCount.isEmpty()){
+			test.append("plateletCount=" + plateletCount + ", ");
+		}
+		if(!NRBCPercent.isEmpty()){
+			test.append("NRBCpercent=" + NRBCPercent + ", ");
+		}
+		if(!NRBCAbsolute.isEmpty()){
+			test.append("NRBCabsolute=" + NRBCAbsolute + ", ");
+		}
+		if(!sodium.isEmpty()){
+			test.append("sodium=" + sodium + ", ");
+		}
+		if(!glucose.isEmpty()){
+			test.append("glucose=" + glucose + ", ");
+		}
+		if(!phosphorus.isEmpty()){
+			test.append("phosphorus=" + phosphorus + ", ");
+		}
+		test.append( "labTechHID=" + labTechHID + ", performedDate=" + today() + " where testID=" + testID);
 
-			/* TODO submit test data */
-			// old createTest query to repurpose for updateTest
-			//String query = "insert into labtest values (" + testID + ", " +  cholesterol +", " + HDLcholesterol +", " + LDLcholesterol +", " + triglycerides +", " + whiteBloodCellCount +", " + redBloodCellCount +", " + hematocrit +", " + plateletCount +", " + NRBCpercent +", " + NRBCabsolute +", " + sodium +", " + phosphorus +", " + glucose +", " + patientID +", " + drHID +", " + labTechHID +", " + orderedDate +", " + performedDate +")";
-			return true;
+	 	Statement stmt = con.createStatement();
+	 	stmt.executeUpdate(test.toString());
+	 	success = true;
+
+	 } catch (SQLException ex){
+	 		System.out.println("Error updating test. " + ex.getMessage());
+	 }
+	 return success;
 	}
 
 		/**
@@ -960,9 +1017,43 @@ public class HealthDB {
     public boolean updateInvoice(String invoiceID, String dueDate, String invoiceItem,
                                 String paymentStatus, String paymentDate, String paymentMethod,
 																String amountOwing) {
+			boolean success = false;
+			// If there is nothing to update, return true. Otherwise, causes sql error.
+			if (dueDate.isEmpty() && invoiceItem.isEmpty() && paymentStatus.isEmpty() &&
+			 	 paymentDate.isEmpty() && paymentMethod.isEmpty() && amountOwing.isEmpty()){
+					 return true;
+				 }
+			try{
+				StringBuilder invoice = new StringBuilder();
+				invoice.append("update invoice set ");
+				if(!dueDate.isEmpty()){
+					invoice.append("dueDate= to_date('" + dueDate + "', 'yyyy-MM-dd'), ");
+				}
+				if(!invoiceItem.isEmpty()){
+					invoice.append("invoiceItem=" + invoiceItem + ", ");
+				}
+				if(!paymentStatus.isEmpty()){
+					invoice.append("paymentStatus=" + paymentStatus + ", ");
+				}
+				if(!paymentMethod.isEmpty()){
+					invoice.append("paymentMethod=" + paymentMethod + ", ");
+				}
+				if(!amountOwing.isEmpty()){
+					invoice.append("amountOwing=" + amountOwing + ", ");
+				}
+				if(!paymentDate.isEmpty()){
+					invoice.append("paymentDate=to_date(" + paymentDate + "', 'yyyy-MM-dd'), ");
+				}
+				invoice.delete(invoice.length()-2, invoice.length()-1);
+				invoice.append("where invoiceID=" + invoiceID);
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate(invoice.toString());
+				success = true;
 
-        /* TODO Update invoice. */
-        return true;
+			} catch (SQLException ex){
+					System.out.println("Error updating invoice. " + ex.getMessage());
+			}
+			return success;
     }
 
 		/**
