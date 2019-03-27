@@ -2150,6 +2150,7 @@ public class HealthDBUI extends JFrame {
         btnFindInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	System.out.println("clicked find by invoice #");
                 Object obj = hdb.findInvoice(txtInvoiceNum.getText());
 
                 /* TODO get tests */
