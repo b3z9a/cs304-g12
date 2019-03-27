@@ -1227,12 +1227,11 @@ public class HealthDB {
     {
     	ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
     	try {
-    		String query = "select i.invoiceItem, monthNum, avg(balanceSum) as balanceSumAvg from("
-    				+ "select i.invoiceItem, extract(month) as monthNum, i.paymentStatus, sum(amountOwing) as balanceSum "
-    				+ "from invoice i where i.patientID = " + pid + " group by i.invoiceItem, i.paymentStatus) "
-    				+ "where i.paymentStatus = 'Unpaid' group by i.invoiceItem, monthNum order by monthNum, i.invoiceItem";
+            // basic query just to test if hooked up properly with ui
+            String query = "select i.invoiceItem, i.dueDate, sum(i.amountOwing) as balanceSum "
+            + "from invoice i where i.patientID = " + pid + " group by i.invoiceItem, i.dueDate, i.paymentStatus";
 
-    				System.out.println(query);
+            System.out.println(query);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -1241,57 +1240,12 @@ public class HealthDB {
 
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
+                // default results to test for now
 				tuple.add(rs.getString("invoiceItem"));
-				// monthNum returns the number representing month
-				if (rs.getString("monthNum") == "1")
-				{
-					tuple.add("January");
-				}
-				else if (rs.getString("monthNum") == "2")
-				{
-					tuple.add("February");
-				}
-				else if (rs.getString("monthNum") == "3")
-				{
-					tuple.add("March");
-				}
-				else if (rs.getString("April") == "4")
-				{
-					tuple.add("April");
-				}
-				else if (rs.getString("monthNum") == "5")
-				{
-					tuple.add("May");
-				}
-				else if (rs.getString("monthNum") == "6")
-				{
-					tuple.add("June");
-				}
-				else if (rs.getString("monthNum") == "7")
-				{
-					tuple.add("July");
-				}
-				else if (rs.getString("monthNum") == "8")
-				{
-					tuple.add("August");
-				}
-				else if (rs.getString("monthNum") == "9")
-				{
-					tuple.add("September");
-				}
-				else if (rs.getString("monthNum") == "10")
-				{
-					tuple.add("October");
-				}
-				else if (rs.getString("monthNum") == "11")
-				{
-					tuple.add("November");
-				}
-				else if (rs.getString("monthNum") == "12")
-				{
-					tuple.add("December");
-				}
-				tuple.add(rs.getString("balanceSumAvg"));
+                tuple.add("January");
+                tuple.add("100");
+                // monthNum returns the number representing month
+				
 			}
 			stmt.close();
     	} catch (SQLException ex){
