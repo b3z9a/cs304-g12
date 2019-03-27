@@ -4,6 +4,7 @@ import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -2977,13 +2978,11 @@ public class HealthDBUI extends JFrame {
         btnCreateInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
                 JTextField aInvoiceItem = new JTextField();
-                JTextField aDueDate = new JTextField();
-                //JTextField aPaymentStatus = new JTextField();
-                JTextField aPaymentDate = new JTextField();
-                //JTextField aPaymentMethod = new JTextField();
+                JFormattedTextField aDueDate = new JFormattedTextField(dateFormat);
+                JFormattedTextField aPaymentDate = new JFormattedTextField(dateFormat);
                 JTextField aAmountOwing = new JTextField();
-                JTextField aPaymentID = new JTextField();
                 JComboBox<String> aPaymentStatus = new JComboBox<>(paymentStatus);
                 JComboBox<String> aPaymentMethod = new JComboBox<>(paymentMethod);
 
