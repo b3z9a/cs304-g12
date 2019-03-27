@@ -2994,7 +2994,7 @@ public class HealthDBUI extends JFrame {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     
 
-                    Object[] fields = {"Patient: " + name, "Invoice Item: ", aInvoiceItem, "Due Date (MM-DD-YYYY): ", aDueDate, "Payment Status: ", aPaymentStatus, "Payment Date (MM-DD-YYYY): ",
+                    Object[] fields = {"Patient: " + name, "Invoice Item: ", aInvoiceItem, "Due Date (YYYY-MM-DD): ", aDueDate, "Payment Status: ", aPaymentStatus, "Payment Date (YYYY-MM-DD): ",
                     		aPaymentDate, "Payment Method: ", aPaymentMethod, "Amount Owing: ", aAmountOwing};
                     
         
