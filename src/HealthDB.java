@@ -704,6 +704,7 @@ public class HealthDB {
 										 " pc.city, pc.province, pc.postalcode, pc.country, "+
 										 "p.homePhone, p.mobilePhone from patient p left join postalcode"+
 										 " pc on p.postalcode = pc.postalcode where p.patientID = " + PID;
+			System.out.println(query);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
