@@ -2701,7 +2701,7 @@ public class HealthDBUI extends JFrame {
                 	extendedBenefitsTableModel.setRowCount(0);
                 	invoiceHistoryGridTableModel.setRowCount(0);
                 	
-                	patientID = planNumArray.get(4);
+                	patientID = planNumArray.get(3);
                 	
                 	patientArray = hdb.findPatient(patientID);
 
