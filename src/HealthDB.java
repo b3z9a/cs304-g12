@@ -241,7 +241,7 @@ public class HealthDB {
             String query = "insert into invoice (invoiceID, patientID, invoiceItem, creationDate, dueDate, paymentStatus, "
                     + "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
                     + patientID + ", '" + invoiceItem + "', " + today() + ", " + "to_date('" + dueDate + "', 'yyyy-MM-dd'), '" + paymentStatus + "', "
-                    + paymentDateValue + ", " + paymentMethod + ", " + amountOwing + ", " + paymentIDCounter + ", " + planID + ")";
+                    + paymentDateValue + ", '" + paymentMethod + "', " + amountOwing + ", " + paymentIDCounter + ", " + planID + ")";
             System.out.println(query);
             invoiceIDCounter++;
             paymentIDCounter++;
