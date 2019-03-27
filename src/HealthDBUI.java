@@ -1251,6 +1251,8 @@ public class HealthDBUI extends JFrame {
         panelPrescriptionFinder = new JPanel();
         panelPrescriptionFinder.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0; gbc.gridy = 1;
         panelPrescription.add(panelPrescriptionFinder, gbc);
 
@@ -1268,6 +1270,8 @@ public class HealthDBUI extends JFrame {
         panelPrescriptionInfo = new JPanel();
         panelPrescriptionInfo.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0; gbc.gridy = 3;
         panelPrescription.add(panelPrescriptionInfo, gbc);
 
