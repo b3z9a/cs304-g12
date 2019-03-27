@@ -899,7 +899,6 @@ public class HealthDB {
 			ResultSetMetaData rsmd = rs.getMetaData();
 
 			while(rs.next()){
-				tuple.add(rs.getString("planID"));
 				tuple.add(rs.getString("policyType"));
 				tuple.add(rs.getString("startDate"));
 				tuple.add(rs.getString("endDate"));
