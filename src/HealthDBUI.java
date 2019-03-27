@@ -1321,7 +1321,7 @@ public class HealthDBUI extends JFrame {
                             JOptionPane.showMessageDialog(frame, "No Pharmacist ID entered!", "Error", JOptionPane.ERROR_MESSAGE);
                         } else {
                             hdb.updatePrescription(pharmHIDField.getText(), prescID);
-                            clearPanelData();
+                            prescPPTableModel.setRowCount(0);
                             updateTable(hdb.getPrescriptions(patientID), prescPPTableModel);
                         }
                     }
