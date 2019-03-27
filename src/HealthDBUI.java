@@ -2991,13 +2991,6 @@ public class HealthDBUI extends JFrame {
                 JComboBox<String> aPaymentStatus = new JComboBox<>(paymentStatus);
                 JComboBox<String> aPaymentMethod = new JComboBox<>(paymentMethod);
 
-                try {
-                    MaskFormatter mask = new MaskFormatter("##-##-####");
-                    mask.install(aDueDate);
-                    mask.install(aPaymentDate);
-                } catch (ParseException ex) {
-                    Logger.getLogger(HealthDBUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
                 if(patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
