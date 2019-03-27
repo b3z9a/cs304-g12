@@ -240,8 +240,8 @@ public class HealthDB {
 			// Oracle will insert null if you insert an empty string. Therefore do not need to check if optional values are empty strings
 			String query = "insert into invoice (invoiceID, patientID, invoiceItem, creationDate, dueDate, paymentStatus, "
 							+ "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
-							+ patientID + ", '" + invoiceItem + "', " + today() + ", " + "to_date('" + dueDate + "', 'yyyy-MM-dd')," + paymentStatus + ", "
-							+ paymentDateValue + ", " + paymentMethod + ", " + amountOwing + ", " + paymentIDCounter + ", " + planID + ")";
+							+ patientID + ", '" + invoiceItem + "', " + today() + ", " + "to_date('" + dueDate + "', 'yyyy-MM-dd'), '" + paymentStatus + "', "
+							+ paymentDateValue + ", '" + paymentMethod + "', " + amountOwing + ", " + paymentIDCounter + ", " + planID + ")";
 			invoiceIDCounter++;
 			paymentIDCounter++;
 			System.out.println("invoiceID Counter post: " + invoiceIDCounter);
