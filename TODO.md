@@ -10,8 +10,8 @@
 * ~~Clear tables when new patient entered~~
 * ~~Change phone number array index from country to phone number~~ 
 * ~~Add view test button to Patient Summary~~
-*
-*
+* Expand Extended Benefits table colums or wrap them
+* Get checkmarks to show on the Prescriptions table Filled column
 *
 
 ## Back End

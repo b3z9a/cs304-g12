@@ -862,7 +862,7 @@ public class HealthDB {
 		ArrayList<String> tuple = new ArrayList<String>();
 
 		try{
-			String query = "find the patientID and planID from Invoice where invoiceID = " + invoiceID;
+			String query = "select patientID, planID from Invoice where invoiceID = " + invoiceID;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -890,7 +890,8 @@ public class HealthDB {
 	public ArrayList<String> findPlanNumber(String planID) {
 		ArrayList<String> tuple = new ArrayList<String>();
 		try{
-			String query = "find the policyType, startDate, endDate, and patientID from ProvincialHealthPlan where planID = " + planID;
+			String query = "select policyType, startDate, endDate, patientID from ProvincialHealthPlan where planID = " + planID;
+			System.out.println(query);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -898,7 +899,6 @@ public class HealthDB {
 			ResultSetMetaData rsmd = rs.getMetaData();
 
 			while(rs.next()){
-				tuple.add(rs.getString("planID"));
 				tuple.add(rs.getString("policyType"));
 				tuple.add(rs.getString("startDate"));
 				tuple.add(rs.getString("endDate"));
