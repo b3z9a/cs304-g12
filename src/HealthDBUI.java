@@ -27,8 +27,8 @@ public class HealthDBUI extends JFrame {
     private String paymentMethod[] = {"Cash", "Credit/Debit", "Cheque"};
 
     private static JFrame frame;
-    private static int width = 900;
-    private static int height = 720;
+    private static int width = 1000;
+    private static int height = 800;
 
     GridBagConstraints gbc;
 
@@ -193,6 +193,7 @@ public class HealthDBUI extends JFrame {
     private void initialize() {
         frame = new JFrame("Integrated Healthcare Database");
         frame.setBounds(50, 0, width, height);
+        frame.setMinimumSize(new Dimension(width, height));
         panelRoot.setLayout(new CardLayout(0, 0));
         frame.setContentPane(panelRoot);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
