@@ -165,7 +165,6 @@ public class HealthDBUI extends JFrame {
         setPanelPrescription();
         setPanelPrescriptionFinder();
         setPanelPrescriptionInfo();
-        setPanelPrescriptionPrescriptions();
 
         setPanelTest();
         setPanelTestFinder();
