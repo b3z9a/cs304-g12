@@ -890,7 +890,7 @@ public class HealthDB {
 	public ArrayList<String> findPlanNumber(String planID) {
 		ArrayList<String> tuple = new ArrayList<String>();
 		try{
-			String query = "select policyType, startDate, endDate, and patientID from ProvincialHealthPlan where planID = " + planID;
+			String query = "select policyType, startDate, endDate, patientID from ProvincialHealthPlan where planID = " + planID;
 			System.out.println(query);
 			// Create a statement
 			Statement stmt = con.createStatement();
