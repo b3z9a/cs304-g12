@@ -30,7 +30,7 @@ public class HealthDBUI extends JFrame {
 
     private String userClass[] = {"Patient Summary", "Plan Summary", "Prescriptions", "Tests"};
     private String paymentStatus[] = {"Paid", "Unpaid"};
-    private String paymentMethod[] = {"". "Cash", "Credit\\Debit", "Cheque"};
+    private String paymentMethod[] = {"", "Cash", "Credit\\Debit", "Cheque"};
 
     private static JFrame frame;
     private static int width = 1000;
