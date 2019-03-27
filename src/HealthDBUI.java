@@ -837,7 +837,7 @@ public class HealthDBUI extends JFrame {
                 if(patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
-                    if (patientID == "") {
+                    if (patientID.equals("")) {
                         JOptionPane.showMessageDialog(frame,
                                 "Patient ID does not exist",
                                 "Error",
@@ -1322,7 +1322,6 @@ public class HealthDBUI extends JFrame {
 
                 String pid = hdb.findPrescription(txtPrescNum.getText());
 
-                /* TODO get prescriptions */
                 patientArray = hdb.findPatient(pid);
 
                 if(patientArray.size() > 0) {
@@ -1406,7 +1405,21 @@ public class HealthDBUI extends JFrame {
         btnFindPrescPatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                patientArray = hdb.findPatient(txtPID.getText());
+                String pidTxt = txtPID.getText();
+                String nameTxt = txtName.getText();
+
+                System.out.println(pidTxt + " " + nameTxt);
+
+                if(pidTxt.equals("") && !nameTxt.isEmpty())
+                {
+                    ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
+                    pidTxt = getPIDfromName(names, nameTxt);
+
+                    patientArray = hdb.findPatient(pidTxt);
+                }
+                else if(!pidTxt.isEmpty()) {
+                    patientArray = hdb.findPatient(pidTxt);
+                }
 
                 if(patientArray.size() > 0) {
 
@@ -1714,8 +1727,21 @@ public class HealthDBUI extends JFrame {
         btnFindTestPID.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String pidTxt = txtPID.getText();
+                String nameTxt = txtName.getText();
 
-                patientArray = hdb.findPatient(txtPID.getText());
+                System.out.println(pidTxt + " " + nameTxt);
+
+                if(pidTxt.equals("") && !nameTxt.isEmpty())
+                {
+                    ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
+                    pidTxt = getPIDfromName(names, nameTxt);
+
+                    patientArray = hdb.findPatient(pidTxt);
+                }
+                else if(!pidTxt.isEmpty()) {
+                    patientArray = hdb.findPatient(pidTxt);
+                }
 
                 if(patientArray.size() > 0) {
 
@@ -2529,7 +2555,6 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 0;
         panelPlanSummaryFinder.add(lbl, gbc);
 
-
         JTextField txtPID = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
@@ -2578,9 +2603,23 @@ public class HealthDBUI extends JFrame {
         btnFindPlanPatientID.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String pidTxt = txtPID.getText();
+                String nameTxt = txtName.getText();
 
-            	patientArray = hdb.findPatient(txtPID.getText());
-            	planArray = hdb.getPlan(txtPID.getText());
+                System.out.println(pidTxt + " " + nameTxt);
+
+                if(pidTxt.equals("") && !nameTxt.isEmpty())
+                {
+                    ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
+                    pidTxt = getPIDfromName(names, nameTxt);
+
+                    patientArray = hdb.findPatient(pidTxt);
+                }
+                else if(!pidTxt.isEmpty()) {
+                    patientArray = hdb.findPatient(pidTxt);
+                }
+
+            	planArray = hdb.getPlan(pidTxt);
             	
                 if(patientArray.size() > 0) {
 
