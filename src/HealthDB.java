@@ -705,27 +705,36 @@ public class HealthDB {
 
 
 	/**
-	 * Finds the patient ID associated with a prescription.
+	 * Finds tuple for given prescriptionID
 	 * @param prescriptionID: ID of the prescription
-	 * @return PID of patient associated with prescription. Returns the empty
+	 * @return tuple for given prescriptionID
 	 					 string if no prescription is found.
 	 */
-	public String findPrescription(String prescriptionID) {
+	public ArrayList<String> findPrescription(String prescriptionID) {
+		ArrayList<String> tuple = new ArrayList<>();
 		try{
-			String query = "select patientID from Prescription where prescriptionID = " + prescriptionID;
+			String query = "select * from Prescription where prescriptionID = " + prescriptionID;
 			Statement stmt = con.createStatement();
 			// Execute each query.
 			ResultSet rs = stmt.executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
 
-			if(rs.next()){
-				return rs.getString("patientID");
-		  }
-
+			while(rs.next()){
+				tuple.add(rs.getString("medication"));
+				tuple.add(rs.getString("dosage"));
+				tuple.add(rs.getString("quantity"));
+				tuple.add(rs.getString("patientID"));
+				tuple.add(rs.getString("drHID"));
+				tuple.add(rs.getString("pharmHID"));
+				tuple.add(rs.getString("prescribedDate"));
+				tuple.add(rs.getString("filledDate"));
+				
+			}
+			stmt.close();
 		} catch (SQLException ex){
 				System.out.println("Error finding prescription. " + ex.getMessage());
 		}
-		return "";
+		return tuple;
 	}
 
 	/**
@@ -925,7 +934,7 @@ public class HealthDB {
 		boolean success = false;
 		try{
 			String prescription = "update prescription set pharmHID=" + hid +
-														", filledDate=" + today() + ", where prescriptionID="
+														", filledDate=" + today() + " where prescriptionID="
 														+ prescriptionID;
 
 			Statement stmt = con.createStatement();
