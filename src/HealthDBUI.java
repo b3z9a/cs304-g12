@@ -3036,7 +3036,9 @@ public class HealthDBUI extends JFrame {
         btnViewInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
+            	// TODO: Figure out what tables to pass to method. Either one of these two below:
+                // viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
+            	viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
             }
         });
         btnViewInvoice.setText("View Selected Invoice");
@@ -3045,7 +3047,8 @@ public class HealthDBUI extends JFrame {
     }
     
     private void viewInvoiceData(JTable table, DefaultTableModel tableModel) {        
-        // JTextField aPatientID = new JTextField();
+        
+    	JTextField aPatientID = new JTextField();
         // JTextField aInvoiceID = new JTextField();
         JTextField aInvoiceItem = new JTextField();
         JTextField aDueDate = new JTextField();
@@ -3066,7 +3069,7 @@ public class HealthDBUI extends JFrame {
                 String invoiceID = tableModel.getValueAt(row, 0).toString();
                 ArrayList<String> testData = hdb.findInvoice(invoiceID);
 
-                // aPatientID.setEditable(false);
+                aPatientID.setEditable(false);
                 // aInvoiceID.setEditable(false);
                 aInvoiceItem.setEditable(false);
                 aDueDate.setEditable(false);
@@ -3078,24 +3081,23 @@ public class HealthDBUI extends JFrame {
                 aPlanID.setEditable(false);
                 aCreationDate.setEditable(false);
                 
-                // aPatientID.setText(testData.get(0));
+                aPatientID.setText(testData.get(0));
                 // aInvoiceID.setText(testData.get(1));
-                aInvoiceItem.setText(testData.get(2));
-                aDueDate.setText(testData.get(3));
-                aPaymentStatus.setText(testData.get(4));
-                aPaymentDate.setText(testData.get(5));
-                aPaymentMethod.setText(testData.get(6));
-                aAmountOwing.setText(testData.get(7));
-                aPaymentID.setText(testData.get(8));
-                aPlanID.setText(testData.get(9));
-                aCreationDate.setText(testData.get(10));
+                aInvoiceItem.setText(testData.get(1));
+                aDueDate.setText(testData.get(2));
+                aPaymentStatus.setText(testData.get(3));
+                aPaymentDate.setText(testData.get(4));
+                aPaymentMethod.setText(testData.get(5));
+                aAmountOwing.setText(testData.get(6));
+                aPaymentID.setText(testData.get(7));
+                aPlanID.setText(testData.get(8));
+                aCreationDate.setText(testData.get(9));
                 
-                Object[] data = {"Patient: " + name, "Invoice ID: " + invoiceID, " ",
-                        "Invoice Item: ", aInvoiceItem, "Due Date: ", aDueDate, "Payment Status: ", aPaymentStatus,
-                        "Payment Date: ", aPaymentDate, "Payment Method: ", aPaymentMethod, "Amount Owing: ", aAmountOwing,
-                        "Payment ID: ", aPaymentID, "Plan ID: ", aPlanID, "Creation Date: ", aCreationDate};
+                Object[] data = {"Patient: " + name, "Invoice ID: " + invoiceID, " ", 
+                		"Patiend ID: ", aPatientID, "Invoice Item: ", aInvoiceItem, "Due Date: ", aDueDate, 
+                		"Payment Status: ", aPaymentStatus, "Payment Date: ", aPaymentDate, "Payment Method: ", aPaymentMethod, 
+                		"Amount Owing: ", aAmountOwing, "Payment ID: ", aPaymentID, "Plan ID: ", aPlanID, "Creation Date: ", aCreationDate};
 
-                String s = testData.get(0);
                 JOptionPane.showMessageDialog(frame, data, "Invoice ID # " + invoiceID + " for Patient " + name, JOptionPane.PLAIN_MESSAGE);
             }
             else {

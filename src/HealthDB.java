@@ -1,5 +1,8 @@
 import java.sql.*;
 import java.util.*;
+
+import javax.swing.JTextField;
+
 import java.text.*;
 
 /**
@@ -923,6 +926,7 @@ public class HealthDB {
 				} else{
 					test.add("");
 				}
+				
 			}
 			// Close the statement, the result set will be closed in the process.
 			stmt.close();
@@ -932,6 +936,10 @@ public class HealthDB {
 		return test;
 	}
 
+	
+	// patientID, invoiceItem, dueDate, paymentStatus, paymentDate, paymentMethod, amountOwing, paymentID , planID, creationDate
+	
+	
 	/**
      * Finds an invoice and returns it
      * @param invoiceID
@@ -947,28 +955,67 @@ public class HealthDB {
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
-
-			while(rs.next()){
-				tuple.add(rs.getString("invoiceID"));
-				tuple.add(rs.getString("invoiceItem"));
-				if (rs.getDate("creationDate")!=null){
-					tuple.add(format.format(rs.getDate("creationDate")));
+			
+			if(rs.next()){
+				if(rs.getString("patientID")!=null){
+					tuple.add(rs.getString("patientID"));
 				} else{
 					tuple.add("");
 				}
-				if (rs.getDate("dueDate")!=null){
-					tuple.add(format.format(rs.getDate("dueDate")));
+				if(rs.getString("invoiceItem")!=null){
+					tuple.add(rs.getString("invoiceItem"));
 				} else{
 					tuple.add("");
 				}
-				tuple.add(rs.getString("paymentStatus"));
-				tuple.add(rs.getString("amountOwing"));
+				if(rs.getString("dueDate")!=null){
+					tuple.add(rs.getString("dueDate"));
+				} else{
+					tuple.add("");
+				}
+				if(rs.getString("paymentStatus")!=null){
+					tuple.add(rs.getString("paymentStatus"));
+				} else{
+					tuple.add("");
+				}
+				if(rs.getString("paymentDate")!=null){
+					tuple.add(rs.getString("paymentDate"));
+				} else{
+					tuple.add("");
+				}
+				if(rs.getString("paymentMethod")!=null){
+					tuple.add(rs.getString("paymentMethod"));
+				} else{
+					tuple.add("");
+				}
+				// amountOwing, paymentID , planID, creationDate
+				if(rs.getString("amountOwing")!=null){
+					tuple.add(rs.getString("amountOwing"));
+				} else{
+					tuple.add("");
+				}
+				if(rs.getString("paymentID")!=null){
+					tuple.add(rs.getString("paymentID"));
+				} else{
+					tuple.add("");
+				}
+				if(rs.getString("planID")!=null){
+					tuple.add(rs.getString("planID"));
+				} else{
+					tuple.add("");
+				}
+				if(rs.getString("creationDate")!=null){
+					tuple.add(rs.getString("creationDate"));
+				} else{
+					tuple.add("");
+				}
 			}
+			// Close the statement, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
-			System.out.println("Failed to get invoice info. " + ex.getMessage());
+			System.out.println("Failed to get plan summary. " + ex.getMessage());
 		}
 		return tuple;
+			
     }
 
 	/**
