@@ -880,7 +880,6 @@ public class HealthDB {
 		return tuple;
     }
 
-
 	/**
 	 * findPlanNum
 	 * Finds a plan number in the database, stores tuple information in a data structure
@@ -966,6 +965,17 @@ public class HealthDB {
         return true;
     }
 
+		/**
+		*  Checks if a new medication would cause an interaction.
+		*  @param patientID
+		 * @param medication
+		*  @return true if the medication would cause an interction, false
+		*          otherwise.
+		*/
+	private boolean checkInteraction(String patientID, String medication){
+		// TODO: Check for interactions. //
+		return false;
+	}
 
 	private void printTuple(ArrayList<String> tuple){
 			StringBuilder sb = new StringBuilder();
