@@ -1531,7 +1531,7 @@ public class HealthDBUI extends JFrame {
                 }
             }
         });
-        btnFindPrescPatient.setText("Find by Patient ID");
+        btnFindPrescPatient.setText("Find Patient ID");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(5,5,0,0);
@@ -2800,7 +2800,7 @@ public class HealthDBUI extends JFrame {
 
             }
         });
-        btnFindPlanPatientID.setText("Find by Patient ID");
+        btnFindPlanPatientID.setText("Find by Patient");
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 0);
         gbc.gridwidth = 2;
