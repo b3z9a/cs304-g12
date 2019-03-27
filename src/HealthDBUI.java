@@ -25,7 +25,7 @@ public class HealthDBUI extends JFrame {
 
     private String userClass[] = {"Patient Summary", "Plan Summary", "Prescriptions", "Tests"};
     private String paymentStatus[] = {"Paid", "Unpaid"};
-    private String paymentMethod[] = {"Cash", "Credit/Debit", "Cheque"};
+    private String paymentMethod[] = {"", "Cash", "Credit/Debit", "Cheque"};
 
     private static JFrame frame;
     private static int width = 1000;
@@ -3007,6 +3007,8 @@ public class HealthDBUI extends JFrame {
                         String paymentMethod = aPaymentMethod.getSelectedItem().toString();
                         String amountOwing = aAmountOwing.getText();
                         planID = hdb.getPlan(patientID).get(0);
+
+                        System.out.println(patientID + " " + invoiceItem + " " + dueDate + " " + paymentStatus + " " + paymentDate + " " + paymentMethod + " " + amountOwing + " " + planID);
                         
                         hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus, 
                         		paymentDate, paymentMethod, amountOwing, planID);
