@@ -1364,9 +1364,11 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                String pid = hdb.findPrescription(txtPrescNum.getText());
+                ArrayList<String> tuple = hdb.findPrescription(txtPrescNum.getText());
 
-                patientArray = hdb.findPatient(pid);
+                String[] data = new String[tuple.size()];
+
+                patientArray = hdb.findPatient(tuple.get(3));
 
                 if(patientArray.size() > 0) {
 
@@ -1385,14 +1387,14 @@ public class HealthDBUI extends JFrame {
                     txtPharmHomeNum.setText(patientArray.get(7));
                     txtPharmMobileNum.setText(patientArray.get(8));
 
-                    prescriptions = hdb.getPrescriptions(patientArray.get(2));
-                    printTuples(prescriptions);
-                    if(prescriptions.size() > 0) {
-                        String[][] data = createData(prescriptions);
-                        for(int row = 0; row < data.length; row++)
-                        {
-                            prescPPTableModel.addRow(data[row]);
+                    int row = 0;
+                    if(tuple.size() > 0) {
+                        for (String s : tuple) {
+                            data[row] = s;
+                            row++;
                         }
+
+                        prescPPTableModel.addRow(data);
                     }
 
                     txtPrescNum.setText("");
