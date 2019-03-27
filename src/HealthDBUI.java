@@ -2977,24 +2977,23 @@ public class HealthDBUI extends JFrame {
         btnCreateInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // JTextField aPatientID = new JTextField();
-                // JTextField aInvoiceID = new JTextField();
                 JTextField aInvoiceItem = new JTextField();
                 JTextField aDueDate = new JTextField();
-                JTextField aPaymentStatus = new JTextField();
+                //JTextField aPaymentStatus = new JTextField();
                 JTextField aPaymentDate = new JTextField();
-                JTextField aPaymentMethod = new JTextField();
+                //JTextField aPaymentMethod = new JTextField();
                 JTextField aAmountOwing = new JTextField();
                 JTextField aPaymentID = new JTextField();
-                JTextField aPlanID = new JTextField();
-                // JTextField aCreationDate = new JTextField();
+                JComboBox<String> aPaymentStatus = new JComboBox<>(paymentStatus);
+                JComboBox<String> aPaymentMethod = new JComboBox<>(paymentMethod);
+
                 
                 if(patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     
 
                     Object[] fields = {"Patient: " + name, "Invoice Item: ", aInvoiceItem, "Due Date: ", aDueDate, "Payment Status: ", aPaymentStatus, "Payment Date: ",
-                    		aPaymentDate, "Payment Method: ", aPaymentMethod, "Amount Owing: ", aAmountOwing, "Payment ID: ", aPaymentID};
+                    		aPaymentDate, "Payment Method: ", aPaymentMethod, "Amount Owing: ", aAmountOwing};
                     
         
                     int resp = JOptionPane.showConfirmDialog(frame, fields, "Create invoice for " + name, JOptionPane.OK_CANCEL_OPTION);
@@ -3003,15 +3002,14 @@ public class HealthDBUI extends JFrame {
                         
                     	String invoiceItem = aInvoiceItem.getText();
                         String dueDate = aDueDate.getText(); 
-                        String paymentStatus = aPaymentStatus.getText();
+                        String paymentStatus = aPaymentStatus.getSelectedItem().toString();
                         String paymentDate = aPaymentDate.getText();
-                        String paymentMethod = aPaymentMethod.getText(); 
-                        String amountOwing = aAmountOwing.getText(); 
-                        String paymentID = aPaymentID.getText();
+                        String paymentMethod = aPaymentMethod.getSelectedItem().toString();
+                        String amountOwing = aAmountOwing.getText();
                         planID = hdb.getPlan(patientID).get(0);
                         
                         hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus, 
-                        		paymentDate, paymentMethod, amountOwing, paymentID, planID);
+                        		paymentDate, paymentMethod, amountOwing, planID);
                         
                      // Clear and update the table with new data
                         invoiceHistoryGridTableModel.setRowCount(0);
