@@ -2492,6 +2492,35 @@ public class HealthDBUI extends JFrame {
         panelPlanSummary.add(panelMonthlyInvoiceSummary, gbc);
         
      // -------------------------------------
+        /* Row 14 */
+        JButton btnGetSummary = new JButton();
+        btnGetSummary.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	// Clear and update the table with new data
+                monthlyInvoiceSummaryTableModel.setRowCount(0);
+                
+                // Call method
+                monthlyInvoiceSummaryArray = hdb.getOwingInvoicesMonthlySummary(patientID);
+                printTuples(monthlyInvoiceSummaryArray);
+                String[][] data = createData(monthlyInvoiceSummaryArray);
+                for(int row = 0; row < data.length; row++)
+                {
+                	monthlyInvoiceSummaryTableModel.addRow(data[row]);
+                }
+            }
+        });
+        btnGetSummary.setText("Get Summary");
+
+        JPanel panelMonthlyInvoiceSummaryPresBtn = new JPanel();
+        panelMonthlyInvoiceSummaryPresBtn.setLayout(new FlowLayout());
+        panelMonthlyInvoiceSummaryPresBtn.add(btnGetSummary);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 14;
+        panelPlanSummary.add(panelMonthlyInvoiceSummaryPresBtn, gbc);
+        
+        // ----------------------------
     }
     private void setPanelProvincialPlan() {
     	JLabel lbl = new JLabel("Plan ID:");
@@ -2619,8 +2648,8 @@ public class HealthDBUI extends JFrame {
         btnUpdateInvoiceTotals.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-            	System.out.println(patientID);
+            	
+            	
 
             	txtTotalUnpaid.setText(Double.toString((hdb.getAmountOwing(patientID))));
                 txtTotalOverDue.setText(Double.toString(hdb.getOverdueAmountOwing(patientID)));
@@ -2758,6 +2787,8 @@ public class HealthDBUI extends JFrame {
                 } else {
                     txtPID.setText("");
                     txtName.setText("");
+                    txtTotalUnpaid.setText("");
+                    txtTotalOverDue.setText("");
 
                     // Clear the data tables
                     extendedBenefitsTableModel.setRowCount(0);

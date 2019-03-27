@@ -1223,7 +1223,7 @@ public class HealthDB {
      * tuple[] = {0 invoiceItem, 1 month, 2 , 3 balanceSumAvg}
      * @return invoices grouped by invoice item, month, average unpaid balance owing 
      */
-    private ArrayList<ArrayList<String>> getOwingInvoicesMonthlySummary(String pid)
+    public ArrayList<ArrayList<String>> getOwingInvoicesMonthlySummary(String pid)
     {
     	ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
     	try {
