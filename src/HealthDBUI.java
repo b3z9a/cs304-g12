@@ -29,7 +29,7 @@ public class HealthDBUI extends JFrame {
     private String planID;
 
     private String userClass[] = {"Patient Summary", "Plan Summary", "Prescriptions", "Tests"};
-    private String paymentStatus[] = {"Paid", "Unpaid"};
+    private String paymentStatus[] = {"Unpaid", "Paid"};
     private String paymentMethod[] = {"", "Cash", "Credit\\Debit", "Cheque"};
 
     private static JFrame frame;
@@ -3034,8 +3034,8 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
             	// TODO: Figure out what tables to pass to method. Either one of these two below:
-                viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
-            	// viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
+                // viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
+            	viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
             }
         });
         btnViewInvoice.setText("View Selected Invoice");

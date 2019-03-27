@@ -231,10 +231,10 @@ insert into HealthcareProfessional values (55284, 'Jeff', 'Coleman', '210', '217
 insert into HealthcareProfessional values (55934, 'Nishi', 'Dhawan', '15', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
 insert into HealthcareProfessional values (56868, 'Timothy', 'Doty', '', '2175 Salal Drive', 'V6B3N6', '604-731-9238', '250-778-3045');
 insert into HealthcareProfessional values (51837, 'Sanja', 'Avinashi', '220', '3935 Kincaid St', 'V5G2X6', '604-634-8573', '778-584-4835');
-insert into HealthcareProfessional values (53592, 'Sanja', 'Avinashi', '215', '3935 Kincaid St', 'V5G2X6', '604-634-8434', '778-573-5838');
-insert into HealthcareProfessional values (59434, 'Sanja', 'Avinashi', '233', '3935 Kincaid St', 'V5G2X6', '604-644-6832', '766-938-9671');
-insert into HealthcareProfessional values (56838, 'Sanja', 'Avinashi', '115', '3935 Kincaid St', 'V5G2X6', '604-644-6824', '855-365-8344');
-insert into HealthcareProfessional values (56992, 'Sanja', 'Avinashi', '101', '3935 Kincaid St', 'V5G2X6', '604-662-4823', '855-365-3843');
+insert into HealthcareProfessional values (53592, 'Anita', 'Goldmann', '215', '3935 Kincaid St', 'V5G2X6', '604-634-8434', '778-573-5838');
+insert into HealthcareProfessional values (59434, 'Henry', 'Cooper', '233', '3935 Kincaid St', 'V5G2X6', '604-644-6832', '766-938-9671');
+insert into HealthcareProfessional values (56838, 'Stanley', 'Gershwin', '115', '3935 Kincaid St', 'V5G2X6', '604-644-6824', '855-365-8344');
+insert into HealthcareProfessional values (56992, 'Mateo', 'Valdez', '101', '3935 Kincaid St', 'V5G2X6', '604-662-4823', '855-365-3843');
 
 
 insert into Doctor values (54337, 922789, 'Cardiologist');
@@ -329,7 +329,7 @@ insert into Patient values (38573757, 'Antonio', 'Gomez', '3211 Fraser St.', 'V6
 insert into Patient values (39485722, 'Miguel', 'Benitez-Lazo', '255, 1755 W 14th Ave', 'V6K1C7', '604-884-5924', '818-283-8429');
 insert into Patient values (34838582, 'Ravdeep', 'Birdi', NULL, NULL, NULL, NULL);
 insert into Patient values (35835723, 'Marie', 'Fransen', '414 939 Beatty St.', 'V6B3N6', '604-753-3858', '771-883-2843');
-insert into Patient values (34958324, 'Julie', 'Fujiwara', '7B, 5555 Dunbar St.', 'V6B3N6', NULL, '771-294-2844');
+insert into Patient values (34958324, 'Emica', 'Fujiwara', '7B, 5555 Dunbar St.', 'V6B3N6', NULL, '771-294-2844');
 insert into Patient values (33847244, 'Charlotte', 'Gill', '550 W 12th Ave', 'V6G2E5', '775-394-2844', NULL);
 insert into Patient values (32838321, 'Nanveet', 'Singh', '211, 1454 Pendrell St. #31', 'V6K1C7', '775-395-2843', '665-294-9433');
 insert into Patient values (35384852, 'Hillary', 'Emmerson', '2145 York Ave', 'V6G2E5', '775-244-3949', '675-938-4834');
@@ -419,11 +419,11 @@ insert into ExtendedBenefitsPlan values (205930, 128472, TO_DATE('2019-01-01', '
 
 insert into Invoice values (119274, 32118954, 'Annual exam', TO_DATE('2018-11-02','YYYY-MM-DD'), TO_DATE('2018-12-02','YYYY-MM-DD'), 'Paid', TO_DATE('2018-11-27','YYYY-MM-DD'), 'Credit\Debit', 0.0, 628462, 128473);
 insert into Invoice values (183746, 12345678, 'Annual exam', TO_DATE('2018-11-02','YYYY-MM-DD'), TO_DATE('2018-12-02','YYYY-MM-DD'), 'Paid', TO_DATE('2018-11-27','YYYY-MM-DD'), 'Credit\Debit', 0.0, 628462, 128473);
-insert into Invoice values (148924, 32485737, 'Clinic visit', TO_DATE('2018-10-14','YYYY-MM-DD'), TO_DATE('2018-11-14','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 200.0, NULL, 121738);
+insert into Invoice values (148924, 32485737, 'ER Visit', TO_DATE('2018-10-14','YYYY-MM-DD'), TO_DATE('2018-11-14','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 200.0, NULL, 121738);
 insert into Invoice values (182747, 12345678, 'Clinic visit', TO_DATE('2018-10-14','YYYY-MM-DD'), TO_DATE('2018-11-14','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 200.0, NULL, 121738);
 insert into Invoice values (152748, 31572742, 'Clinic visit', TO_DATE('2018-05-11','YYYY-MM-DD'), TO_DATE('2018-05-11','YYYY-MM-DD'), 'Paid', TO_DATE('2018-11-27','YYYY-MM-DD'), 'Cheque', 0.0, 628462, 126724);
 insert into Invoice values (119396, 31857372, 'Orthodic insoles', TO_DATE('2019-01-13','YYYY-MM-DD'), TO_DATE('2019-03-13','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 265.50, NULL, 128473);
-insert into Invoice values (137472, 12345678, 'Orthodic insoles', TO_DATE('2019-01-13','YYYY-MM-DD'), TO_DATE('2019-03-13','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 265.50, NULL, 128473);
+insert into Invoice values (137472, 12345678, 'ER Visit', TO_DATE('2019-01-13','YYYY-MM-DD'), TO_DATE('2019-03-13','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 265.50, NULL, 128473);
 insert into Invoice values (192745, 29562774, 'Massage re: back injury', TO_DATE('2019-01-04','YYYY-MM-DD'), TO_DATE('2019-02-04','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 145.0, NULL, 127828);
 insert into Invoice values (138824, 1, 'Clinic visit', TO_DATE('2019-02-14','YYYY-MM-DD'), TO_DATE('2019-03-14','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 100.0, NULL, 128471);
 insert into Invoice values (128473, 1, 'Knee brace', TO_DATE('2019-02-12','YYYY-MM-DD'), TO_DATE('2019-03-12','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 100.0, NULL, 128471);
@@ -432,7 +432,7 @@ insert into Invoice values (129842, 1, 'Prescription - Fluoxetine', TO_DATE('201
 insert into Invoice values (185734, 3, 'Clinic visit', TO_DATE('2019-02-12','YYYY-MM-DD'), TO_DATE('2019-02-12','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 150.0, NULL, 124324);
 insert into Invoice values (158382, 3, 'Back brace', TO_DATE('2019-02-11','YYYY-MM-DD'), TO_DATE('2018-03-11','YYYY-MM-DD'), 'Paid', TO_DATE('2019-03-05','YYYY-MM-DD'), 'Cash', 20.0, 674823, 124324);
 insert into Invoice values (124759, 3, 'Clinic visit', TO_DATE('2019-02-25','YYYY-MM-DD'), TO_DATE('2018-03-25','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 200.0, NULL, 124324);
-insert into Invoice values (184854, 3, 'Prescription - Pregbalin', TO_DATE('2018-10-14','YYYY-MM-DD'), TO_DATE('2018-11-14','YYYY-MM-DD'), 'Paid', TO_DATE('2018-11-15','YYYY-MM-DD'), 'Credit\Debit', 0.0, 682742, 124324);
+insert into Invoice values (184854, 3, 'ER Visit', TO_DATE('2018-10-14','YYYY-MM-DD'), TO_DATE('2018-11-14','YYYY-MM-DD'), 'Paid', TO_DATE('2018-11-15','YYYY-MM-DD'), 'Credit\Debit', 0.0, 682742, 124324);
 insert into Invoice values (152745, 4, 'Clinic visit', TO_DATE('2019-01-05','YYYY-MM-DD'), TO_DATE('2018-05-11','YYYY-MM-DD'), 'Paid', TO_DATE('2018-11-27','YYYY-MM-DD'), 'Cheque', 0.0, 683743, 128472);
 insert into Invoice values (123845, 4, 'Prescription - Amoxicillin', TO_DATE('2018-10-11','YYYY-MM-DD'), TO_DATE('2018-11-11','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 37.21, NULL, 128472);
 insert into Invoice values (145883, 4, 'Chest X-Ray', TO_DATE('2019-03-25','YYYY-MM-DD'), TO_DATE('2019-04-25','YYYY-MM-DD'), 'Unpaid', NULL, NULL, 200.0, NULL, 128472);

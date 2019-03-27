@@ -313,8 +313,8 @@ public class HealthDB {
 			String query = "select p.firstName, p.lastName, p.patientID, p.street, "
 							+ "pc.city, pc.province, pc.postalcode, pc.country, "
 							+ "p.homePhone, p.mobilePhone from patient p left join postalcode pc "
-							+ "on p.postalcode = pc.postalcode " + "where (p.firstName like '%"
-							+ name + "%'" + " or p.lastName like '%" + name + "%')" ;
+							+ "on p.postalcode = pc.postalcode " + "where (lower(p.firstName) like '%"
+							+ name.toLowerCase() + "%'" + " or lower(p.lastName) like '%" + name.toLowerCase() + "%')" ;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
