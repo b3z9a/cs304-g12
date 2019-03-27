@@ -215,20 +215,19 @@ public class HealthDB {
 	 * Optional on creating a new invoice
 	 * @param paymentDate
 	 * @param paymentMethod
-	 * @param paymentID
 	 * @param planID
 	 *
 	 * Creates an unpaid/fully paid invoice with current date as creation date
 	 */
 	public boolean createInvoice(String patientID, String invoiceItem, String dueDate, String paymentStatus,
-														String paymentDate, String paymentMethod, String amountOwing, String paymentID, String planID) {
+														String paymentDate, String paymentMethod, String amountOwing, String planID) {
 		try {
 			System.out.println("invoiceID Counter pre: " + invoiceIDCounter);
 			// Oracle will insert null if you insert an empty string. Therefore do not need to check if optional values are empty strings
 			String query = "insert into invoice (invoiceID, patientID, invoiceItem, creationDate, dueDate, paymentStatus, "
 							+ "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
-							+ patientID + ", " + invoiceItem + ", " + today() + ", " + dueDate + ", " + paymentStatus + ", "
-							+ paymentDate + ", " + paymentMethod + ", " + amountOwing + ", " + paymentID + ", " + planID + ")";
+							+ patientID + ", '" + invoiceItem + "', " + today() + ", " + dueDate + ", " + paymentStatus + ", "
+							+ paymentDate + ", " + paymentMethod + ", " + amountOwing + ", " + planID + ")";
 			invoiceIDCounter++;
 			System.out.println("invoiceID Counter post: " + invoiceIDCounter);
 			// Create a statement
