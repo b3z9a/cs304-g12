@@ -36,6 +36,7 @@ public class HealthDB {
 	static Integer prescriptionIDCounter;
 	static Integer testIDCounter;
 	static Integer invoiceIDCounter;
+	static Integer paymentIDCounter;
 	private DateFormat format = new SimpleDateFormat("MMMM dd yyyy");
 
 	/**
@@ -81,6 +82,7 @@ public class HealthDB {
 			// Set counters
 			String maxTest = "select max(testID) as max from labtest";
 			String maxInvoice = "select max(invoiceID) as max from invoice";
+			String maxPayment = "select max(paymentID) as max from invoice";
 			String maxPrescription = "select max(prescriptionID) as max from prescription";
 
 			Statement stmt = con.createStatement();
@@ -93,12 +95,18 @@ public class HealthDB {
 			if(rs.next()){
 				invoiceIDCounter = rs.getInt("max") +1;
 			}
+			
+			rs = stmt.executeQuery(maxPayment);
+			if(rs.next()){
+				paymentIDCounter = rs.getInt("max") +1;
+			}
 
 			rs = stmt.executeQuery(maxPrescription);
 			if(rs.next()){
 				prescriptionIDCounter = rs.getInt("max") + 1;
 			}
 			System.out.println("invoiceIDCounter: " + invoiceIDCounter);
+			System.out.println("paymentIDCounter: " + paymentIDCounter);
 			System.out.println("prescriptionIDCounter: " + prescriptionIDCounter);
 			System.out.println("testIDCounter: " + testIDCounter);
 
@@ -223,13 +231,16 @@ public class HealthDB {
 														String paymentDate, String paymentMethod, String amountOwing, String planID) {
 		try {
 			System.out.println("invoiceID Counter pre: " + invoiceIDCounter);
+			System.out.println("paymentID Counter pre: " + paymentIDCounter);
 			// Oracle will insert null if you insert an empty string. Therefore do not need to check if optional values are empty strings
 			String query = "insert into invoice (invoiceID, patientID, invoiceItem, creationDate, dueDate, paymentStatus, "
 							+ "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
 							+ patientID + ", '" + invoiceItem + "', " + today() + ", " + dueDate + ", " + paymentStatus + ", "
-							+ paymentDate + ", " + paymentMethod + ", " + amountOwing + ", " + planID + ")";
+							+ paymentDate + ", " + paymentMethod + ", " + amountOwing + ", " + paymentIDCounter + ", " + planID + ")";
 			invoiceIDCounter++;
+			paymentIDCounter++;
 			System.out.println("invoiceID Counter post: " + invoiceIDCounter);
+			System.out.println("paymentID Counter post: " + paymentIDCounter);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
