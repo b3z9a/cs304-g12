@@ -133,6 +133,8 @@ public class HealthDB {
 	 * @param quantity
 	 * @param patientID
 	 * @param drHID
+	 * 
+	 * @return return true if prescription was created
 	 *
 	 * Creates a prescription with current date as prescribedDate
 	 */
@@ -164,6 +166,7 @@ public class HealthDB {
 	 * @param patientID
 	 * @param drHID
 	 *
+	 * @return return true if test was created
 	 * Creates a lab test with current date as ordered date
 	 */
 	public boolean createTest(String patientID, String drHID) {
@@ -226,7 +229,8 @@ public class HealthDB {
 	 * Optional on creating a new invoice
 	 * @param paymentDate
 	 * @param paymentMethod
-	 * @param planID
+	 * 
+	 * @return return true if invoice was created
 	 *
 	 * Creates an unpaid/fully paid invoice with current date as creation date
 	 */
@@ -237,7 +241,6 @@ public class HealthDB {
             System.out.println("paymentID Counter pre: " + paymentIDCounter);
 
             String paymentDateValue = "''";
-            String paymentMethodValue = "''";
             String paymentIDValue = "''";
             if(!paymentDate.isEmpty()){
                 paymentDateValue = "to_date('" + paymentDate + "', 'yyyy-MM-dd')";
@@ -254,6 +257,7 @@ public class HealthDB {
                     + paymentDateValue + ", '" + paymentMethod + "', " + amountOwing + ", " + paymentIDValue + ", " + planID + ")";
             System.out.println(query);
             invoiceIDCounter++;
+            // Don't increase paymentIDCounter if no payment info was entered
             if (!paymentDate.isEmpty() && !paymentMethod.isEmpty())
             {
             	paymentIDCounter++;
@@ -305,7 +309,7 @@ public class HealthDB {
 
 	/** Finds all patients with a name containing the string provided.
 	* @param name: the name of the patient to be searched for
-	* @return tuples of all patients whose first or last name contains the string provided.
+	* @return tuples of all patients whose first or last name starts with the string provided.
 	*/
 	public ArrayList<ArrayList<String>> getPatients(String name){
 		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
@@ -402,7 +406,7 @@ public class HealthDB {
 	}
 
 	/**
-	 * Returns the tests of the specified doctor
+	 * Returns the tests of the specified patient
 	 *
 	 * tuple = {0 testID, 1 orderedDate, 2 performedDate}
 	 *
@@ -537,7 +541,7 @@ public class HealthDB {
 	/**
 	 * Returns extended benefits information for specified patient
 	 *
-	 * tuple = {0 chiropractic}
+	 * tuple = {0 chiropractic, 1 chiropracticAnnualLimit, 2 chiropracticYTD, ...} query/tuple below to see rest of tuple values
 	 *
 	 * @param pid - the PID of the selected Patient
 	 * @return extended benefits information
@@ -706,6 +710,7 @@ public class HealthDB {
 										 " pc.city, pc.province, pc.postalcode, pc.country, "+
 										 "p.homePhone, p.mobilePhone from patient p left join postalcode"+
 										 " pc on p.postalcode = pc.postalcode where p.patientID = " + PID;
+			System.out.println(query);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -734,7 +739,7 @@ public class HealthDB {
 
 
 	/**
-	 * Finds tuple for given prescriptionID
+	 * Finds prescription tuple for given prescriptionID
 	 * @param prescriptionID: ID of the prescription
 	 * @return tuple for given prescriptionID
 	 					 string if no prescription is found.
@@ -854,7 +859,7 @@ public class HealthDB {
 	}
 
 	/**
-	 * Finds the patientID associated with a test and returns it
+	 * Finds test tuple for given testID
 	 * @param testID: ID of the test to be found
 	 * @return the tuple of the test with the ID provided if no tuple is found
 	 * 				returns the empty string.
@@ -959,9 +964,10 @@ public class HealthDB {
 
 
 	/**
-     * Finds an invoice and returns it
+     * Finds an invoice by given invoiceID
      * @param invoiceID
-     * @return
+     * @return the tuple of the invoice with the ID provided if no tuple is found
+	 * 				returns the empty string.
      */
     public ArrayList<String> findInvoice(String invoiceID) {
 		ArrayList<String> tuple = new ArrayList<String>();
@@ -1037,8 +1043,7 @@ public class HealthDB {
     }
 
 	/**
-	 * findPlanNum
-	 * Finds a plan number in the database, stores tuple information in a data structure
+	 * Finds a plan number by given planID
 	 * tuple[] = {0 planID, 1 policyType, 2 startDate, 3 endDate, 4 patientID}
 	 * @param planID
 	 * @return the single tuple for the plan with the given planID
@@ -1213,9 +1218,10 @@ public class HealthDB {
     }
 
     /**
-     * Get monthly summary for average unapaid balance owing per invoice item
+     * Get monthly summary for average unpaid balance owing per invoice item
+     * 
      * tuple[] = {0 invoiceItem, 1 month, 2 , 3 balanceSumAvg}
-     * @return
+     * @return invoices grouped by invoice item, month, average unpaid balance owing 
      */
     private ArrayList<ArrayList<String>> getOwingInvoicesMonthlySummary(String pid)
     {
