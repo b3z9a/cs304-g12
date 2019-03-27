@@ -233,10 +233,11 @@ public class HealthDB {
             System.out.println("invoiceID Counter pre: " + invoiceIDCounter);
             System.out.println("paymentID Counter pre: " + paymentIDCounter);
 
-            String paymentDateValue = "";
+            String paymentDateValue = "''";
             if(!paymentDate.isEmpty()){
                 paymentDateValue = "to_date('" + paymentDate + "', 'yyyy-MM-dd')";
             }
+            
             // Oracle will insert null if you insert an empty string. Therefore do not need to check if optional values are empty strings
             String query = "insert into invoice (invoiceID, patientID, invoiceItem, creationDate, dueDate, paymentStatus, "
                     + "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
