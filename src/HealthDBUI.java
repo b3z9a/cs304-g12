@@ -2516,7 +2516,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 4;
         panelProvincialPlan.add(lbl, gbc);
 
-        txtStartDate = new JTextField(12);
+        txtStartDate = new JTextField(20);
         txtStartDate.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.insets= new Insets(0,5,0,0);
