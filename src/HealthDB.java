@@ -906,7 +906,6 @@ public class HealthDB {
      * @return
      */
     public ArrayList<String> findInvoice(String invoiceID) {
-    	System.out.println("called findInvoice");
 		ArrayList<String> tuple = new ArrayList<String>();
 		try{
 			String query = "select invoiceID, invoiceItem, creationDate, dueDate, paymentStatus, amountOwing"
