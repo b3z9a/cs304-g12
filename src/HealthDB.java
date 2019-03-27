@@ -1228,8 +1228,8 @@ public class HealthDB {
     	ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
     	try {
     		String query = "select i.invoiceItem, monthNum, avg(balanceSum) as balanceSumAvg from("
-    				+ "select i.invoiceItem, extract(month) as monthNum, i.paymentStatus, sum(amountOwing) as balanceSum"
-    				+ "from invoice i where i.patientID = " + pid + " group by i.invoiceItem, i.paymentStatus)"
+    				+ "select i.invoiceItem, extract(month) as monthNum, i.paymentStatus, sum(amountOwing) as balanceSum "
+    				+ "from invoice i where i.patientID = " + pid + " group by i.invoiceItem, i.paymentStatus) "
     				+ "where i.paymentStatus = 'Unpaid' group by i.invoiceItem, monthNum order by monthNum, i.invoiceItem";
 
     				System.out.println(query);
