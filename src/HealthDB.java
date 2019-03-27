@@ -948,7 +948,7 @@ public class HealthDB {
     public ArrayList<String> findInvoice(String invoiceID) {
 		ArrayList<String> tuple = new ArrayList<String>();
 		try{
-			String query = "select invoiceID, invoiceItem, creationDate, dueDate, paymentStatus, amountOwing"
+			String query = "select patientID, invoiceItem, dueDate, paymentStatus, paymentDate, paymentMethod, amountOwing, paymentID, planID, creationDate"
 					+ " from Invoice where invoiceID = " + invoiceID;
 			// Create a statement
 			Statement stmt = con.createStatement();
