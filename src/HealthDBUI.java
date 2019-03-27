@@ -3036,7 +3036,7 @@ public class HealthDBUI extends JFrame {
         btnViewInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
+                viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
             }
         });
         btnViewInvoice.setText("View Selected Invoice");
@@ -3045,8 +3045,8 @@ public class HealthDBUI extends JFrame {
     }
     
     private void viewInvoiceData(JTable table, DefaultTableModel tableModel) {        
-        JTextField aPatientID = new JTextField();
-        JTextField aInvoiceID = new JTextField();
+        // JTextField aPatientID = new JTextField();
+        // JTextField aInvoiceID = new JTextField();
         JTextField aInvoiceItem = new JTextField();
         JTextField aDueDate = new JTextField();
         JTextField aPaymentStatus = new JTextField();
@@ -3057,20 +3057,17 @@ public class HealthDBUI extends JFrame {
         JTextField aPlanID = new JTextField();
         JTextField aCreationDate = new JTextField();
         
-
         if(patientArray.size() > 0) {
-        	String name = patientArray.get(0);
-            patientID = patientArray.get(2);
-            String invoiceID = hdb.getInvoices(patientID).get(0).get(0);
+            String name = patientArray.get(0) + " " + patientArray.get(1);
 
             int row = table.getSelectedRow();
 
             if(row >= 0) {
-                //String invoiceID = tableModel.getValueAt(row, 0).toString();
+                String invoiceID = tableModel.getValueAt(row, 0).toString();
                 ArrayList<String> testData = hdb.findInvoice(invoiceID);
 
-                aPatientID.setEditable(false);
-                aInvoiceID.setEditable(false);
+                // aPatientID.setEditable(false);
+                // aInvoiceID.setEditable(false);
                 aInvoiceItem.setEditable(false);
                 aDueDate.setEditable(false);
                 aPaymentStatus.setEditable(false);
@@ -3081,8 +3078,8 @@ public class HealthDBUI extends JFrame {
                 aPlanID.setEditable(false);
                 aCreationDate.setEditable(false);
                 
-                aPatientID.setText(testData.get(0));
-                aInvoiceID.setText(testData.get(1));
+                // aPatientID.setText(testData.get(0));
+                // aInvoiceID.setText(testData.get(1));
                 aInvoiceItem.setText(testData.get(2));
                 aDueDate.setText(testData.get(3));
                 aPaymentStatus.setText(testData.get(4));
@@ -3093,8 +3090,7 @@ public class HealthDBUI extends JFrame {
                 aPlanID.setText(testData.get(9));
                 aCreationDate.setText(testData.get(10));
                 
-
-                Object[] data = {"Invoice ID: " + invoiceID, "PatientID: " + aPatientID, " ",
+                Object[] data = {"Patient: " + name, "Invoice ID: " + invoiceID, " ",
                         "Invoice Item: ", aInvoiceItem, "Due Date: ", aDueDate, "Payment Status: ", aPaymentStatus,
                         "Payment Date: ", aPaymentDate, "Payment Method: ", aPaymentMethod, "Amount Owing: ", aAmountOwing,
                         "Payment ID: ", aPaymentID, "Plan ID: ", aPlanID, "Creation Date: ", aCreationDate};
