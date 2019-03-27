@@ -1,11 +1,15 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * TODO
@@ -2979,6 +2983,7 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+
                 JTextField aInvoiceItem = new JTextField();
                 JFormattedTextField aDueDate = new JFormattedTextField(dateFormat);
                 JFormattedTextField aPaymentDate = new JFormattedTextField(dateFormat);
@@ -2986,12 +2991,19 @@ public class HealthDBUI extends JFrame {
                 JComboBox<String> aPaymentStatus = new JComboBox<>(paymentStatus);
                 JComboBox<String> aPaymentMethod = new JComboBox<>(paymentMethod);
 
-                
+                try {
+                    MaskFormatter mask = new MaskFormatter("##-##-####");
+                    mask.install(aDueDate);
+                    mask.install(aPaymentDate);
+                } catch (ParseException ex) {
+                    Logger.getLogger(HealthDBUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
                 if(patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     
 
-                    Object[] fields = {"Patient: " + name, "Invoice Item: ", aInvoiceItem, "Due Date: ", aDueDate, "Payment Status: ", aPaymentStatus, "Payment Date: ",
+                    Object[] fields = {"Patient: " + name, "Invoice Item: ", aInvoiceItem, "Due Date (MM-DD-YYYY): ", aDueDate, "Payment Status: ", aPaymentStatus, "Payment Date (MM-DD-YYYY): ",
                     		aPaymentDate, "Payment Method: ", aPaymentMethod, "Amount Owing: ", aAmountOwing};
                     
         
