@@ -871,7 +871,7 @@ public class HealthDB {
 		ArrayList<String> tuple = new ArrayList<String>();
 
 		try{
-			String query = "select patientID, planID from Invoice where invoiceID = " + invoiceID;
+			String query = "select * from Invoice where invoiceID = " + invoiceID;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -880,7 +880,16 @@ public class HealthDB {
 
 			while(rs.next()){
 				tuple.add(rs.getString("patientID"));
+				tuple.add(rs.getString("invoiceItem"));
+				tuple.add(rs.getString("creationDate"));
+				tuple.add(rs.getString("dueDate"));
+				tuple.add(rs.getString("paymentStatus"));
+				tuple.add(rs.getString("paymentDate"));
+				tuple.add(rs.getString("paymentMethod"));
+				tuple.add(rs.getString("amountOwing"));
+				tuple.add(rs.getString("paymentID"));
 				tuple.add(rs.getString("planID"));
+				
 			}
 			stmt.close();
 		} catch (SQLException ex){
