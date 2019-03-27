@@ -1364,12 +1364,13 @@ public class HealthDBUI extends JFrame {
         btnFindPrescNum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String prescNum = txtPrescNum.getText();
 
-                ArrayList<String> tuple = hdb.findPrescription(txtPrescNum.getText());
+                ArrayList<String> tuple = hdb.findPrescription(prescNum);
 
                 String[] data = new String[tuple.size()];
 
-                patientArray = hdb.findPatient(tuple.get(3));
+                patientArray = hdb.findPatient(hdb.findPIDfromPrescription(prescNum));
 
                 if(patientArray.size() > 0) {
 

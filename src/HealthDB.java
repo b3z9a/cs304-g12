@@ -753,6 +753,30 @@ public class HealthDB {
 	}
 
 	/**
+	 * Finds the patient ID associated with a prescription.
+	 * @param prescriptionID: ID of the prescription
+	 * @return PID of patient associated with prescription. Returns the empty
+	string if no prescription is found.
+	 */
+	public String findPIDfromPrescription(String prescriptionID) {
+		try{
+			String query = "select patientID from Prescription where prescriptionID = " + prescriptionID;
+			Statement stmt = con.createStatement();
+			// Execute each query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			if(rs.next()){
+				return rs.getString("patientID");
+			}
+
+		} catch (SQLException ex){
+			System.out.println("Error finding prescription. " + ex.getMessage());
+		}
+		return "";
+	}
+
+	/**
 	 * Finds the patientID associated with a test and returns it
 	 * @param testID: ID of the test to be found
 	 * @return the tuple of the test with the ID provided if no tuple is found
