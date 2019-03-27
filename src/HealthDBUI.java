@@ -2936,7 +2936,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 4;
         panelPlanSummaryInfo.add(lbl, gbc);
 
-        txtPlanSumAddress = new JTextField(20);
+        txtPlanSumAddress = new JTextField(30);
         txtPlanSumAddress.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.insets= new Insets(0,5,0,0);
