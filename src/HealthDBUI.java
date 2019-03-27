@@ -3034,8 +3034,8 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
             	// TODO: Figure out what tables to pass to method. Either one of these two below:
-                // viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
-            	viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
+                viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
+            	// viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
             }
         });
         btnViewInvoice.setText("View Selected Invoice");

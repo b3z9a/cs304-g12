@@ -242,12 +242,6 @@ public class HealthDB {
             if(!paymentDate.isEmpty()){
                 paymentDateValue = "to_date('" + paymentDate + "', 'yyyy-MM-dd')";
             }
-
-            if (!paymentMethod.isEmpty())
-            {
-            	paymentMethodValue = "'" + paymentMethod + "'";
-            }
-
             if (!paymentDate.isEmpty() && !paymentMethod.isEmpty())
             {
             	paymentIDValue = paymentIDCounter.toString();
@@ -257,7 +251,7 @@ public class HealthDB {
             String query = "insert into invoice (invoiceID, patientID, invoiceItem, creationDate, dueDate, paymentStatus, "
                     + "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
                     + patientID + ", '" + invoiceItem + "', " + today() + ", " + "to_date('" + dueDate + "', 'yyyy-MM-dd'), '" + paymentStatus + "', "
-                    + paymentDateValue + ", " + paymentMethodValue + ", " + amountOwing + ", " + paymentIDValue + ", " + planID + ")";
+                    + paymentDateValue + ", '" + paymentMethod + "', " + amountOwing + ", " + paymentIDValue + ", " + planID + ")";
             System.out.println(query);
             invoiceIDCounter++;
             if (!paymentDate.isEmpty() && !paymentMethod.isEmpty())
@@ -972,7 +966,7 @@ public class HealthDB {
     public ArrayList<String> findInvoice(String invoiceID) {
 		ArrayList<String> tuple = new ArrayList<String>();
 		try{
-			String query = "select invoiceID, invoiceItem, creationDate, dueDate, paymentStatus, amountOwing"
+			String query = "select patientID, invoiceItem, dueDate, paymentStatus, paymentDate, paymentMethod, amountOwing, paymentID, planID, creationDate"
 					+ " from Invoice where invoiceID = " + invoiceID;
 			// Create a statement
 			Statement stmt = con.createStatement();
