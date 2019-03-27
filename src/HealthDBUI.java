@@ -2982,11 +2982,9 @@ public class HealthDBUI extends JFrame {
         btnCreateInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-
                 JTextField aInvoiceItem = new JTextField();
-                JFormattedTextField aDueDate = new JFormattedTextField(dateFormat);
-                JFormattedTextField aPaymentDate = new JFormattedTextField(dateFormat);
+                JTextField aDueDate = new JTextField();
+                JTextField aPaymentDate = new JTextField();
                 JTextField aAmountOwing = new JTextField();
                 JComboBox<String> aPaymentStatus = new JComboBox<>(paymentStatus);
                 JComboBox<String> aPaymentMethod = new JComboBox<>(paymentMethod);
