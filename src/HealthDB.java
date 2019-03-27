@@ -98,7 +98,7 @@ public class HealthDB {
 			if(rs.next()){
 				invoiceIDCounter = rs.getInt("max") +1;
 			}
-			
+
 			rs = stmt.executeQuery(maxPayment);
 			if(rs.next()){
 				paymentIDCounter = rs.getInt("max") +1;
@@ -240,12 +240,11 @@ public class HealthDB {
             if(!paymentDate.isEmpty()){
                 paymentDateValue = "to_date('" + paymentDate + "', 'yyyy-MM-dd')";
             }
-            
             if (!paymentDate.isEmpty() && !paymentMethod.isEmpty())
             {
             	paymentIDValue = paymentIDCounter.toString();
             }
-            
+
             // Oracle will insert null if you insert an empty string. Therefore do not need to check if optional values are empty strings
             String query = "insert into invoice (invoiceID, patientID, invoiceItem, creationDate, dueDate, paymentStatus, "
                     + "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
@@ -771,7 +770,7 @@ public class HealthDB {
 				else {
 				    tuple.add("Yes");
                 }
-				
+
 			}
 			stmt.close();
 		} catch (SQLException ex){
@@ -789,6 +788,30 @@ public class HealthDB {
 	public String findPIDfromPrescription(String prescriptionID) {
 		try{
 			String query = "select patientID from Prescription where prescriptionID = " + prescriptionID;
+			Statement stmt = con.createStatement();
+			// Execute each query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			if(rs.next()){
+				return rs.getString("patientID");
+			}
+
+		} catch (SQLException ex){
+			System.out.println("Error finding prescription. " + ex.getMessage());
+		}
+		return "";
+	}
+
+	/**
+	 * Finds the patient ID associated with an invoice and returns it.
+	 * @param invoiceID: ID of the invoice
+	 * @return PID of patient associated with invoice. Returns the empty
+	string if no invoice is found.
+	 */
+	public String findPIDfromInvoice(String invoiceID) {
+		try{
+			String query = "select patientID from Invoice where invoiceID = " + invoiceID;
 			Statement stmt = con.createStatement();
 			// Execute each query.
 			ResultSet rs = stmt.executeQuery(query);
@@ -919,7 +942,7 @@ public class HealthDB {
 				} else{
 					test.add("");
 				}
-				
+
 			}
 			// Close the statement, the result set will be closed in the process.
 			stmt.close();
@@ -929,10 +952,10 @@ public class HealthDB {
 		return test;
 	}
 
-	
+
 	// patientID, invoiceItem, dueDate, paymentStatus, paymentDate, paymentMethod, amountOwing, paymentID , planID, creationDate
-	
-	
+
+
 	/**
      * Finds an invoice and returns it
      * @param invoiceID
@@ -941,14 +964,14 @@ public class HealthDB {
     public ArrayList<String> findInvoice(String invoiceID) {
 		ArrayList<String> tuple = new ArrayList<String>();
 		try{
-			String query = "select invoiceID, invoiceItem, creationDate, dueDate, paymentStatus, amountOwing"
+			String query = "select patientID, invoiceItem, dueDate, paymentStatus, paymentDate, paymentMethod, amountOwing, paymentID, planID, creationDate"
 					+ " from Invoice where invoiceID = " + invoiceID;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
-			
+
 			if(rs.next()){
 				if(rs.getString("patientID")!=null){
 					tuple.add(rs.getString("patientID"));
@@ -1008,7 +1031,7 @@ public class HealthDB {
 			System.out.println("Failed to get plan summary. " + ex.getMessage());
 		}
 		return tuple;
-			
+
     }
 
 	/**
@@ -1018,7 +1041,7 @@ public class HealthDB {
 	 * @param planID
 	 * @return the single tuple for the plan with the given planID
 	 */
-	public ArrayList<String> findPlanNumber(String planID) {
+	public ArrayList<String> findPlan(String planID) {
 		ArrayList<String> tuple = new ArrayList<String>();
 		try{
 			String query = "select policyType, startDate, endDate, patientID from ProvincialHealthPlan where planID = " + planID;
@@ -1186,7 +1209,7 @@ public class HealthDB {
 			}
 			return success;
     }
-    
+
     /**
      * Get monthly summary for average unapaid balance owing per invoice item
      * tuple[] = {0 invoiceItem, 1 month, 2 , 3 balanceSumAvg}
@@ -1200,7 +1223,7 @@ public class HealthDB {
     				+ "select i.invoiceItem, extract(month) as monthNum, i.paymentStatus, sum(amountOwing) as balanceSum"
     				+ "from invoice i where i.patientID = " + pid + " group by i.invoiceItem, i.paymentStatus)"
     				+ "where i.paymentStatus = 'Unpaid' group by i.invoiceItem, monthNum order by monthNum, i.invoiceItem";
-			
+
     				System.out.println(query);
 			// Create a statement
 			Statement stmt = con.createStatement();
