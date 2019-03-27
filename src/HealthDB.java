@@ -226,7 +226,6 @@ public class HealthDB {
 	 * Optional on creating a new invoice
 	 * @param paymentDate
 	 * @param paymentMethod
-	 * @param planID
 	 *
 	 * Creates an unpaid/fully paid invoice with current date as creation date
 	 */
@@ -237,7 +236,6 @@ public class HealthDB {
             System.out.println("paymentID Counter pre: " + paymentIDCounter);
 
             String paymentDateValue = "''";
-            String paymentMethodValue = "''";
             String paymentIDValue = "''";
             if(!paymentDate.isEmpty()){
                 paymentDateValue = "to_date('" + paymentDate + "', 'yyyy-MM-dd')";
