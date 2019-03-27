@@ -1296,6 +1296,46 @@ public class HealthDBUI extends JFrame {
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 5;
         panelPrescription.add(panePrescriptionPrescriptions, gbc);
+
+        JButton btnMarkFilled= new JButton();
+        btnMarkFilled.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTextField pharmHIDField = new JTextField();
+                if(patientArray.size() > 0) {
+                    int row = prescPPTable.getSelectedRow();
+
+                    String prescID = prescPPTableModel.getValueAt(row, 0).toString();
+
+                    Object[] fields = {"Please enter your Pharmacist ID:", pharmHIDField};
+
+                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Mark " + prescID + " as Filled", JOptionPane.OK_CANCEL_OPTION);
+
+                    if(resp == JOptionPane.OK_OPTION)
+                    {
+                        if(pharmHIDField.getText().equals("")) {
+                            JOptionPane.showMessageDialog(frame, "No Pharmacist ID entered!", "Error", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            hdb.updatePrescription(pharmHIDField.getText(), prescID);
+                            clearPanelData();
+                            updateTable(hdb.getPrescriptions(patientID), prescPPTableModel);
+                        }
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        btnMarkFilled.setText("Mark as Filled");
+
+
+        JPanel panelPrescriptionBtns = new JPanel();
+        panelPrescriptionBtns.setLayout(new FlowLayout());
+        panelPrescriptionBtns.add(btnMarkFilled);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 10;
+        panelPrescription.add(panelPrescriptionBtns, gbc);
     }
     private void setPanelPrescriptionFinder() {
         JTextField txtPID = new JTextField(10);
