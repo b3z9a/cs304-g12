@@ -1146,6 +1146,88 @@ public class HealthDB {
 			}
 			return success;
     }
+    
+    /**
+     * Get monthly summary for average unapaid balance owing per invoice item
+     * tuple[] = {0 invoiceItem, 1 month, 2 , 3 balanceSumAvg}
+     * @return
+     */
+    private ArrayList<ArrayList<String>> getOwingInvoicesMonthlySummary(String pid)
+    {
+    	ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
+    	try {
+    		String query = "select i.invoiceItem, monthNum, avg(balanceSum) as balanceSumAvg from("
+    				+ "select i.invoiceItem, extract(month) as monthNum, i.paymentStatus, sum(amountOwing) as balanceSum"
+    				+ "from invoice i where i.patientID = " + pid + " group by i.invoiceItem, i.paymentStatus)"
+    				+ "where i.paymentStatus = 'Unpaid' group by i.invoiceItem, monthNum order by monthNum, i.invoiceItem";
+			
+    				System.out.println(query);
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				ArrayList<String> tuple = new ArrayList<String>();
+				tuple.add(rs.getString("invoiceItem"));
+				// monthNum returns the number representing month
+				if (rs.getString("monthNum") == "1")
+				{
+					tuple.add("January");
+				}
+				else if (rs.getString("monthNum") == "2")
+				{
+					tuple.add("February");
+				}
+				else if (rs.getString("monthNum") == "3")
+				{
+					tuple.add("March");
+				}
+				else if (rs.getString("April") == "4")
+				{
+					tuple.add("April");
+				}
+				else if (rs.getString("monthNum") == "5")
+				{
+					tuple.add("May");
+				}
+				else if (rs.getString("monthNum") == "6")
+				{
+					tuple.add("June");
+				}
+				else if (rs.getString("monthNum") == "7")
+				{
+					tuple.add("July");
+				}
+				else if (rs.getString("monthNum") == "8")
+				{
+					tuple.add("August");
+				}
+				else if (rs.getString("monthNum") == "9")
+				{
+					tuple.add("September");
+				}
+				else if (rs.getString("monthNum") == "10")
+				{
+					tuple.add("October");
+				}
+				else if (rs.getString("monthNum") == "11")
+				{
+					tuple.add("November");
+				}
+				else if (rs.getString("monthNum") == "12")
+				{
+					tuple.add("December");
+				}
+				tuple.add(rs.getString("balanceSumAvg"));
+			}
+			stmt.close();
+    	} catch (SQLException ex){
+			System.out.println("Error getting owing invoices monthly summary " + ex.getMessage());
+    	}
+    	return tuples;
+    }
 
 		/**
 		*  Checks if a new medication would cause an interaction.
