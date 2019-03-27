@@ -705,27 +705,36 @@ public class HealthDB {
 
 
 	/**
-	 * Finds the patient ID associated with a prescription.
+	 * Finds tuple for given prescriptionID
 	 * @param prescriptionID: ID of the prescription
-	 * @return PID of patient associated with prescription. Returns the empty
+	 * @return tuple for given prescriptionID
 	 					 string if no prescription is found.
 	 */
-	public String findPrescription(String prescriptionID) {
+	public ArrayList<String> findPrescription(String prescriptionID) {
+		ArrayList<String> tuple = new ArrayList<>();
 		try{
-			String query = "select patientID from Prescription where prescriptionID = " + prescriptionID;
+			String query = "select * from Prescription where prescriptionID = " + prescriptionID;
 			Statement stmt = con.createStatement();
 			// Execute each query.
 			ResultSet rs = stmt.executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
 
-			if(rs.next()){
-				return rs.getString("patientID");
-		  }
-
+			while(rs.next()){
+				tuple.add(rs.getString("medication"));
+				tuple.add(rs.getString("dosage"));
+				tuple.add(rs.getString("quantity"));
+				tuple.add(rs.getString("patientID"));
+				tuple.add(rs.getString("drHID"));
+				tuple.add(rs.getString("pharmHID"));
+				tuple.add(rs.getString("prescribedDate"));
+				tuple.add(rs.getString("filledDate"));
+				
+			}
+			stmt.close();
 		} catch (SQLException ex){
 				System.out.println("Error finding prescription. " + ex.getMessage());
 		}
-		return "";
+		return tuple;
 	}
 
 	/**
@@ -862,7 +871,7 @@ public class HealthDB {
 		ArrayList<String> tuple = new ArrayList<String>();
 
 		try{
-			String query = "select patientID, planID from Invoice where invoiceID = " + invoiceID;
+			String query = "select * from Invoice where invoiceID = " + invoiceID;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -871,7 +880,16 @@ public class HealthDB {
 
 			while(rs.next()){
 				tuple.add(rs.getString("patientID"));
+				tuple.add(rs.getString("invoiceItem"));
+				tuple.add(rs.getString("creationDate"));
+				tuple.add(rs.getString("dueDate"));
+				tuple.add(rs.getString("paymentStatus"));
+				tuple.add(rs.getString("paymentDate"));
+				tuple.add(rs.getString("paymentMethod"));
+				tuple.add(rs.getString("amountOwing"));
+				tuple.add(rs.getString("paymentID"));
 				tuple.add(rs.getString("planID"));
+				
 			}
 			stmt.close();
 		} catch (SQLException ex){
