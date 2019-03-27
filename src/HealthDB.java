@@ -925,7 +925,7 @@ public class HealthDB {
 		boolean success = false;
 		try{
 			String prescription = "update prescription set pharmHID=" + hid +
-														", filledDate=" + today() + ", where prescriptionID="
+														", filledDate=" + today() + " where prescriptionID="
 														+ prescriptionID;
 
 			Statement stmt = con.createStatement();
