@@ -713,21 +713,36 @@ public class HealthDB {
 	public ArrayList<String> findPrescription(String prescriptionID) {
 		ArrayList<String> tuple = new ArrayList<>();
 		try{
-			String query = "select * from Prescription where prescriptionID = " + prescriptionID;
+			String query = "select pr.prescriptionID, pr.prescribedDate, m.medication, pr.dosage, "
+					+ "m.dosageMeasure, pr.quantity, pr.filledDate from prescription pr, medication m "
+					+ "where pr.medication = m.medication and pr.prescriptionID = " + prescriptionID;
 			Statement stmt = con.createStatement();
 			// Execute each query.
 			ResultSet rs = stmt.executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
 
 			while(rs.next()){
+				tuple.add(rs.getString("prescriptionID"));
+				if (rs.getDate("prescribedDate")!=null){
+					tuple.add(format.format(rs.getDate("prescribedDate")));
+				} else{
+					tuple.add("");
+				}
 				tuple.add(rs.getString("medication"));
 				tuple.add(rs.getString("dosage"));
+				tuple.add(rs.getString("dosageMeasure"));
 				tuple.add(rs.getString("quantity"));
-				tuple.add(rs.getString("patientID"));
-				tuple.add(rs.getString("drHID"));
-				tuple.add(rs.getString("pharmHID"));
-				tuple.add(rs.getString("prescribedDate"));
-				tuple.add(rs.getString("filledDate"));
+				if (rs.getDate("filledDate")!=null){
+					tuple.add(format.format(rs.getDate("filledDate")));
+				} else{
+					tuple.add("");
+				}
+				if(rs.getString("filledDate") == null) {
+                    tuple.add("No");
+                }
+				else {
+				    tuple.add("Yes");
+                }
 				
 			}
 			stmt.close();
@@ -867,11 +882,10 @@ public class HealthDB {
      * @return
      */
     public ArrayList<String> findInvoice(String invoiceID) {
-
 		ArrayList<String> tuple = new ArrayList<String>();
-
 		try{
-			String query = "select * from Invoice where invoiceID = " + invoiceID;
+			String query = "select invoiceID, invoiceItem, creationDate, dueDate, paymentStatus, amountOwing"
+					+ " from Invoice where invoiceID = " + invoiceID;
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -879,16 +893,20 @@ public class HealthDB {
 			ResultSetMetaData rsmd = rs.getMetaData();
 
 			while(rs.next()){
-				tuple.add(rs.getString("patientID"));
+				tuple.add(rs.getString("invoiceID"));
 				tuple.add(rs.getString("invoiceItem"));
-				tuple.add(rs.getString("creationDate"));
-				tuple.add(rs.getString("dueDate"));
+				if (rs.getDate("creationDate")!=null){
+					tuple.add(format.format(rs.getDate("creationDate")));
+				} else{
+					tuple.add("");
+				}
+				if (rs.getDate("dueDate")!=null){
+					tuple.add(format.format(rs.getDate("dueDate")));
+				} else{
+					tuple.add("");
+				}
 				tuple.add(rs.getString("paymentStatus"));
-				tuple.add(rs.getString("paymentDate"));
-				tuple.add(rs.getString("paymentMethod"));
 				tuple.add(rs.getString("amountOwing"));
-				tuple.add(rs.getString("paymentID"));
-				tuple.add(rs.getString("planID"));
 				
 			}
 			stmt.close();
