@@ -959,6 +959,106 @@ public class HealthDB {
 		return test;
 	}
 
+	/**
+	 * Finds the patientID associated with a test and returns it
+	 * @param testID: ID of the test to be found
+	 * @return the tuple of the test with the ID provided if no tuple is found
+	 * 				returns the empty string.
+	 */
+	public ArrayList<String> findTestValues(String testID) {
+		ArrayList<String> test = new ArrayList<>();
+		try{
+			String query = "select cholesterol, HDLcholesterol, LDLcholesterol, triglycerides,"+
+					"whiteBloodCellCount, redBloodCellCount, hematocrit, plateletCount,"+
+					"NRBCPercent, NRBCAbsolute, sodium, glucose, phosphorus, labTechHID "+
+					"from labtest where testID=" + testID;
+
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			if(rs.next()){
+				if(rs.getString("cholesterol")!=null){
+					test.add(rs.getString("cholesterol") + "mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("HDLcholesterol")!=null){
+					test.add(rs.getString("HDLcholesterol") + "mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("LDLcholesterol")!=null){
+					test.add(rs.getString("LDLcholesterol") + "mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("triglycerides")!=null){
+					test.add(rs.getString("triglycerides") + "mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("whiteBloodCellCount")!=null){
+					test.add(rs.getString("whiteBloodCellCount") + "/mcL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("redBloodCellCount")!=null){
+					test.add(rs.getString("redBloodCellCount") + "/mcL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("hematocrit")!=null){
+					test.add(rs.getString("hematocrit") + "%");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("plateletCount")!=null){
+					test.add(rs.getString("plateletCount") + "/mcL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("NRBCPercent")!=null){
+					test.add(rs.getString("NRBCPercent") + "%");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("NRBCAbsolute")!=null){
+					test.add(rs.getString("NRBCAbsolute"));
+				} else{
+					test.add("");
+				}
+				if(rs.getString("sodium")!=null){
+					test.add(rs.getString("sodium") + " mEq/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("glucose")!=null){
+					test.add(rs.getString("glucose") + " mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("phosphorus")!=null){
+					test.add(rs.getString("phosphorus") + " mg/dL");
+				} else{
+					test.add("");
+				}
+				if(rs.getString("labTechHID")!=null){
+					test.add(rs.getString("labTechHID"));
+				} else{
+					test.add("");
+				}
+
+			}
+			// Close the statement, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get test summary. " + ex.getMessage());
+		}
+		return test;
+	}
 
 	// patientID, invoiceItem, dueDate, paymentStatus, paymentDate, paymentMethod, amountOwing, paymentID , planID, creationDate
 
