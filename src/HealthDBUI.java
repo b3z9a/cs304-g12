@@ -298,16 +298,16 @@ public class HealthDBUI extends JFrame {
 
         // Find the index
         row = 0;
-        for(Object obj : nameArr)
-        {
-            if(s.equals(nameArr[row]))
-            {
-                index = row;
+        if (s != null) {
+            for(Object obj : nameArr) {
+                if(s.equals(nameArr[row])) {
+                    index = row;
+                }
+                row++;
             }
-            row++;
+            return names.get(index).get(2);
         }
-
-        return names.get(index).get(2);
+        return "";
     }
 
     private void viewTestData(JTable table, DefaultTableModel tableModel) {
@@ -1809,10 +1809,12 @@ public class HealthDBUI extends JFrame {
                 {
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
                     pidTxt = getPIDfromName(names, nameTxt);
-
-                    patientArray = hdb.findPatient(pidTxt);
+                    // str != null && !str.isEmpty()
+                    if (!pidTxt.equals("")) {
+                        patientArray = hdb.findPatient(pidTxt);
+                    }
                 }
-                else if(!pidTxt.isEmpty()) {
+                else if(!pidTxt.equals("")) {
                     patientArray = hdb.findPatient(pidTxt);
                 }
 
@@ -2507,14 +2509,16 @@ public class HealthDBUI extends JFrame {
             	
             	// Clear and update the table with new data
                 monthlyInvoiceSummaryTableModel.setRowCount(0);
-                
-                // Call method
-                monthlyInvoiceSummaryArray = hdb.getOwingInvoicesMonthlySummary(patientID);
-                printTuples(monthlyInvoiceSummaryArray);
-                String[][] data = createData(monthlyInvoiceSummaryArray);
-                for(int row = 0; row < data.length; row++)
-                {
-                	monthlyInvoiceSummaryTableModel.addRow(data[row]);
+
+                if(patientArray.size() > 0) {
+                    monthlyInvoiceSummaryArray = hdb.getOwingInvoicesMonthlySummary(patientID);
+                    printTuples(monthlyInvoiceSummaryArray);
+                    String[][] data = createData(monthlyInvoiceSummaryArray);
+                    for(int row = 0; row < data.length; row++) {
+                        monthlyInvoiceSummaryTableModel.addRow(data[row]);
+                    }
+                } else {
+                    monthlyInvoiceSummaryTableModel.setRowCount(0);
                 }
             }
         });
@@ -2652,9 +2656,18 @@ public class HealthDBUI extends JFrame {
         btnUpdateInvoiceTotals.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // clear data first
 
-            	txtTotalUnpaid.setText(Double.toString((hdb.getAmountOwing(patientID))));
-                txtTotalOverDue.setText(Double.toString(hdb.getOverdueAmountOwing(patientID)));
+                txtTotalUnpaid.setText("");
+                txtTotalOverDue.setText("");
+
+                if(patientArray.size() > 0) {
+                    txtTotalUnpaid.setText(Double.toString((hdb.getAmountOwing(patientID))));
+                    txtTotalOverDue.setText(Double.toString(hdb.getOverdueAmountOwing(patientID)));
+                } else {
+                    txtTotalUnpaid.setText("");
+                    txtTotalOverDue.setText("");
+                }
             }
         });
         btnUpdateInvoiceTotals.setText("Update Totals");
@@ -2729,8 +2742,10 @@ public class HealthDBUI extends JFrame {
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
                     pidTxt = getPIDfromName(names, nameTxt);
 
-                    patientArray = hdb.findPatient(pidTxt);
-                } else if (!pidTxt.isEmpty()) {
+                    if (!pidTxt.equals("")) {
+                        patientArray = hdb.findPatient(pidTxt);
+                    }
+                } else if (!pidTxt.equals("")) {
                     patientArray = hdb.findPatient(pidTxt);
                 }
 
@@ -2828,7 +2843,9 @@ public class HealthDBUI extends JFrame {
 
                 	patientID = planNumArray.get(3);
 
-                	patientArray = hdb.findPatient(patientID);
+                    if (!patientID.equals("")) {
+                        patientArray = hdb.findPatient(patientID);
+                    }
 
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
@@ -2917,7 +2934,6 @@ public class HealthDBUI extends JFrame {
                     txtPlanSumAddress.setText(addr);
                     txtPlanSumMobilePhone.setText(mobile);
                     txtPlanSumHomePhone.setText(home);
-
 
                     planArray = hdb.getPlan(patientID);
 
