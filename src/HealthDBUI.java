@@ -2475,7 +2475,7 @@ public class HealthDBUI extends JFrame {
      // -------------------------------------
         
         /* Row 12 */
-        lbl = new JLabel("Monthly Invoice Summary", SwingConstants.LEADING);
+        lbl = new JLabel("Monthly Invoice Summary for Unpaid Amounts", SwingConstants.LEADING);
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
         gbc = new GridBagConstraints();
         gbc.insets= new Insets(10,0,0,0);
@@ -2600,7 +2600,7 @@ public class HealthDBUI extends JFrame {
     }
     
     private void setPanelMonthlyInvoiceSummary() {
-        String cols[] = {"Invoice Item", "Month", "Average Balance"};
+        String cols[] = {"Invoice Item", "Month, Year", "Average Unpaid Balance"};
         
         String data[][] = {};
         monthlyInvoiceSummaryTableModel = new DefaultTableModel (data, cols);
