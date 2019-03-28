@@ -81,11 +81,11 @@ public class HealthDBUI extends JFrame {
     private JPanel panelPlanSummaryFinder;
     private JPanel panelPlanSummaryInfo;
     private JPanel panelProvincialPlan;
-    private JPanel panelExtendedBenefits;
+    private JScrollPane paneExtendedBenefits;
     private JPanel panelInvoiceHistory;
-    private JPanel panelInvoiceHistoryGrid;
+    private JScrollPane paneInvoiceHistoryGrid;
     private JPanel panelPlanSummaryActions;
-    private JPanel panelMonthlyInvoiceSummary;
+    private JScrollPane paneMonthlyInvoiceSummary;
 
     private JTextField txtPlanSumName;
     private JTextField txtPlanSumPID;
@@ -147,8 +147,6 @@ public class HealthDBUI extends JFrame {
     // view tables
     private JTable testTPTable;
     private DefaultTableModel testTPTableModel;
-    private JTable invoiceTPTable;
-    private DefaultTableModel invoiceTPTableModel;
 
     private JTable extendedBenefitsTable;
     private DefaultTableModel extendedBenefitsTableModel;
@@ -198,11 +196,8 @@ public class HealthDBUI extends JFrame {
         setPanelPlanSummaryFinder();
         setPanelPlanSummaryInfo();
         setPanelProvincialPlan();
-        setPanelExtendedBenefits();
         setPanelInvoiceHistory();
-        setPanelInvoiceHistoryGrid();
         setPanelPlanSummaryActions();
-        setPanelMonthlyInvoiceSummary();
     }
 
     /**
@@ -2456,13 +2451,22 @@ public class HealthDBUI extends JFrame {
         panelPlanSummary.add(lbl, gbc);
 
         /* Row 7 */
-        panelExtendedBenefits = new JPanel();
-        panelExtendedBenefits.setLayout(new BorderLayout());
+        String colsEB[] = {"Chiropractic", "Chiropractic Annual Limit", "Chiropractic YTD","Physiotherapy", "Physiotherapy Annual Limit", "Physiotherapy YTD",
+                "Non-Surgical Podiatry", "Non-Surgical Podiatry Annual Limit", "Non-Surgical Podiatry YTD", "Acupuncture", "Acupuncture Annual Limit", "Acupuncture YTD",
+                "Medication", "Medication Annual Limit", "Medication YTD"};
+        String data[][] = {};
+
+        extendedBenefitsTableModel = new DefaultTableModel (data, colsEB);
+        extendedBenefitsTable = new JTable(extendedBenefitsTableModel);
+
+        paneExtendedBenefits = new JScrollPane(extendedBenefitsTable);
+        paneExtendedBenefits.setLayout(new ScrollPaneLayout());
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 7;
-        panelPlanSummary.add(panelExtendedBenefits, gbc);
+        panelPlanSummary.add(paneExtendedBenefits, gbc);
 
         // --------------------------------------------------
 
@@ -2488,13 +2492,18 @@ public class HealthDBUI extends JFrame {
         // --------------------------------------------------
 
         /* Row 10 */
-        panelInvoiceHistoryGrid = new JPanel();
-        panelInvoiceHistoryGrid.setLayout(new BorderLayout());
+        String colsIH[] = {"Invoice ID", "Invoice Item", "Creation Date", "Due Date", "Status", "Balance"};
+        invoiceHistoryGridTableModel = new DefaultTableModel (data, colsIH);
+        invoiceHistoryGridTable = new JTable(invoiceHistoryGridTableModel);
+
+        paneInvoiceHistoryGrid = new JScrollPane(invoiceHistoryGridTable);
+        paneInvoiceHistoryGrid.setLayout(new ScrollPaneLayout());
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 10;
-        panelPlanSummary.add(panelInvoiceHistoryGrid, gbc);
+        panelPlanSummary.add(paneInvoiceHistoryGrid, gbc);
 
         // -------------------------------------
 
@@ -2518,13 +2527,18 @@ public class HealthDBUI extends JFrame {
         panelPlanSummary.add(lbl, gbc);
 
         /* Row 13 */
-        panelMonthlyInvoiceSummary = new JPanel();
-        panelMonthlyInvoiceSummary.setLayout(new BorderLayout());
+        String cols[] = {"Invoice Item", "Month, Year", "Average Unpaid Balance"};
+        monthlyInvoiceSummaryTableModel = new DefaultTableModel (data, cols);
+        monthlyInvoiceSummaryTable = new JTable(monthlyInvoiceSummaryTableModel);
+
+        paneMonthlyInvoiceSummary = new JScrollPane(monthlyInvoiceSummaryTable);
+        paneMonthlyInvoiceSummary.setLayout(new ScrollPaneLayout());
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 13;
-        panelPlanSummary.add(panelMonthlyInvoiceSummary, gbc);
+        panelPlanSummary.add(paneMonthlyInvoiceSummary, gbc);
 
      // -------------------------------------
         /* Row 14 */
@@ -2621,37 +2635,7 @@ public class HealthDBUI extends JFrame {
         panelProvincialPlan.add(txtEndDate, gbc);
 
     }
-    private void setPanelExtendedBenefits() {
-    	String cols[] = {"Chiropractic", "Chiropractic Annual Limit", "Chiropractic YTD","Physiotherapy", "Physiotherapy Annual Limit", "Physiotherapy YTD",
-    			"Non-Surgical Podiatry", "Non-Surgical Podiatry Annual Limit", "Non-Surgical Podiatry YTD", "Acupuncture", "Acupuncture Annual Limit", "Acupuncture YTD",
-    			"Medication", "Medication Annual Limit", "Medication YTD"};
 
-        String data[][] = {};
-        extendedBenefitsTableModel = new DefaultTableModel (data, cols);
-        extendedBenefitsTable = new JTable(extendedBenefitsTableModel);
-        panelExtendedBenefits.add(extendedBenefitsTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelExtendedBenefits.add(extendedBenefitsTable, BorderLayout.CENTER);
-
-    }
-
-    private void setPanelMonthlyInvoiceSummary() {
-        String cols[] = {"Invoice Item", "Month, Year", "Average Unpaid Balance"};
-
-        String data[][] = {};
-        monthlyInvoiceSummaryTableModel = new DefaultTableModel (data, cols);
-        monthlyInvoiceSummaryTable = new JTable(monthlyInvoiceSummaryTableModel);
-        panelMonthlyInvoiceSummary.add(monthlyInvoiceSummaryTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelMonthlyInvoiceSummary.add(monthlyInvoiceSummaryTable, BorderLayout.CENTER);
-    }
-
-    private void setPanelInvoiceHistoryGrid() {
-    	String cols[] = {"Invoice ID", "Invoice Item", "Creation Date", "Due Date", "Status", "Balance"};
-        String data[][] = {};
-        invoiceHistoryGridTableModel = new DefaultTableModel (data, cols);
-        invoiceHistoryGridTable = new JTable(invoiceHistoryGridTableModel);
-        panelInvoiceHistoryGrid.add(invoiceHistoryGridTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelInvoiceHistoryGrid.add(invoiceHistoryGridTable, BorderLayout.CENTER);
-    }
     private void setPanelInvoiceHistory() {
     	JLabel lbl = new JLabel("Total Unpaid:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
@@ -2850,6 +2834,7 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 0);
         gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 4; gbc.gridy = 0;
         panelPlanSummaryFinder.add(btnFindPlanPatientID, gbc);
 
@@ -2932,6 +2917,7 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 0);
         gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 4; gbc.gridy = 1;
         panelPlanSummaryFinder.add(btnFindPlanSumPlanNum, gbc);
 
@@ -3008,6 +2994,7 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 0);
         gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 4; gbc.gridy = 2;
         panelPlanSummaryFinder.add(btnFindPlanInvoiceNum, gbc);
     }
@@ -3233,18 +3220,6 @@ public class HealthDBUI extends JFrame {
         panelTest.setVisible(false);
         panelPlanSummary.setVisible(false);
         panelInvoice.setVisible(false);
-    }
-
-    private void switchToInvoicePanel() {
-        /* Switch to User Class panel when login achieved */
-        panelOracleLogin.setVisible(false);
-        panelUserClass.setVisible(false);
-        panelEmpty.setVisible(false);
-        panelPatientSummary.setVisible(false);
-        panelPrescription.setVisible(false);
-        panelTest.setVisible(false);
-        panelPlanSummary.setVisible(false);
-        panelInvoice.setVisible(true);
     }
 
 }
