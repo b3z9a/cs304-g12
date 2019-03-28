@@ -1706,10 +1706,13 @@ public class HealthDBUI extends JFrame {
         btnFindTestNum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String testNum = txtTest.getText();
 
-                String pid = hdb.findPIDfromTest(txtTest.getText());
+                ArrayList<String> tuple = hdb.findTest(testNum);
 
-                patientArray = hdb.findPatient(pid);
+                String[] data = new String[tuple.size()];
+
+                patientArray = hdb.findPatient(hdb.findPIDfromTest(testNum));
 
                 if(patientArray.size() > 0) {
 
@@ -1728,15 +1731,14 @@ public class HealthDBUI extends JFrame {
                     txtLabHomeNum.setText(patientArray.get(8));
                     txtLabMobileNum.setText(patientArray.get(9));
 
-                    tests = hdb.getTests(patientArray.get(2));
-                    printTuples(tests);
-                    if(tests.size() > 0)
-                    {
-                        String[][] data = createData(tests);
-                        for(int row = 0; row < data.length; row++)
-                        {
-                            testTPTableModel.addRow(data[row]);
+                    int row = 0;
+                    if(tuple.size() > 0) {
+                        for (String s : tuple) {
+                            data[row] = s;
+                            row++;
                         }
+
+                        testTPTableModel.addRow(data);
                     }
 
                     txtTest.setText("");

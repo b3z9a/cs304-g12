@@ -883,6 +883,49 @@ public class HealthDB {
 	public ArrayList<String> findTest(String testID) {
 		ArrayList<String> test = new ArrayList<>();
 		try{
+			String query = "select testID, orderedDate, performedDate " +
+					"from labtest where testID=" + testID;
+
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				test.add(rs.getString("testID"));
+				if (rs.getDate("orderedDate")!=null){
+					test.add(format.format(rs.getDate("orderedDate")));
+				}
+				if (rs.getDate("performedDate")!=null){
+					test.add(format.format(rs.getDate("performedDate")));
+				} else{
+					test.add("");
+				}
+				if(rs.getString("performedDate") == null) {
+                    test.add("No");
+                }
+                else {
+                    test.add("Yes");
+                }
+			}
+			// Close the statement, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get test summary. " + ex.getMessage());
+		}
+		return test;
+	}
+
+	/**
+	 * Finds the patientID associated with a test and returns it
+	 * @param testID: ID of the test to be found
+	 * @return the tuple of the test with the ID provided if no tuple is found
+	 * 				returns the empty string.
+	 */
+	public ArrayList<String> findTestValues(String testID) {
+		ArrayList<String> test = new ArrayList<>();
+		try{
 			String query = "select cholesterol, HDLcholesterol, LDLcholesterol, triglycerides,"+
 					"whiteBloodCellCount, redBloodCellCount, hematocrit, plateletCount,"+
 					"NRBCPercent, NRBCAbsolute, sodium, glucose, phosphorus, labTechHID "+
@@ -974,7 +1017,7 @@ public class HealthDB {
 		}
 		return test;
 	}
-
+>>>>>>> 0317a467fd86b76da4f31ba489872c16bf681670
 
 	// patientID, invoiceItem, dueDate, paymentStatus, paymentDate, paymentMethod, amountOwing, paymentID , planID, creationDate
 
