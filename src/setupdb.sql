@@ -169,7 +169,7 @@ CREATE TABLE ExtendedBenefitsPlan (
 
 CREATE TABLE Invoice (
     invoiceID 			integer,
-    patientID 		integer,
+    patientID 		integer not null,
     invoiceItem 		varchar2(60),
     creationDate 		date not null,
     dueDate 			date not null,
