@@ -153,7 +153,7 @@ public class HealthDB {
 			ResultSet rs = stmt.executeQuery(query);
 			stmt.close();
 			System.out.println("Prescription successfully created");
-			return true;
+			return !checkInteraction(patientID, medication);
 		} catch (SQLException ex){
 			System.out.println("Failed to create prescription" + ex.getMessage());
 			return false;
@@ -867,6 +867,50 @@ public class HealthDB {
 	public ArrayList<String> findTest(String testID) {
 		ArrayList<String> test = new ArrayList<>();
 		try{
+			String query = "select testID, orderedDate, performedDate " + 
+					"from labtest where testID=" + testID;
+
+			// Create a statement
+			Statement stmt = con.createStatement();
+			// Execute the query.
+			ResultSet rs = stmt.executeQuery(query);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				test.add(rs.getString("testID"));
+				if (rs.getDate("orderedDate")!=null){
+					test.add(format.format(rs.getDate("orderedDate")));
+				}
+				if (rs.getDate("performedDate")!=null){
+					test.add(format.format(rs.getDate("performedDate")));
+				} else{
+					test.add("");
+				}
+				if(rs.getString("performedDate") == null) {
+                    test.add("No");
+                }
+                else {
+                    test.add("Yes");
+                }
+			}
+			// Close the statement, the result set will be closed in the process.
+			stmt.close();
+		} catch (SQLException ex){
+			System.out.println("Failed to get test summary. " + ex.getMessage());
+		}
+		return test;
+	}
+
+
+	/**
+	 * Finds the patientID associated with a test and returns it
+	 * @param testID: ID of the test to be found
+	 * @return the tuple of the test with the ID provided if no tuple is found
+	 * 				returns the empty string.
+	 */
+	public ArrayList<String> findTestValues(String testID) {
+		ArrayList<String> test = new ArrayList<>();
+		try{
 			String query = "select cholesterol, HDLcholesterol, LDLcholesterol, triglycerides,"+
 					"whiteBloodCellCount, redBloodCellCount, hematocrit, plateletCount,"+
 					"NRBCPercent, NRBCAbsolute, sodium, glucose, phosphorus, labTechHID "+
@@ -958,7 +1002,6 @@ public class HealthDB {
 		}
 		return test;
 	}
-
 
 	// patientID, invoiceItem, dueDate, paymentStatus, paymentDate, paymentMethod, amountOwing, paymentID , planID, creationDate
 
@@ -1265,8 +1308,26 @@ public class HealthDB {
 		*          otherwise.
 		*/
 	private boolean checkInteraction(String patientID, String medication){
-		// TODO: Check for interactions. //
-		return false;
+		boolean interaction = false;
+		try{
+			String query = "select p.patientID from patient p where not exists " +
+										 "(select * from medInteraction med where not exists " +
+										 "(select * from prescription pr where p.patientID=" +
+										 "pr.patientID and pr.medication=med.medication and p.patientID=" + patientID + "))";
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			if(rs.next() && !rs.getString("patientID").isEmpty()){
+				System.out.println(rs.getString("patientID"));
+				String update = "delete from Prescription where patientID =" + patientID + " and medication='" + medication + "'";
+				stmt.executeUpdate(update);
+				return true;
+			}
+
+		} catch (SQLException ex){
+				System.out.println("Error checking for medication interaction. " + ex.getMessage());
+		}
+		return interaction;
 	}
 
 	private void printTuple(ArrayList<String> tuple){
