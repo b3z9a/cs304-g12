@@ -1017,8 +1017,6 @@ public class HealthDB {
 		}
 		return test;
 	}
->>>>>>> 0317a467fd86b76da4f31ba489872c16bf681670
-
 	// patientID, invoiceItem, dueDate, paymentStatus, paymentDate, paymentMethod, amountOwing, paymentID , planID, creationDate
 
 
