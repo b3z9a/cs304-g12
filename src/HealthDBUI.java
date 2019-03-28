@@ -419,6 +419,44 @@ public class HealthDBUI extends JFrame {
         }
         return 0;
     }
+
+    private int findSingleTest(String testNum) {
+        ArrayList<String> tuple = hdb.findTest(testNum);
+
+        String[] data = new String[tuple.size()];
+
+        if(tuple.size() > 0) {
+
+            patientArray = hdb.findPatient(hdb.findPIDfromTest(testNum));
+
+            // Clear the data tables
+            testTPTableModel.setRowCount(0);
+
+            patientID = patientArray.get(2);
+            String name = patientArray.get(0) + " " + patientArray.get(1);
+            String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
+
+            System.out.println(patientArray.get(2) + ", " + name);
+
+            txtLabName.setText(name);
+            txtLabPID.setText(patientArray.get(2));
+            txtLabAddr.setText(addr);
+            txtLabHomeNum.setText(patientArray.get(8));
+            txtLabMobileNum.setText(patientArray.get(9));
+
+            int col = 0;
+            if (tuple.size() > 0) {
+                for (String s : tuple) {
+                    data[col] = s;
+                    col++;
+                }
+
+                testTPTableModel.addRow(data);
+            }
+            return 1;
+        }
+        return 0;
+    }
     /**
      * Initializes the Oracle Login panel
      */
@@ -1701,6 +1739,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 6;
         panelTest.add(panelTestActions, gbc);
     }
+
     private void setPanelTestFinder() {
         JTextField txtPID = new JTextField(10);
         JTextField txtName = new JTextField(12);
@@ -1725,39 +1764,7 @@ public class HealthDBUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String testNum = txtTest.getText();
 
-                ArrayList<String> tuple = hdb.findTest(testNum);
-
-                String[] data = new String[tuple.size()];
-
-                patientArray = hdb.findPatient(hdb.findPIDfromTest(testNum));
-
-                if(patientArray.size() > 0) {
-
-                    // Clear the data tables
-                    testTPTableModel.setRowCount(0);
-
-                    patientID = patientArray.get(2);
-                    String name = patientArray.get(0) + " " + patientArray.get(1);
-                    String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
-
-                    System.out.println(patientArray.get(2) + ", " + name);
-
-                    txtLabName.setText(name);
-                    txtLabPID.setText(patientArray.get(2));
-                    txtLabAddr.setText(addr);
-                    txtLabHomeNum.setText(patientArray.get(8));
-                    txtLabMobileNum.setText(patientArray.get(9));
-
-                    int row = 0;
-                    if(tuple.size() > 0) {
-                        for (String s : tuple) {
-                            data[row] = s;
-                            row++;
-                        }
-
-                        testTPTableModel.addRow(data);
-                    }
-
+                if(findSingleTest(testNum) == 1) {
                     txtTest.setText("");
                     txtPID.setText("");
                     txtName.setText("");
@@ -2003,6 +2010,8 @@ public class HealthDBUI extends JFrame {
                                 dPhos.getText(), dLabHID.getText())) {
                             JOptionPane.showMessageDialog(frame, "Test edited for " + name + "\nTest ID: " + testID,
                                     "Edit Test for " + name,  JOptionPane.INFORMATION_MESSAGE);
+
+                            findSingleTest(testID);
                         }
                         else {
                             JOptionPane.showMessageDialog(frame, "Failed to edit test for " + name + "\nTest ID: " + testID,
