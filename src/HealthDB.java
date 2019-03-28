@@ -39,6 +39,7 @@ public class HealthDB {
 	static Integer prescriptionIDCounter;
 	static Integer testIDCounter;
 	static Integer invoiceIDCounter;
+	static Integer paymentIDCounter;
 	private DateFormat format = new SimpleDateFormat("MMMM dd yyyy");
 
 	/**
@@ -84,6 +85,7 @@ public class HealthDB {
 			// Set counters
 			String maxTest = "select max(testID) as max from labtest";
 			String maxInvoice = "select max(invoiceID) as max from invoice";
+			String maxPayment = "select max(paymentID) as max from invoice";
 			String maxPrescription = "select max(prescriptionID) as max from prescription";
 
 			Statement stmt = con.createStatement();
