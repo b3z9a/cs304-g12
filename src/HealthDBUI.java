@@ -383,7 +383,42 @@ public class HealthDBUI extends JFrame {
             JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
         }
     }
+    private int findSinglePrescription(String prescNum) {
+        ArrayList<String> tuple = hdb.findPrescription(prescNum);
 
+        if(tuple.size() > 0) {
+            singlePrescData = new String[tuple.size()];
+
+            patientArray = hdb.findPatient(hdb.findPIDfromPrescription(prescNum));
+
+            // Clear the data tables
+            prescPPTableModel.setRowCount(0);
+
+            patientID = patientArray.get(2);
+            String name = patientArray.get(0) + " " + patientArray.get(1);
+            String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
+
+            System.out.println(patientArray.get(2) + ", " + name);
+
+            txtPharmName.setText(name);
+            txtPharmPID.setText(patientArray.get(2));
+            txtPharmAddr.setText(addr);
+            txtPharmHomeNum.setText(patientArray.get(7));
+            txtPharmMobileNum.setText(patientArray.get(8));
+
+            int col = 0;
+            if (tuple.size() > 0) {
+                for (String s : tuple) {
+                    singlePrescData[col] = s;
+                    col++;
+                }
+
+                prescPPTableModel.addRow(singlePrescData);
+            }
+            return 1;
+        }
+        return 0;
+    }
     /**
      * Initializes the Oracle Login panel
      */
@@ -1340,7 +1375,7 @@ public class HealthDBUI extends JFrame {
 
                             if(singlePrescBool)
                             {
-                                prescPPTableModel.addRow(singlePrescData);
+                                findSinglePrescription(prescID);
                             } else {
                                 updateTable(hdb.getPrescriptions(patientID), prescPPTableModel);
                             }
@@ -1362,6 +1397,9 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 10;
         panelPrescription.add(panelPrescriptionBtns, gbc);
     }
+
+
+
     private void setPanelPrescriptionFinder() {
         JTextField txtPID = new JTextField(10);
         JTextField txtName = new JTextField(12);
@@ -1385,7 +1423,6 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String prescNum = txtPrescNum.getText();
-
                 ArrayList<String> tuple = hdb.findPrescription(prescNum);
 
                 singlePrescData = new String[tuple.size()];
@@ -1421,6 +1458,8 @@ public class HealthDBUI extends JFrame {
                     txtPrescNum.setText("");
                     txtPID.setText("");
                     txtName.setText("");
+                    
+                if(findSinglePrescription(prescNum) == 1) {
                     singlePrescBool = Boolean.TRUE;
                 }
                 else {
