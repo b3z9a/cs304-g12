@@ -778,8 +778,7 @@ public class HealthDBUI extends JFrame {
         System.out.println(sb.toString());
     }
 
-    private String[][] createData(ArrayList<ArrayList<String>> tuples)
-    {
+    private String[][] createData(ArrayList<ArrayList<String>> tuples) {
         String[][] data = new String[tuples.size()][tuples.get(0).size()];
 
         int row = 0;
@@ -1531,7 +1530,7 @@ public class HealthDBUI extends JFrame {
                 }
             }
         });
-        btnFindPrescPatient.setText("Find Patient ID");
+        btnFindPrescPatient.setText("Find Patient");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(5,5,0,0);
@@ -1854,7 +1853,7 @@ public class HealthDBUI extends JFrame {
                 }
             }
         });
-        btnFindTestPID.setText("Find by Patient ID");
+        btnFindTestPID.setText("Find Patient");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(5,5,0,0);
@@ -2795,7 +2794,7 @@ public class HealthDBUI extends JFrame {
 
             }
         });
-        btnFindPlanPatientID.setText("Find by Patient");
+        btnFindPlanPatientID.setText("Find Patient");
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 0);
         gbc.gridwidth = 2;
