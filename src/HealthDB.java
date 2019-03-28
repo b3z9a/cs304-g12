@@ -224,7 +224,7 @@ public class HealthDB {
             if (!paymentDate.isEmpty()) {
                 paymentDateValue = "to_date('" + paymentDate + "', 'yyyy-MM-dd')";
             }
-            if (!paymentDate.isEmpty() && !paymentMethod.isEmpty()) {
+            if (!paymentDate.isEmpty() && paymentMethod.equals("Credit\\Debit")) {
                 paymentIDValue = paymentIDCounter.toString();
             }
 
@@ -235,7 +235,7 @@ public class HealthDB {
                     + paymentDateValue + ", '" + paymentMethod + "', " + amountOwing + ", " + paymentIDValue + ", " + planID + ")";
             invoiceIDCounter++;
             // Don't increase paymentIDCounter if no payment info was entered
-            if (!paymentDate.isEmpty() && !paymentMethod.isEmpty()) {
+            if (!paymentDate.isEmpty() && paymentMethod.equals("Credit\\Debit")) {
                 paymentIDCounter++;
             }
             // Create a statement
@@ -1230,19 +1230,19 @@ public class HealthDB {
                 invoice.append("dueDate= to_date('" + dueDate + "', 'yyyy-MM-dd'), ");
             }
             if (!invoiceItem.isEmpty()) {
-                invoice.append("invoiceItem=" + invoiceItem + ", ");
+                invoice.append("invoiceItem='" + invoiceItem + "', ");
             }
             if (!paymentStatus.isEmpty()) {
-                invoice.append("paymentStatus=" + paymentStatus + ", ");
+                invoice.append("paymentStatus='" + paymentStatus + "', ");
             }
             if (!paymentMethod.isEmpty()) {
-                invoice.append("paymentMethod=" + paymentMethod + ", ");
+                invoice.append("paymentMethod='" + paymentMethod + "', ");
             }
             if (!amountOwing.isEmpty()) {
                 invoice.append("amountOwing=" + amountOwing + ", ");
             }
             if (!paymentDate.isEmpty()) {
-                invoice.append("paymentDate=to_date('" + paymentDate + "', 'yyyy-MM-dd'), ");
+            	invoice.append("paymentDate=trunc(to_timestamp('" + paymentDate + "','yyyy-mm-dd HH24:MI:SS.FF1')), ");
             }
             invoice.delete(invoice.length() - 2, invoice.length() - 1);
             invoice.append("where invoiceID=" + invoiceID);
