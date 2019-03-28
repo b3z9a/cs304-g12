@@ -66,6 +66,9 @@ public class HealthDBUI extends JFrame {
     private JPanel panelPrescriptionInfo;
     private JScrollPane panePrescriptionPrescriptions;
 
+    private Boolean singlePrescBool;
+    private String[] singlePrescData;
+
     private JPanel panelTestFinder;
     private JPanel panelTestInfo;
     private JScrollPane paneTestTests;
@@ -225,6 +228,8 @@ public class HealthDBUI extends JFrame {
         planArray.clear();
         planNumArray.clear();
         planInvoiceArray.clear();
+        singlePrescData = new String[0];
+        singlePrescBool = Boolean.FALSE;
 
         prescPPTableModel.setRowCount(0);
         prescPSTableModel.setRowCount(0);
@@ -1340,7 +1345,13 @@ public class HealthDBUI extends JFrame {
                         } else {
                             hdb.updatePrescription(pharmHIDField.getText(), prescID);
                             prescPPTableModel.setRowCount(0);
-                            updateTable(hdb.getPrescriptions(patientID), prescPPTableModel);
+
+                            if(singlePrescBool)
+                            {
+                                prescPPTableModel.addRow(singlePrescData);
+                            } else {
+                                updateTable(hdb.getPrescriptions(patientID), prescPPTableModel);
+                            }
                         }
                     }
                 }
@@ -1385,7 +1396,7 @@ public class HealthDBUI extends JFrame {
 
                 ArrayList<String> tuple = hdb.findPrescription(prescNum);
 
-                String[] data = new String[tuple.size()];
+                singlePrescData = new String[tuple.size()];
 
                 patientArray = hdb.findPatient(hdb.findPIDfromPrescription(prescNum));
 
@@ -1406,24 +1417,26 @@ public class HealthDBUI extends JFrame {
                     txtPharmHomeNum.setText(patientArray.get(7));
                     txtPharmMobileNum.setText(patientArray.get(8));
 
-                    int row = 0;
+                    int col = 0;
                     if(tuple.size() > 0) {
                         for (String s : tuple) {
-                            data[row] = s;
-                            row++;
+                            singlePrescData[col] = s;
+                            col++;
                         }
 
-                        prescPPTableModel.addRow(data);
+                        prescPPTableModel.addRow(singlePrescData);
                     }
 
                     txtPrescNum.setText("");
                     txtPID.setText("");
                     txtName.setText("");
+                    singlePrescBool = Boolean.TRUE;
                 }
                 else {
                     txtPrescNum.setText("");
                     txtPID.setText("");
                     txtName.setText("");
+                    singlePrescBool = Boolean.FALSE;
 
                     // Clear the data tables
                     clearPanelData();
@@ -1517,11 +1530,13 @@ public class HealthDBUI extends JFrame {
                     txtPrescNum.setText("");
                     txtPID.setText("");
                     txtName.setText("");
+                    singlePrescBool = Boolean.FALSE;
                 }
                 else {
                     txtPrescNum.setText("");
                     txtPID.setText("");
                     txtName.setText("");
+                    singlePrescBool = Boolean.FALSE;
 
                     // Clear the data tables
                     clearPanelData();
