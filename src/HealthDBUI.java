@@ -600,15 +600,6 @@ public class HealthDBUI extends JFrame {
         gbc.insets = new Insets(0,0,10, 0);
         panel.add(lbl, gbc);
 
-        lbl = new JLabel("CPSC 304 - Group 12");
-        lbl.setFont(new Font("Arial", Font.BOLD, 24));
-        lbl.setHorizontalAlignment(SwingConstants.CENTER);
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.insets = new Insets(0,0,10, 0);
-        panel.add(lbl, gbc);
-
         lbl = new JLabel();
         lbl.setHorizontalAlignment(0);
         lbl.setHorizontalTextPosition(0);
