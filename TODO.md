@@ -12,6 +12,7 @@
 * ~~Add view test button to Patient Summary~~
 * ~~Expand Extended Benefits table colums or wrap them~~ (Not necessary)
 * Add error check for cancel pressed for Name chooser
+* Add dialog box when random name chosen and no name found in db
 * Mark as Filled refreshes entire Presc table even if theres only one entry
 
 ## Back End
