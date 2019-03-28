@@ -460,7 +460,6 @@ public class HealthDBUI extends JFrame {
                     switchToUserSelectPanel();
                 }
                 else {
-                    //System.out.println("Login credentials: " + username + " " + password);
 
                     hdb.setOracleCredentials(username, password);
 
@@ -641,11 +640,8 @@ public class HealthDBUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String userClass = cboxUserClass.getSelectedItem().toString();
 
-                System.out.println();
-
                 switch (userClass) {
                     case "Patient Summary":
-                        System.out.println("Patient Summary");
 
                         clearPanelData();
 
@@ -1074,7 +1070,6 @@ public class HealthDBUI extends JFrame {
                     if(resp == JOptionPane.OK_OPTION) {
                         String drHIDInput = dDrHID.getText();
                         hdb.createReferral(patientID, drHID, drHIDInput);
-                        System.out.println(drHIDInput);
 
                         // Clear and update the table with new data
                         refPSTableModel.setRowCount(0);
@@ -1122,8 +1117,6 @@ public class HealthDBUI extends JFrame {
                 String pidTxt = txtPID.getText();
                 String nameTxt = txtName.getText();
 
-                System.out.println(pidTxt + " " + nameTxt);
-
                 if(pidTxt.equals("") && !nameTxt.isEmpty())
                 {
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
@@ -1146,7 +1139,6 @@ public class HealthDBUI extends JFrame {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
 
-                    System.out.println(patientArray.get(2) + ", " + name);
 
                     txtDocName.setText(name);
                     txtDocPID.setText(patientArray.get(2));
@@ -1409,7 +1401,6 @@ public class HealthDBUI extends JFrame {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
 
-                    System.out.println(patientArray.get(2) + ", " + name);
 
                     txtPharmName.setText(name);
                     txtPharmPID.setText(patientArray.get(2));
@@ -1486,8 +1477,6 @@ public class HealthDBUI extends JFrame {
                 String pidTxt = txtPID.getText();
                 String nameTxt = txtName.getText();
 
-                System.out.println(pidTxt + " " + nameTxt);
-
                 if(pidTxt.equals("") && !nameTxt.isEmpty())
                 {
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
@@ -1507,8 +1496,6 @@ public class HealthDBUI extends JFrame {
                     patientID = patientArray.get(2);
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
-
-                    System.out.println(patientArray.get(2) + ", " + name);
 
                     txtPharmName.setText(name);
                     txtPharmPID.setText(patientArray.get(2));
@@ -1737,8 +1724,6 @@ public class HealthDBUI extends JFrame {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
 
-                    System.out.println(patientArray.get(2) + ", " + name);
-
                     txtLabName.setText(name);
                     txtLabPID.setText(patientArray.get(2));
                     txtLabAddr.setText(addr);
@@ -1812,8 +1797,6 @@ public class HealthDBUI extends JFrame {
                 String pidTxt = txtPID.getText();
                 String nameTxt = txtName.getText();
 
-                System.out.println(pidTxt + " " + nameTxt);
-
                 if(pidTxt.equals("") && !nameTxt.isEmpty())
                 {
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
@@ -1833,8 +1816,6 @@ public class HealthDBUI extends JFrame {
                     patientID = patientArray.get(2);
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
-
-                    System.out.println(patientArray.get(2) + ", " + name);
 
                     txtLabName.setText(name);
                     txtLabPID.setText(patientArray.get(2));
@@ -1989,10 +1970,6 @@ public class HealthDBUI extends JFrame {
                     int resp = JOptionPane.showConfirmDialog(frame, fields, "Edit Test for " + name, JOptionPane.OK_CANCEL_OPTION);
 
                     if(resp == JOptionPane.OK_OPTION) {
-                        System.out.println(testID+ " " +dChol.getText()+ " " +dHDL.getText()+ " " +dLDL.getText()+ " " +dTrig.getText()
-                                        + " " +dWBcc.getText()+ " " + dRBcc.getText()+ " " +dHema.getText()+ " " +dPlate.getText()
-                                        + " " +dNRPer.getText() + " " + dNRAbs.getText()+ " " +dSod.getText()+ " " +dGlu.getText()
-                                + " " +dPhos.getText()+ " " + dLabHID.getText());
                         if(hdb.updateTest(testID,
                                 dChol.getText(), dHDL.getText(),dLDL.getText(), dTrig.getText(),
                                 dWBcc.getText(), dRBcc.getText(), dHema.getText(), dPlate.getText(),
@@ -2732,8 +2709,6 @@ public class HealthDBUI extends JFrame {
                 String pidTxt = txtPID.getText();
                 String nameTxt = txtName.getText();
 
-                System.out.println(pidTxt + " " + nameTxt);
-
                 if(pidTxt.equals("") && !nameTxt.isEmpty())
                 {
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
@@ -2758,8 +2733,6 @@ public class HealthDBUI extends JFrame {
                     String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
                     String mobile = patientArray.get(9);
                     String home = patientArray.get(8);
-
-                    System.out.println(patientArray.get(2) + ", " + name);
 
                     txtPlanSumName.setText(name);
                     txtPlanSumPID.setText(patientID);
@@ -3072,8 +3045,6 @@ public class HealthDBUI extends JFrame {
                         String paymentMethod = aPaymentMethod.getSelectedItem().toString();
                         String amountOwing = aAmountOwing.getText();
                         planID = hdb.getPlan(patientID).get(0);
-
-                        System.out.println(patientID + " " + invoiceItem + " " + dueDate + " " + paymentStatus + " " + paymentDate + " " + paymentMethod + " " + amountOwing + " " + planID);
 
                         hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus,
                         		paymentDate, paymentMethod, amountOwing, planID);
