@@ -996,10 +996,7 @@ public class HealthDB {
 		}
 		return test;
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> 6df94de674406351005bef955e16829083f8c644
 	// patientID, invoiceItem, dueDate, paymentStatus, paymentDate, paymentMethod, amountOwing, paymentID , planID, creationDate
 
 
@@ -1270,13 +1267,8 @@ public class HealthDB {
             String query = "select invoiceItem, to_char(dueDate, 'Month, YYYY') as monthYear, avg(balanceSum) as balanceSumAvg from( "
             + "select invoiceItem, dueDate, paymentStatus, sum(amountOwing) as balanceSum "
             + "from invoice where patientID = " + pid + " group by invoiceItem, dueDate, paymentStatus) "
-<<<<<<< HEAD
             + "where paymentStatus = 'Unpaid' group by invoiceItem, to_char(dueDate, 'Month') order by invoiceItem, monthName";
-=======
-            + "where paymentStatus = 'Unpaid' group by invoiceItem, to_char(dueDate, 'Month, YYYY') order by invoiceItem, monthYear";
 
-            System.out.println(query);
->>>>>>> 6df94de674406351005bef955e16829083f8c644
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
