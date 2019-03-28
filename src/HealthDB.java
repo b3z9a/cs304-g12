@@ -153,7 +153,7 @@ public class HealthDB {
 			ResultSet rs = stmt.executeQuery(query);
 			stmt.close();
 			System.out.println("Prescription successfully created");
-			return true;
+			return !checkInteraction(patientID, medication);
 		} catch (SQLException ex){
 			System.out.println("Failed to create prescription" + ex.getMessage());
 			return false;
@@ -1265,8 +1265,26 @@ public class HealthDB {
 		*          otherwise.
 		*/
 	private boolean checkInteraction(String patientID, String medication){
-		// TODO: Check for interactions. //
-		return false;
+		boolean interaction = false;
+		try{
+			String query = "select p.patientID from patient p where not exists " +
+										 "(select * from medInteraction med where not exists " +
+										 "(select * from prescription pr where p.patientID=" +
+										 "pr.patientID and pr.medication=med.medication and p.patientID=" + patientID + "))";
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			if(rs.next() && !rs.getString("patientID").isEmpty()){
+				System.out.println(rs.getString("patientID"));
+				String update = "delete from Prescription where patientID =" + patientID + " and medication='" + medication + "'";
+				stmt.executeUpdate(update);
+				return true;
+			}
+
+		} catch (SQLException ex){
+				System.out.println("Error checking for medication interaction. " + ex.getMessage());
+		}
+		return interaction;
 	}
 
 	private void printTuple(ArrayList<String> tuple){
