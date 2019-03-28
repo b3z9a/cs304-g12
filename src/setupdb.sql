@@ -30,7 +30,7 @@ CREATE TABLE HealthcareProfessional (
     officeNumber 	varchar2(10),
     street 			varchar2(60),
     postalCode 		varchar2(6),
-    homePhone 		varchar2(20),
+    officePhone 		varchar2(20),
     mobilePhone 	varchar2(20),
     PRIMARY KEY (HID),
     FOREIGN KEY (postalCode) REFERENCES PostalCode ON DELETE CASCADE
@@ -169,7 +169,7 @@ CREATE TABLE ExtendedBenefitsPlan (
 
 CREATE TABLE Invoice (
     invoiceID 			integer,
-    patientID 		integer,
+    patientID 		integer not null,
     invoiceItem 		varchar2(60),
     creationDate 		date not null,
     dueDate 			date not null,

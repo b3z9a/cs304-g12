@@ -1,21 +1,26 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * TODO
- * Create a dialog box to select from multiple patients
- * Format dates as MM-DD-YYYY (SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");)
- * Create a dropdown menu for Invoice panel for payment status and methods
+ * <h2>HealthDBUI</h2>
+ * Main program GUI for the Integrated Healthcare Management System
+ * <br>
+ * CPSC 304 Group 12
+ *
+ * @author Jenna Bains
+ * @author Laura Greenstreet
+ * @author Michelle Kong
+ * @author Jan Louis Evangelista
+ *
+ * <br>
+ * Note: The Oracle DB + JDBC example provided by the CS department,
+ * branch.java has been used as a reference for building this
+ * application.
+ *
  */
 
 public class HealthDBUI extends JFrame {
@@ -53,7 +58,7 @@ public class HealthDBUI extends JFrame {
     private JPasswordField passwordField;
 
     private JPanel panelUserClassSelect;
-    private JComboBox cboxUserClass = new JComboBox(userClass);
+    private JComboBox<String> cboxUserClass = new JComboBox<>(userClass);
     private JButton btnConfirmUserClass;
 
     private JPanel panelPatientSummaryFinder;
@@ -74,18 +79,14 @@ public class HealthDBUI extends JFrame {
     private JScrollPane paneTestTests;
     private JPanel panelTestActions;
 
-    private JPanel panelInvoiceFinder;
-    private JPanel panelInvoiceInfo;
-    private JPanel panelInvoiceSubmit;
-
     private JPanel panelPlanSummaryFinder;
     private JPanel panelPlanSummaryInfo;
     private JPanel panelProvincialPlan;
-    private JPanel panelExtendedBenefits;
+    private JScrollPane paneExtendedBenefits;
     private JPanel panelInvoiceHistory;
-    private JPanel panelInvoiceHistoryGrid;
+    private JScrollPane paneInvoiceHistoryGrid;
     private JPanel panelPlanSummaryActions;
-    private JPanel panelMonthlyInvoiceSummary;
+    private JScrollPane paneMonthlyInvoiceSummary;
 
     private JTextField txtPlanSumName;
     private JTextField txtPlanSumPID;
@@ -147,8 +148,6 @@ public class HealthDBUI extends JFrame {
     // view tables
     private JTable testTPTable;
     private DefaultTableModel testTPTableModel;
-    private JTable invoiceTPTable;
-    private DefaultTableModel invoiceTPTableModel;
 
     private JTable extendedBenefitsTable;
     private DefaultTableModel extendedBenefitsTableModel;
@@ -157,6 +156,10 @@ public class HealthDBUI extends JFrame {
     private JTable monthlyInvoiceSummaryTable;
     private DefaultTableModel monthlyInvoiceSummaryTableModel;
 
+    /**
+     * Program entry point
+     * @param args
+     */
     public static void main(String args[]) {
         hdb = new HealthDB();
 
@@ -169,6 +172,10 @@ public class HealthDBUI extends JFrame {
         });
     }
 
+    /**
+     * HealthDBUI Class Constructor
+     * Sets up all panel views and initializes program
+     */
     public HealthDBUI() {
         initialize();
         setPanelOracleLogin();
@@ -189,25 +196,16 @@ public class HealthDBUI extends JFrame {
         setPanelTestInfo();
         setPanelTestActions();
 
-        setPanelInvoice();
-        setPanelInvoiceFinder();
-        setPanelInvoiceInfo();
-        setPanelInvoiceSubmit();
-
         setPanelPlanSummary();
         setPanelPlanSummaryFinder();
         setPanelPlanSummaryInfo();
         setPanelProvincialPlan();
-        setPanelExtendedBenefits();
         setPanelInvoiceHistory();
-        setPanelInvoiceHistoryGrid();
         setPanelPlanSummaryActions();
-        setPanelMonthlyInvoiceSummary();
     }
 
     /**
-     * initialize()
-     * Initializes the window as well as the combo box selections
+     * Initializes the window as well as the the fields needed
      */
     private void initialize() {
         frame = new JFrame("Integrated Healthcare Database");
@@ -223,6 +221,9 @@ public class HealthDBUI extends JFrame {
         planInvoiceArray = new ArrayList<String>();
     }
 
+    /**
+     * Clears all data for all views for fresh start
+     */
     private void clearPanelData() {
         patientArray.clear();
         planArray.clear();
@@ -236,7 +237,6 @@ public class HealthDBUI extends JFrame {
         testPSTableModel.setRowCount(0);
         testTPTableModel.setRowCount(0);
         refPSTableModel.setRowCount(0);
-        // invoiceTPTableModel.setRowCount(0);
 
         txtDocName.setText("");
         txtDocPID.setText("");
@@ -280,6 +280,84 @@ public class HealthDBUI extends JFrame {
         monthlyInvoiceSummaryTableModel.setRowCount(0);
     }
 
+    /**
+     * Prints the list of tuples for debug purposes
+     * @param tuples
+     */
+    private void printTuples(ArrayList<ArrayList<String>> tuples) {
+        StringBuilder sb = new StringBuilder();
+        for (ArrayList<String> list : tuples) {
+            for (String s : list) {
+                sb.append(" '");
+                sb.append(s);
+                sb.append("', ");
+            }
+            sb.append("\n");
+        }
+        System.out.println(sb.toString());
+    }
+
+    /**
+     * Prints the values of a single tuple
+     * @param tuple
+     */
+    private void printTuple(ArrayList<String> tuple) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : tuple) {
+            sb.append(" '");
+            sb.append(s);
+            sb.append("', ");
+        }
+        System.out.println(sb.toString());
+    }
+
+    /**
+     * Converts the Array of array of tuples into a 2D array for use by JTables
+     * @param tuples
+     * @return
+     */
+    private String[][] createData(ArrayList<ArrayList<String>> tuples) {
+        String[][] data = new String[tuples.size()][tuples.get(0).size()];
+
+        int row = 0;
+        int col = 0;
+
+        /* Using same code as printTuples */
+        for (ArrayList<String> tuple : tuples) {
+            for (String s : tuple) {
+                data[row][col] = s;
+                col++;
+            }
+            col = 0;
+            row++;
+        }
+
+        System.out.println(Arrays.deepToString(data));
+
+        return data;
+    }
+
+    /**
+     * Updates a JTable's TableModel given an array of tuples
+     * @param arr
+     * @param tableModel
+     */
+    private void updateTable(ArrayList<ArrayList<String>> arr, DefaultTableModel tableModel) {
+        //printTuples(arr);
+        if (arr.size() > 0) {
+            String[][] data = createData(arr);
+            for (int row = 0; row < data.length; row++) {
+                tableModel.addRow(data[row]);
+            }
+        }
+    }
+
+    /**
+     * Gets the patient ID of a certain patient's name from an array of tuples
+     * @param names
+     * @param nameTxt
+     * @return
+     */
     private String getPIDfromName(ArrayList<ArrayList<String>> names, String nameTxt) {
         // Do a name search
         Object[] nameArr = new Object[names.size()];
@@ -287,13 +365,13 @@ public class HealthDBUI extends JFrame {
         int row = 0;
         int index = 0;
 
-        for(ArrayList<String> tuple : names) {
+        for (ArrayList<String> tuple : names) {
             nameArr[row] = tuple.get(0) + " " + tuple.get(1) + " - " + tuple.get(2);
             row++;
         }
 
         // Generate dialog
-        String s = (String)JOptionPane.showInputDialog(frame,
+        String s = (String) JOptionPane.showInputDialog(frame,
                 "Choose a patient with " + nameTxt + " in their name:",
                 "Choose a Patient",
                 JOptionPane.PLAIN_MESSAGE,
@@ -304,8 +382,8 @@ public class HealthDBUI extends JFrame {
         // Find the index
         row = 0;
         if (s != null) {
-            for(Object obj : nameArr) {
-                if(s.equals(nameArr[row])) {
+            for (Object obj : nameArr) {
+                if (s.equals(nameArr[row])) {
                     index = row;
                 }
                 row++;
@@ -315,6 +393,11 @@ public class HealthDBUI extends JFrame {
         return "";
     }
 
+    /**
+     * Prints out test values onto a dialog box
+     * @param table
+     * @param tableModel
+     */
     private void viewTestData(JTable table, DefaultTableModel tableModel) {
         JTextField dChol = new JTextField();
         JTextField dHDL = new JTextField();
@@ -331,12 +414,12 @@ public class HealthDBUI extends JFrame {
         JTextField dPhos = new JTextField();
         JTextField dLabHID = new JTextField();
 
-        if(patientArray.size() > 0) {
+        if (patientArray.size() > 0) {
             String name = patientArray.get(0) + " " + patientArray.get(1);
 
             int row = table.getSelectedRow();
 
-            if(row >= 0) {
+            if (row >= 0) {
                 String testID = tableModel.getValueAt(row, 0).toString();
                 ArrayList<String> testData = hdb.findTestValues(testID);
 
@@ -379,19 +462,23 @@ public class HealthDBUI extends JFrame {
 
                 String s = testData.get(0);
                 JOptionPane.showMessageDialog(frame, data, "Test # " + testID + " for Patient " + name, JOptionPane.PLAIN_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(frame, "Please select a test from the Test table.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            else {
-                JOptionPane.showMessageDialog(frame, "Please select a test from the Test table.", "Error",  JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        else {
-            JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(frame, "No patient selected!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    /**
+     * Finds a single prescription and puts it into a JTable
+     * @param prescNum
+     * @return
+     */
     private int findSinglePrescription(String prescNum) {
         ArrayList<String> tuple = hdb.findPrescription(prescNum);
 
-        if(tuple.size() > 0) {
+        if (tuple.size() > 0) {
             singlePrescData = new String[tuple.size()];
 
             patientArray = hdb.findPatient(hdb.findPIDfromPrescription(prescNum));
@@ -425,12 +512,17 @@ public class HealthDBUI extends JFrame {
         return 0;
     }
 
+    /**
+     * Finds a single test and puts it into a JTable
+     * @param testNum
+     * @return
+     */
     private int findSingleTest(String testNum) {
         ArrayList<String> tuple = hdb.findTest(testNum);
 
         String[] data = new String[tuple.size()];
 
-        if(tuple.size() > 0) {
+        if (tuple.size() > 0) {
 
             patientArray = hdb.findPatient(hdb.findPIDfromTest(testNum));
 
@@ -462,8 +554,9 @@ public class HealthDBUI extends JFrame {
         }
         return 0;
     }
+
     /**
-     * Initializes the Oracle Login panel
+     * Oracle DB Login Panel
      */
     private void setPanelOracleLogin() {
         panelOracleLogin = new JPanel();
@@ -471,15 +564,52 @@ public class HealthDBUI extends JFrame {
         panelOracleLogin.setEnabled(true);
         panelRoot.add(panelOracleLogin, "Card1");
 
-        JLabel lbl = new JLabel();
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weighty = 1.0;
+        panelOracleLogin.add(panel, gbc);
+
+        JPanel loginPanel = new JPanel();
+        loginPanel.setLayout(new GridBagLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        panelOracleLogin.add(loginPanel, gbc);
+
+        JPanel aboutPanel = new JPanel();
+        aboutPanel.setLayout(new BorderLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.PAGE_END;
+        gbc.insets = new Insets(0,0,10,0);
+        gbc.weighty = 1.0;
+        panelOracleLogin.add(aboutPanel, gbc);
+
+        JLabel lbl = new JLabel("Integrated Healthcare Management System");
+        lbl.setFont(new Font("Arial", Font.BOLD, 32));
+        lbl.setHorizontalAlignment(SwingConstants.CENTER);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(0,0,10, 0);
+        panel.add(lbl, gbc);
+
+        lbl = new JLabel();
         lbl.setHorizontalAlignment(0);
         lbl.setHorizontalTextPosition(0);
         lbl.setText("Oracle Database Login");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
+        gbc.insets = new Insets(0,0,10, 0);
         gbc.anchor = GridBagConstraints.WEST;
-        panelOracleLogin.add(lbl, gbc);
+        loginPanel.add(lbl, gbc);
 
         lbl = new JLabel();
         lbl.setHorizontalAlignment(4);
@@ -488,7 +618,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        panelOracleLogin.add(lbl, gbc);
+        loginPanel.add(lbl, gbc);
 
         usernameField = new JTextField();
         gbc = new GridBagConstraints();
@@ -496,7 +626,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(usernameField, gbc);
+        loginPanel.add(usernameField, gbc);
 
         lbl = new JLabel();
         lbl.setHorizontalAlignment(4);
@@ -505,7 +635,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panelOracleLogin.add(lbl, gbc);
+        loginPanel.add(lbl, gbc);
 
         passwordField = new JPasswordField();
         gbc = new GridBagConstraints();
@@ -513,7 +643,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(passwordField, gbc);
+        loginPanel.add(passwordField, gbc);
 
         JButton btnLogin = new JButton();
         btnLogin.setHorizontalTextPosition(0);
@@ -531,13 +661,11 @@ public class HealthDBUI extends JFrame {
                     System.out.println("Login credentials invalid");
 
                     JOptionPane.showMessageDialog(frame, "Login Failed: Username or Password missing!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
-                }
-                else if (username.equals("1") || password.equals("1")) {
+                } else if (username.equals("1") || password.equals("1")) {
 
                     /* Bypass Oracle DB connection for local testing */
                     switchToUserSelectPanel();
-                }
-                else {
+                } else {
                     //System.out.println("Login credentials: " + username + " " + password);
 
                     hdb.setOracleCredentials(username, password);
@@ -547,8 +675,7 @@ public class HealthDBUI extends JFrame {
 
                         /* Switch to User Class panel when login achieved */
                         switchToUserSelectPanel();
-                    }
-                    else {
+                    } else {
                         System.out.println("Login Failed!");
                         JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -558,142 +685,32 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
-        gbc.insets = new Insets(5,0,0,0);
+        gbc.insets = new Insets(5, 0, 0, 0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(btnLogin, gbc);
+        loginPanel.add(btnLogin, gbc);
 
 
-        JButton btnLauraLogin = new JButton();
-        btnLauraLogin.setHorizontalTextPosition(0);
-        btnLauraLogin.setPreferredSize(new Dimension(80, 30));
-        btnLauraLogin.setText("Laura Login");
+        JButton btnAbout = new JButton();
+        btnAbout.setHorizontalTextPosition(0);
+        btnAbout.setText("About the Team");
         /* Login button action listener */
-        btnLauraLogin.addActionListener(new ActionListener() {
+        btnAbout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                username = "ora_k1j8";
-                password = "a30442115"; /* Fill in if you want */
-
-                hdb.setOracleCredentials(username, password);
-
-                /* Switch to next view only if database connection is made */
-                if (hdb.connectToDB(username, password)) {
-
-                    /* Switch to User Class panel when login achieved */
-                    switchToUserSelectPanel();
-                }
-                else {
-                    System.out.println("Login Failed!");
-                    JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
-                }
+                JOptionPane.showMessageDialog(frame, "Integrated Healthcare Management System\n" +
+                        "CPSC 304 - Group 12\n\n" +
+                        "J. Bains\n" +
+                        "L. Greenstreet\n" +
+                        "M. Kong\n" +
+                        "J. Evangelista", "About the Team", JOptionPane.PLAIN_MESSAGE);
             }
         });
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.insets = new Insets(10,0,0,0);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(btnLauraLogin, gbc);
+        aboutPanel.add(btnAbout, BorderLayout.PAGE_END);
 
-        JButton btnMichelleLogin = new JButton();
-        btnMichelleLogin.setHorizontalTextPosition(0);
-        btnMichelleLogin.setPreferredSize(new Dimension(80, 30));
-        btnMichelleLogin.setText("Michelle Login");
-        /* Login button action listener */
-        btnMichelleLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                username = "ora_u4d9";
-                password = "a32746133"; /* Fill in if you want */
-
-                hdb.setOracleCredentials(username, password);
-
-                /* Switch to next view only if database connection is made */
-                if (hdb.connectToDB(username, password)) {
-
-                    /* Switch to User Class panel when login achieved */
-                    switchToUserSelectPanel();
-                }
-                else {
-                    System.out.println("Login Failed!");
-                    JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 5;
-        gbc.insets = new Insets(5,0,0,0);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(btnMichelleLogin, gbc);
-
-        JButton btnJennaLogin = new JButton();
-        btnJennaLogin.setHorizontalTextPosition(0);
-        btnJennaLogin.setPreferredSize(new Dimension(80, 30));
-        btnJennaLogin.setText("Jenna Login");
-        /* Login button action listener */
-        btnJennaLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                username = "ora_b3z9a";
-                password = "a31823115"; /* Fill in if you want */
-
-                hdb.setOracleCredentials(username, password);
-
-                /* Switch to next view only if database connection is made */
-                if (hdb.connectToDB(username, password)) {
-
-                    /* Switch to User Class panel when login achieved */
-                    switchToUserSelectPanel();
-                }
-                else {
-                    System.out.println("Login Failed!");
-                    JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 6;
-        gbc.insets = new Insets(5,0,0,0);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(btnJennaLogin, gbc);
-
-        JButton btnJanLogin = new JButton();
-        btnJanLogin.setHorizontalTextPosition(0);
-        btnJanLogin.setPreferredSize(new Dimension(80, 30));
-        btnJanLogin.setText("Jan Login");
-        /* Login button action listener */
-        btnJanLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                username = "ora_b3a0b";
-                password = "a28912146";
-
-                hdb.setOracleCredentials(username, password);
-
-                /* Switch to next view only if database connection is made */
-                if (hdb.connectToDB(username, password)) {
-
-                    /* Switch to User Class panel when login achieved */
-                    switchToUserSelectPanel();
-                }
-                else {
-                    System.out.println("Login Failed!");
-                    JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 7;
-        gbc.insets = new Insets(5,0,0,0);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(btnJanLogin, gbc);
     }
 
     /**
-     * Initializes the main container for both User Class Selection and User Class Info panels
+     * Start panel initialization for user views
      */
     private void setPanelUserClass() {
         panelUserClass = new JPanel();
@@ -701,9 +718,6 @@ public class HealthDBUI extends JFrame {
         panelRoot.add(panelUserClass, "Card2");
     }
 
-    /**
-     * Initializes the User Class Selection panel
-     */
     private void setPanelUserClassSelect() {
         panelUserClassSelect = new JPanel();
         panelUserClassSelect.setLayout(new FlowLayout());
@@ -724,7 +738,6 @@ public class HealthDBUI extends JFrame {
                 switch (userClass) {
                     case "Patient Summary":
                         System.out.println("Patient Summary");
-
                         clearPanelData();
 
                         /* Switch to Patient Summary panel */
@@ -803,13 +816,9 @@ public class HealthDBUI extends JFrame {
         panelUserClassSelect.add(cboxUserClass);
         panelUserClassSelect.add(btnConfirmUserClass);
         panelUserClassSelect.add(btnClear);
-
     }
 
-    /**
-     * Initializes the User Class Info panel
-     */
-    private void setPanelUserClassInfo(){
+    private void setPanelUserClassInfo() {
         panelUserClassInfo = new JPanel();
         panelUserClassInfo.setLayout(new CardLayout(0, 0));
         panelUserClass.add(panelUserClassInfo, BorderLayout.CENTER);
@@ -838,69 +847,18 @@ public class HealthDBUI extends JFrame {
         panelUserClassInfo.add(panelEmpty, "Card7");
     }
 
-    private void printTuples(ArrayList<ArrayList<String>> tuples){
-        StringBuilder sb = new StringBuilder();
-        for (ArrayList<String> list : tuples){
-          for (String s : list){
-            sb.append(" '");
-            sb.append(s);
-            sb.append("', ");
-          }
-          sb.append("\n");
-        }
-        System.out.println(sb.toString());
-    }
-
-    private void printTuple(ArrayList<String> tuple){
-        StringBuilder sb = new StringBuilder();
-          for (String s : tuple){
-            sb.append(" '");
-            sb.append(s);
-            sb.append("', ");
-          }
-        System.out.println(sb.toString());
-    }
-
-    private String[][] createData(ArrayList<ArrayList<String>> tuples) {
-        String[][] data = new String[tuples.size()][tuples.get(0).size()];
-
-        int row = 0;
-        int col = 0;
-
-        /* Using same code as printTuples */
-        for(ArrayList<String> tuple : tuples) {
-            for (String s : tuple) {
-                data[row][col] = s;
-                col++;
-            }
-		    col = 0;
-            row++;
-        }
-
-       	System.out.println(Arrays.deepToString(data));
-
-        return data;
-    }
-
-    private void updateTable(ArrayList<ArrayList<String>> arr, DefaultTableModel tableModel) {
-        //printTuples(arr);
-        if(arr.size() > 0)
-        {
-            String[][] data = createData(arr);
-            for(int row = 0; row < data.length; row++)
-            {
-                tableModel.addRow(data[row]);
-            }
-        }
-    }
-
+    /**
+     * Start panel initialization for Patient Summary View and its components
+     */
     private void setPanelPatientSummary() {
         JLabel lbl = new JLabel("Patient Summary");
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
         lbl.setHorizontalAlignment(SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(0,5,0,0);
         panelPatientSummary.add(lbl, gbc);
 
         /* Row 1 */
@@ -908,18 +866,20 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryFinder.setLayout(new FlowLayout());
         gbc = new GridBagConstraints();
         gbc.weightx = 1.0;
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panelPatientSummary.add(panelPatientSummaryFinder, gbc);
 
         /* Row 2 */
         lbl = new JLabel("Personal Information", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         panelPatientSummary.add(lbl, gbc);
 
         /* Row 3 */
@@ -928,14 +888,15 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         panelPatientSummary.add(panelPatientSummaryInfo, gbc);
 
         JButton btnDeletePatient = new JButton();
         btnDeletePatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
                     if (patientID.equals("")) {
@@ -950,13 +911,11 @@ public class HealthDBUI extends JFrame {
                             "Delete Patient " + name,
                             JOptionPane.YES_NO_OPTION);
 
-                    if(resp == JOptionPane.YES_OPTION)
-                    {
+                    if (resp == JOptionPane.YES_OPTION) {
                         hdb.deletePatient(patientID);
                         clearPanelData();
                     }
-                }
-                else {
+                } else {
                     JOptionPane.showMessageDialog(frame,
                             "No patient selected!",
                             "Error",
@@ -970,17 +929,19 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryPatBtn.setLayout(new FlowLayout());
         panelPatientSummaryPatBtn.add(btnDeletePatient);
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         panelPatientSummary.add(panelPatientSummaryPatBtn, gbc);
 
         /* Row 4 */
         lbl = new JLabel("Prescriptions", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 5;
+        gbc.gridx = 0;
+        gbc.gridy = 5;
         panelPatientSummary.add(lbl, gbc);
 
 
@@ -995,8 +956,10 @@ public class HealthDBUI extends JFrame {
 
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 6;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 6;
         panelPatientSummary.add(panePatientSummaryPrescriptions, gbc);
 
         /* Row 6 */
@@ -1008,14 +971,14 @@ public class HealthDBUI extends JFrame {
                 JTextField dDosage = new JTextField();
                 JTextField dQty = new JTextField();
 
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
                     Object[] fields = {"Patient: " + name, "Medication", dMedication, "Dosage", dDosage, "Quantity", dQty};
 
                     int resp = JOptionPane.showConfirmDialog(frame, fields, "Create prescription for " + name, JOptionPane.OK_CANCEL_OPTION);
 
-                    if(resp == JOptionPane.OK_OPTION) {
+                    if (resp == JOptionPane.OK_OPTION) {
                         String medication = dMedication.getText();
                         String dosage = dDosage.getText();
                         String qty = dQty.getText();
@@ -1025,13 +988,11 @@ public class HealthDBUI extends JFrame {
                         prescPSTableModel.setRowCount(0);
                         prescriptions = hdb.getPrescriptions(patientID);
                         updateTable(prescriptions, prescPSTableModel);
-                    }
-                    else {
+                    } else {
                         System.out.println("No values entered");
                     }
-                }
-                else {
-                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -1041,17 +1002,19 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryPresBtn.setLayout(new FlowLayout());
         panelPatientSummaryPresBtn.add(btnCreatePrescription);
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 7;
+        gbc.gridx = 0;
+        gbc.gridy = 7;
         panelPatientSummary.add(panelPatientSummaryPresBtn, gbc);
 
         /* Row 6 */
         lbl = new JLabel("Tests", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 8;
+        gbc.gridx = 0;
+        gbc.gridy = 8;
         panelPatientSummary.add(lbl, gbc);
 
         /* Row 7 */
@@ -1064,38 +1027,38 @@ public class HealthDBUI extends JFrame {
 
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 9;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 9;
         panelPatientSummary.add(panePatientSummaryTests, gbc);
 
-        JButton btnCreateTest= new JButton();
+        JButton btnCreateTest = new JButton();
         btnCreateTest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
-                    if(hdb.createTest(patientID, drHID)) {
+                    if (hdb.createTest(patientID, drHID)) {
 
                         // Clear and update the table with new data
                         testPSTableModel.setRowCount(0);
                         tests = hdb.getTests(patientID);
                         updateTable(tests, testPSTableModel);
-                        JOptionPane.showMessageDialog(frame, "Test created for " + name, "Create test for " + name,  JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(frame, "Test created for " + name, "Create test for " + name, JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Failed to create test for " + name, "Create test for " + name, JOptionPane.ERROR_MESSAGE);
                     }
-                    else {
-                        JOptionPane.showMessageDialog(frame, "Failed to create test for " + name, "Create test for " + name,  JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-                else {
-                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
         btnCreateTest.setText("Create New Test");
 
-        JButton btnViewTest= new JButton();
+        JButton btnViewTest = new JButton();
         btnViewTest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1109,17 +1072,19 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryTestsBtn.add(btnCreateTest);
         panelPatientSummaryTestsBtn.add(btnViewTest);
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 10;
+        gbc.gridx = 0;
+        gbc.gridy = 10;
         panelPatientSummary.add(panelPatientSummaryTestsBtn, gbc);
 
         /* Row 8 */
         lbl = new JLabel("Referrals", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 11;
+        gbc.gridx = 0;
+        gbc.gridy = 11;
         panelPatientSummary.add(lbl, gbc);
 
         /* Row 9 */
@@ -1132,8 +1097,10 @@ public class HealthDBUI extends JFrame {
 
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 12;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 12;
         panelPatientSummary.add(panePatientSummaryReferrals, gbc);
 
         JButton btnCreateReferral = new JButton();
@@ -1142,14 +1109,14 @@ public class HealthDBUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JTextField dDrHID = new JTextField();
 
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
                     Object[] fields = {"Patient: " + name, "Doctor ID for Referral", dDrHID};
 
                     int resp = JOptionPane.showConfirmDialog(frame, fields, "Create referral for " + name, JOptionPane.OK_CANCEL_OPTION);
 
-                    if(resp == JOptionPane.OK_OPTION) {
+                    if (resp == JOptionPane.OK_OPTION) {
                         String drHIDInput = dDrHID.getText();
                         hdb.createReferral(patientID, drHID, drHIDInput);
                         System.out.println(drHIDInput);
@@ -1158,13 +1125,11 @@ public class HealthDBUI extends JFrame {
                         refPSTableModel.setRowCount(0);
                         referrals = hdb.getReferrals(patientID);
                         updateTable(referrals, refPSTableModel);
-                    }
-                    else {
+                    } else {
                         System.out.println("No values entered");
                     }
-                }
-                else {
-                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -1175,7 +1140,8 @@ public class HealthDBUI extends JFrame {
         panelPatientSummaryRefBtn.setLayout(new FlowLayout());
         panelPatientSummaryRefBtn.add(btnCreateReferral);
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 13;
+        gbc.gridx = 0;
+        gbc.gridy = 13;
         panelPatientSummary.add(panelPatientSummaryRefBtn, gbc);
     }
 
@@ -1202,18 +1168,16 @@ public class HealthDBUI extends JFrame {
 
                 System.out.println(pidTxt + " " + nameTxt);
 
-                if(pidTxt.equals("") && !nameTxt.isEmpty())
-                {
+                if (pidTxt.equals("") && !nameTxt.isEmpty()) {
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
                     pidTxt = getPIDfromName(names, nameTxt);
 
                     patientArray = hdb.findPatient(pidTxt);
-                }
-                else if(!pidTxt.isEmpty()) {
+                } else if (!pidTxt.isEmpty()) {
                     patientArray = hdb.findPatient(pidTxt);
                 }
 
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
 
                     // Clear the data tables
                     prescPSTableModel.setRowCount(0);
@@ -1246,8 +1210,7 @@ public class HealthDBUI extends JFrame {
 
                     txtPID.setText("");
                     txtName.setText("");
-                }
-                else {
+                } else {
                     txtPID.setText("");
                     txtName.setText("");
 
@@ -1261,91 +1224,107 @@ public class HealthDBUI extends JFrame {
         btnfindPatient.setText("Find Patient");
         panelPatientSummaryFinder.add(btnfindPatient);
     }
+
     private void setPanelPatientSummaryInfo() {
         JLabel lbl = new JLabel("Name");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         panelPatientSummaryInfo.add(lbl, gbc);
 
         txtDocName = new JTextField(12);
         txtDocName.setEditable(false);
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
+        gbc.insets = new Insets(0, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 3;
+        gbc.gridx = 1;
+        gbc.gridy = 3;
         panelPatientSummaryInfo.add(txtDocName, gbc);
 
         lbl = new JLabel("PID");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 2;
+        gbc.gridy = 3;
         panelPatientSummaryInfo.add(lbl, gbc);
 
         txtDocPID = new JTextField(10);
         txtDocPID.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 3;
+        gbc.gridy = 3;
         panelPatientSummaryInfo.add(txtDocPID, gbc);
 
         lbl = new JLabel("Address");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         gbc.gridwidth = 2;
         panelPatientSummaryInfo.add(lbl, gbc);
 
         txtDocAddr = new JTextField(26);
         txtDocAddr.setEditable(false);
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
+        gbc.insets = new Insets(0, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 4;
+        gbc.gridx = 1;
+        gbc.gridy = 4;
         panelPatientSummaryInfo.add(txtDocAddr, gbc);
 
         lbl = new JLabel("Mobile Num");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 6;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 6;
         panelPatientSummaryInfo.add(lbl, gbc);
 
         txtDocMobileNum = new JTextField(10);
         txtDocMobileNum.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 1; gbc.gridy = 6;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 1;
+        gbc.gridy = 6;
         panelPatientSummaryInfo.add(txtDocMobileNum, gbc);
 
         lbl = new JLabel("Home Num");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 6;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 2;
+        gbc.gridy = 6;
         panelPatientSummaryInfo.add(lbl, gbc);
 
         txtDocHomeNum = new JTextField(10);
         txtDocHomeNum.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 6;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 3;
+        gbc.gridy = 6;
         panelPatientSummaryInfo.add(txtDocHomeNum, gbc);
     }
 
+    /**
+     * Start panel initialization for Prescription View and its components
+     */
     private void setPanelPrescription() {
         JLabel lbl = new JLabel("Prescription Information");
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
         lbl.setHorizontalAlignment(SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(0,5,0,0);
         panelPrescription.add(lbl, gbc);
 
         /* Row 1 */
@@ -1354,17 +1333,19 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         panelPrescription.add(panelPrescriptionFinder, gbc);
 
         /* Row 2 */
         lbl = new JLabel("Personal Information", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         panelPrescription.add(lbl, gbc);
 
         /* Row 3 */
@@ -1373,19 +1354,20 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         panelPrescription.add(panelPrescriptionInfo, gbc);
 
         /* Row 4 */
         lbl = new JLabel("Prescriptions", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         panelPrescription.add(lbl, gbc);
-
 
         /* Row 5 */
         String cols[] = {"ID", "Date", "Medication", "Dosage", "Dosage Unit", "Quantity", "Filled Date", "Filled?"};
@@ -1398,16 +1380,18 @@ public class HealthDBUI extends JFrame {
 
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 5;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 5;
         panelPrescription.add(panePrescriptionPrescriptions, gbc);
 
-        JButton btnMarkFilled= new JButton();
+        JButton btnMarkFilled = new JButton();
         btnMarkFilled.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JTextField pharmHIDField = new JTextField();
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
                     int row = prescPPTable.getSelectedRow();
 
                     String prescID = prescPPTableModel.getValueAt(row, 0).toString();
@@ -1416,40 +1400,35 @@ public class HealthDBUI extends JFrame {
 
                     int resp = JOptionPane.showConfirmDialog(frame, fields, "Mark " + prescID + " as Filled", JOptionPane.OK_CANCEL_OPTION);
 
-                    if(resp == JOptionPane.OK_OPTION)
-                    {
-                        if(pharmHIDField.getText().equals("")) {
+                    if (resp == JOptionPane.OK_OPTION) {
+                        if (pharmHIDField.getText().equals("")) {
                             JOptionPane.showMessageDialog(frame, "No Pharmacist ID entered!", "Error", JOptionPane.ERROR_MESSAGE);
                         } else {
                             hdb.updatePrescription(pharmHIDField.getText(), prescID);
                             prescPPTableModel.setRowCount(0);
 
-                            if(singlePrescBool)
-                            {
+                            if (singlePrescBool) {
                                 findSinglePrescription(prescID);
                             } else {
                                 updateTable(hdb.getPrescriptions(patientID), prescPPTableModel);
                             }
                         }
                     }
-                }
-                else {
-                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
         btnMarkFilled.setText("Mark as Filled");
 
-
         JPanel panelPrescriptionBtns = new JPanel();
         panelPrescriptionBtns.setLayout(new FlowLayout());
         panelPrescriptionBtns.add(btnMarkFilled);
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 10;
+        gbc.gridx = 0;
+        gbc.gridy = 10;
         panelPrescription.add(panelPrescriptionBtns, gbc);
     }
-
-
 
     private void setPanelPrescriptionFinder() {
         JTextField txtPID = new JTextField(10);
@@ -1458,15 +1437,17 @@ public class HealthDBUI extends JFrame {
         JLabel lbl = new JLabel("Prescription #:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0,0,0,0);
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         panelPrescriptionFinder.add(lbl, gbc);
 
         JTextField txtPrescNum = new JTextField(10);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0,5,0,0);
-        gbc.gridx = 1; gbc.gridy = 0;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
         panelPrescriptionFinder.add(txtPrescNum, gbc);
 
         JButton btnFindPrescNum = new JButton();
@@ -1475,10 +1456,9 @@ public class HealthDBUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String prescNum = txtPrescNum.getText();
 
-                if(findSinglePrescription(prescNum) == 1) {
+                if (findSinglePrescription(prescNum) == 1) {
                     singlePrescBool = Boolean.TRUE;
-                }
-                else {
+                } else {
                     txtPrescNum.setText("");
                     txtPID.setText("");
                     txtName.setText("");
@@ -1494,35 +1474,40 @@ public class HealthDBUI extends JFrame {
         btnFindPrescNum.setText("Find by Prescription Number");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0,5,0,0);
-        gbc.gridx = 4; gbc.gridy = 0;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 4;
+        gbc.gridy = 0;
         gbc.gridwidth = 2;
         panelPrescriptionFinder.add(btnFindPrescNum, gbc);
 
         lbl = new JLabel("PID:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(5,0,0,0);
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 0, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         panelPrescriptionFinder.add(lbl, gbc);
 
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(5,5,0,0);
-        gbc.gridx = 1; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 0, 0);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
         panelPrescriptionFinder.add(txtPID, gbc);
 
         lbl = new JLabel("Name:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(5,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 0, 0);
+        gbc.gridx = 2;
+        gbc.gridy = 1;
         panelPrescriptionFinder.add(lbl, gbc);
 
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(5,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 0, 0);
+        gbc.gridx = 3;
+        gbc.gridy = 1;
         panelPrescriptionFinder.add(txtName, gbc);
 
         JButton btnFindPrescPatient = new JButton();
@@ -1534,18 +1519,16 @@ public class HealthDBUI extends JFrame {
 
                 System.out.println(pidTxt + " " + nameTxt);
 
-                if(pidTxt.equals("") && !nameTxt.isEmpty())
-                {
+                if (pidTxt.equals("") && !nameTxt.isEmpty()) {
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
                     pidTxt = getPIDfromName(names, nameTxt);
 
                     patientArray = hdb.findPatient(pidTxt);
-                }
-                else if(!pidTxt.isEmpty()) {
+                } else if (!pidTxt.isEmpty()) {
                     patientArray = hdb.findPatient(pidTxt);
                 }
 
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
 
                     // Clear the data tables
                     prescPPTableModel.setRowCount(0);
@@ -1564,11 +1547,9 @@ public class HealthDBUI extends JFrame {
 
                     prescriptions = hdb.getPrescriptions(patientArray.get(2));
                     printTuples(prescriptions);
-                    if(prescriptions.size() > 0)
-                    {
+                    if (prescriptions.size() > 0) {
                         String[][] data = createData(prescriptions);
-                        for(int row = 0; row < data.length; row++)
-                        {
+                        for (int row = 0; row < data.length; row++) {
                             prescPPTableModel.addRow(data[row]);
                         }
                     }
@@ -1577,8 +1558,7 @@ public class HealthDBUI extends JFrame {
                     txtPID.setText("");
                     txtName.setText("");
                     singlePrescBool = Boolean.FALSE;
-                }
-                else {
+                } else {
                     txtPrescNum.setText("");
                     txtPID.setText("");
                     txtName.setText("");
@@ -1594,132 +1574,153 @@ public class HealthDBUI extends JFrame {
         btnFindPrescPatient.setText("Find Patient");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(5,5,0,0);
-        gbc.gridx = 4; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 0, 0);
+        gbc.gridx = 4;
+        gbc.gridy = 1;
         panelPrescriptionFinder.add(btnFindPrescPatient, gbc);
     }
+
     private void setPanelPrescriptionInfo() {
         JLabel lbl = new JLabel("Name");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         panelPrescriptionInfo.add(lbl, gbc);
 
         txtPharmName = new JTextField(12);
         txtPharmName.setEditable(false);
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
+        gbc.insets = new Insets(0, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 3;
+        gbc.gridx = 1;
+        gbc.gridy = 3;
         panelPrescriptionInfo.add(txtPharmName, gbc);
 
         lbl = new JLabel("PID");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 2;
+        gbc.gridy = 3;
         panelPrescriptionInfo.add(lbl, gbc);
 
         txtPharmPID = new JTextField(10);
         txtPharmPID.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 3;
+        gbc.gridy = 3;
         panelPrescriptionInfo.add(txtPharmPID, gbc);
 
         lbl = new JLabel("Address");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         panelPrescriptionInfo.add(lbl, gbc);
 
         txtPharmAddr = new JTextField(26);
         txtPharmAddr.setEditable(false);
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
+        gbc.insets = new Insets(0, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 4;
+        gbc.gridx = 1;
+        gbc.gridy = 4;
         panelPrescriptionInfo.add(txtPharmAddr, gbc);
 
         lbl = new JLabel("Mobile Num");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 6;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 6;
         panelPrescriptionInfo.add(lbl, gbc);
 
         txtPharmMobileNum = new JTextField(10);
         txtPharmMobileNum.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 1; gbc.gridy = 6;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 1;
+        gbc.gridy = 6;
         panelPrescriptionInfo.add(txtPharmMobileNum, gbc);
 
         lbl = new JLabel("Home Num");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 6;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 2;
+        gbc.gridy = 6;
         panelPrescriptionInfo.add(lbl, gbc);
 
         txtPharmHomeNum = new JTextField(10);
         txtPharmHomeNum.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 6;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 3;
+        gbc.gridy = 6;
         panelPrescriptionInfo.add(txtPharmHomeNum, gbc);
     }
 
+    /**
+     * Start panel initialization for Test View and its components
+     */
     private void setPanelTest() {
         JLabel lbl = new JLabel("Test Information");
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
         lbl.setHorizontalAlignment(SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(0,5,0,0);
         panelTest.add(lbl, gbc);
 
         /* Row 1 */
         panelTestFinder = new JPanel();
         panelTestFinder.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panelTest.add(panelTestFinder, gbc);
 
         /* Row 2 */
         lbl = new JLabel("Personal Information", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         panelTest.add(lbl, gbc);
 
         /* Row 3 */
         panelTestInfo = new JPanel();
         panelTestInfo.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panelTest.add(panelTestInfo, gbc);
 
         /* Row 4 */
         lbl = new JLabel("Tests", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         panelTest.add(lbl, gbc);
 
         /* Row 5 */
@@ -1733,15 +1734,18 @@ public class HealthDBUI extends JFrame {
 
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 5;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 5;
         panelTest.add(paneTestTests, gbc);
 
         /* Row 6 */
         panelTestActions = new JPanel();
         panelTestActions.setLayout(new FlowLayout());
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 6;
+        gbc.gridx = 0;
+        gbc.gridy = 6;
         panelTest.add(panelTestActions, gbc);
     }
 
@@ -1752,15 +1756,17 @@ public class HealthDBUI extends JFrame {
         JLabel lbl = new JLabel("Test #:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0,0,0,0);
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         panelTestFinder.add(lbl, gbc);
 
         JTextField txtTest = new JTextField(10);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0,5,0,0);
-        gbc.gridx = 1; gbc.gridy = 0;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
         panelTestFinder.add(txtTest, gbc);
 
         JButton btnFindTestNum = new JButton();
@@ -1769,12 +1775,11 @@ public class HealthDBUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String testNum = txtTest.getText();
 
-                if(findSingleTest(testNum) == 1) {
+                if (findSingleTest(testNum) == 1) {
                     txtTest.setText("");
                     txtPID.setText("");
                     txtName.setText("");
-                }
-                else {
+                } else {
                     txtTest.setText("");
                     txtPID.setText("");
                     txtName.setText("");
@@ -1789,35 +1794,39 @@ public class HealthDBUI extends JFrame {
         btnFindTestNum.setText("Find by Test Number");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0,5,0,0);
-        gbc.gridx = 4; gbc.gridy = 0;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 4;
+        gbc.gridy = 0;
         panelTestFinder.add(btnFindTestNum, gbc);
 
         lbl = new JLabel("PID:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(5,0,0,0);
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 0, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         panelTestFinder.add(lbl, gbc);
-
 
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(5,5,0,0);
-        gbc.gridx = 1; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 0, 0);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
         panelTestFinder.add(txtPID, gbc);
 
         lbl = new JLabel("Name:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(5,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 0, 0);
+        gbc.gridx = 2;
+        gbc.gridy = 1;
         panelTestFinder.add(lbl, gbc);
 
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(5,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 0, 0);
+        gbc.gridx = 3;
+        gbc.gridy = 1;
         panelTestFinder.add(txtName, gbc);
 
         JButton btnFindTestPID = new JButton();
@@ -1829,20 +1838,18 @@ public class HealthDBUI extends JFrame {
 
                 System.out.println(pidTxt + " " + nameTxt);
 
-                if(pidTxt.equals("") && !nameTxt.isEmpty())
-                {
+                if (pidTxt.equals("") && !nameTxt.isEmpty()) {
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
                     pidTxt = getPIDfromName(names, nameTxt);
                     // str != null && !str.isEmpty()
                     if (!pidTxt.equals("")) {
                         patientArray = hdb.findPatient(pidTxt);
                     }
-                }
-                else if(!pidTxt.equals("")) {
+                } else if (!pidTxt.equals("")) {
                     patientArray = hdb.findPatient(pidTxt);
                 }
 
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
 
                     // Clear the data tables
                     testTPTableModel.setRowCount(0);
@@ -1861,19 +1868,16 @@ public class HealthDBUI extends JFrame {
 
                     tests = hdb.getTests(patientArray.get(2));
                     printTuples(tests);
-                    if(tests.size() > 0)
-                    {
+                    if (tests.size() > 0) {
                         String[][] data = createData(tests);
-                        for(int row = 0; row < data.length; row++)
-                        {
+                        for (int row = 0; row < data.length; row++) {
                             testTPTableModel.addRow(data[row]);
                         }
                     }
                     txtTest.setText("");
                     txtPID.setText("");
                     txtName.setText("");
-                }
-                else {
+                } else {
                     txtTest.setText("");
                     txtPID.setText("");
                     txtName.setText("");
@@ -1888,90 +1892,101 @@ public class HealthDBUI extends JFrame {
         btnFindTestPID.setText("Find Patient");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(5,5,0,0);
-        gbc.gridx = 4; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 0, 0);
+        gbc.gridx = 4;
+        gbc.gridy = 1;
         panelTestFinder.add(btnFindTestPID, gbc);
     }
+
     private void setPanelTestInfo() {
         JLabel lbl = new JLabel("Name");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         panelTestInfo.add(lbl, gbc);
 
         txtLabName = new JTextField(12);
         txtLabName.setEditable(false);
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
+        gbc.insets = new Insets(0, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 3;
+        gbc.gridx = 1;
+        gbc.gridy = 3;
         panelTestInfo.add(txtLabName, gbc);
 
         lbl = new JLabel("PID");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 2;
+        gbc.gridy = 3;
         panelTestInfo.add(lbl, gbc);
 
         txtLabPID = new JTextField(10);
         txtLabPID.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 3;
+        gbc.gridy = 3;
         panelTestInfo.add(txtLabPID, gbc);
 
         lbl = new JLabel("Address");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         panelTestInfo.add(lbl, gbc);
 
         txtLabAddr = new JTextField(26);
         txtLabAddr.setEditable(false);
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
+        gbc.insets = new Insets(0, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 4;
+        gbc.gridx = 1;
+        gbc.gridy = 4;
         panelTestInfo.add(txtLabAddr, gbc);
 
         lbl = new JLabel("Mobile Num");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 6;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 6;
         panelTestInfo.add(lbl, gbc);
 
         txtLabMobileNum = new JTextField(10);
         txtLabMobileNum.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 1; gbc.gridy = 6;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 1;
+        gbc.gridy = 6;
         panelTestInfo.add(txtLabMobileNum, gbc);
 
         lbl = new JLabel("Home Num");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 6;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 2;
+        gbc.gridy = 6;
         panelTestInfo.add(lbl, gbc);
 
         txtLabHomeNum = new JTextField(10);
         txtLabHomeNum.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 6;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 3;
+        gbc.gridy = 6;
         panelTestInfo.add(txtLabHomeNum, gbc);
-
     }
 
     private void setPanelTestActions() {
-        JButton btnFillTest= new JButton();
+        JButton btnFillTest = new JButton();
         btnFillTest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1990,8 +2005,7 @@ public class HealthDBUI extends JFrame {
                 JTextField dPhos = new JTextField();
                 JTextField dLabHID = new JTextField();
 
-                if(patientArray.size() > 0)
-                {
+                if (patientArray.size() > 0) {
                     int row = testTPTable.getSelectedRow();
                     String testID = testTPTableModel.getValueAt(row, 0).toString();
 
@@ -2005,39 +2019,36 @@ public class HealthDBUI extends JFrame {
 
                     int resp = JOptionPane.showConfirmDialog(frame, fields, "Edit Test for " + name, JOptionPane.OK_CANCEL_OPTION);
 
-                    if(resp == JOptionPane.OK_OPTION) {
-                        System.out.println(testID+ " " +dChol.getText()+ " " +dHDL.getText()+ " " +dLDL.getText()+ " " +dTrig.getText()
-                                        + " " +dWBcc.getText()+ " " + dRBcc.getText()+ " " +dHema.getText()+ " " +dPlate.getText()
-                                        + " " +dNRPer.getText() + " " + dNRAbs.getText()+ " " +dSod.getText()+ " " +dGlu.getText()
-                                + " " +dPhos.getText()+ " " + dLabHID.getText());
-                        if(hdb.updateTest(testID,
-                                dChol.getText(), dHDL.getText(),dLDL.getText(), dTrig.getText(),
+                    if (resp == JOptionPane.OK_OPTION) {
+                        System.out.println(testID + " " + dChol.getText() + " " + dHDL.getText() + " " + dLDL.getText() + " " + dTrig.getText()
+                                + " " + dWBcc.getText() + " " + dRBcc.getText() + " " + dHema.getText() + " " + dPlate.getText()
+                                + " " + dNRPer.getText() + " " + dNRAbs.getText() + " " + dSod.getText() + " " + dGlu.getText()
+                                + " " + dPhos.getText() + " " + dLabHID.getText());
+                        if (hdb.updateTest(testID,
+                                dChol.getText(), dHDL.getText(), dLDL.getText(), dTrig.getText(),
                                 dWBcc.getText(), dRBcc.getText(), dHema.getText(), dPlate.getText(),
                                 dNRPer.getText(), dNRAbs.getText(), dSod.getText(), dGlu.getText(),
                                 dPhos.getText(), dLabHID.getText())) {
                             JOptionPane.showMessageDialog(frame, "Test edited for " + name + "\nTest ID: " + testID,
-                                    "Edit Test for " + name,  JOptionPane.INFORMATION_MESSAGE);
+                                    "Edit Test for " + name, JOptionPane.INFORMATION_MESSAGE);
 
                             findSingleTest(testID);
-                        }
-                        else {
+                        } else {
                             JOptionPane.showMessageDialog(frame, "Failed to edit test for " + name + "\nTest ID: " + testID,
-                                    "Edit Test for " + name,  JOptionPane.ERROR_MESSAGE);
+                                    "Edit Test for " + name, JOptionPane.ERROR_MESSAGE);
                         }
-                    }
-                    else {
+                    } else {
                         System.out.println("No value entered");
                     }
-                }
-                else {
-                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No patient selected!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
         btnFillTest.setText("Fill Out Test");
         panelTestActions.add(btnFillTest);
 
-        JButton btnViewTest= new JButton();
+        JButton btnViewTest = new JButton();
         btnViewTest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -2048,348 +2059,19 @@ public class HealthDBUI extends JFrame {
         panelTestActions.add(btnViewTest);
     }
 
-    private void setPanelInvoice() {
-        JLabel lbl = new JLabel("Invoice");
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
-        lbl.setHorizontalAlignment(SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 0;
-        panelInvoice.add(lbl, gbc);
-
-        /* Row 1 */
-        panelInvoiceFinder = new JPanel();
-        panelInvoiceFinder.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0;
-        gbc.gridx = 0; gbc.gridy = 1;
-        panelInvoice.add(panelInvoiceFinder, gbc);
-
-        /* Row 2 */
-        lbl = new JLabel("Invoice Information", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
-        gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 2;
-        panelInvoice.add(lbl, gbc);
-
-        /* Row 3 */
-        panelInvoiceInfo = new JPanel();
-        panelInvoiceInfo.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0;
-        gbc.gridx = 0; gbc.gridy = 3;
-        panelInvoice.add(panelInvoiceInfo, gbc);
-
-        /* Row 4 */
-        lbl = new JLabel("Submit Information", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
-        gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 4;
-        panelInvoice.add(lbl, gbc);
-
-        /* Row 5 */
-        panelInvoiceSubmit = new JPanel();
-        panelInvoiceSubmit.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0;
-        gbc.gridx = 0; gbc.gridy = 5;
-        panelInvoice.add(panelInvoiceSubmit, gbc);
-
-        /* Bottom Row, fill the space */
-        JPanel panel = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 6;
-        panelInvoice.add(panel, gbc);
-
-    }
-    private void setPanelInvoiceFinder() {
-        JLabel lbl = new JLabel("HID:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 0;
-        panelInvoiceFinder.add(lbl, gbc);
-
-        JTextField txtHID = new JTextField(10);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 1; gbc.gridy = 0;
-        panelInvoiceFinder.add(txtHID, gbc);
-
-        lbl = new JLabel("Staff Name:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 2; gbc.gridy = 0;
-        panelInvoiceFinder.add(lbl, gbc);
-
-        JTextField txtStaffName = new JTextField(12);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 3; gbc.gridy = 0;
-        panelInvoiceFinder.add(txtStaffName, gbc);
-
-        lbl = new JLabel("Invoice #:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 4; gbc.gridy = 0;
-        panelInvoiceFinder.add(lbl, gbc);
-
-        JTextField txtInvoiceNum = new JTextField(12);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 5; gbc.gridy = 0;
-        panelInvoiceFinder.add(txtInvoiceNum, gbc);
-
-        lbl = new JLabel("PID:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 1;
-        panelInvoiceFinder.add(lbl, gbc);
-
-        JTextField txtPID = new JTextField(10);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 1; gbc.gridy = 1;
-        panelInvoiceFinder.add(txtPID, gbc);
-
-        lbl = new JLabel("Patient Name:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 2; gbc.gridy = 1;
-        panelInvoiceFinder.add(lbl, gbc);
-
-        JTextField txtPatientName = new JTextField(12);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 3; gbc.gridy = 1;
-        panelInvoiceFinder.add(txtPatientName, gbc);
-
-        lbl = new JLabel("Plan #:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 4; gbc.gridy = 1;
-        panelInvoiceFinder.add(lbl, gbc);
-
-        JTextField txtPlanNum = new JTextField(12);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 5; gbc.gridy = 1;
-        panelInvoiceFinder.add(txtPlanNum, gbc);
-
-        JButton btnFindInvoice = new JButton();
-        btnFindInvoice.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.findInvoice(txtInvoiceNum.getText());
-
-                /* TODO get tests */
-            }
-        });
-        btnFindInvoice.setText("Find Invoices");
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 0);
-        gbc.gridwidth = 2;
-        gbc.gridx = 2; gbc.gridy = 2;
-        panelInvoiceFinder.add(btnFindInvoice, gbc);
-    }
-    private void setPanelInvoiceInfo() {
-        JLabel lbl = new JLabel("Invoice ID:");
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 3;
-        panelInvoiceInfo.add(lbl, gbc);
-
-        txtInvoiceID = new JTextField(12);
-        txtInvoiceID.setEditable(false);
-        gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 3;
-        panelInvoiceInfo.add(txtInvoiceID, gbc);
-
-        lbl = new JLabel("Plan ID:");
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 3;
-        panelInvoiceInfo.add(lbl, gbc);
-
-        txtInvoicePlanID = new JTextField(12);
-        txtInvoicePlanID.setEditable(false);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 3;
-        panelInvoiceInfo.add(txtInvoicePlanID, gbc);
-
-        lbl = new JLabel("Patient ID:");
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 4;
-        panelInvoiceInfo.add(lbl, gbc);
-
-        txtInvoicePlanID = new JTextField(12);
-        txtInvoicePlanID.setEditable(false);
-        gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 4;
-        panelInvoiceInfo.add(txtInvoicePlanID, gbc);
-
-        lbl = new JLabel("Patient Name:");
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 4;
-        panelInvoiceInfo.add(lbl, gbc);
-
-        txtInvoicePatientName = new JTextField(12);
-        txtInvoicePatientName.setEditable(false);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 4;
-        panelInvoiceInfo.add(txtInvoicePatientName, gbc);
-    }
-    private void setPanelInvoiceSubmit() {
-        JLabel lbl = new JLabel("Creation Date:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 0;
-        panelInvoiceSubmit.add(lbl, gbc);
-
-        final JTextField txtCreationDate = new JTextField(10);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 1; gbc.gridy = 0;
-        panelInvoiceSubmit.add(txtCreationDate, gbc);
-
-        lbl = new JLabel("Due Date:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 1;
-        panelInvoiceSubmit.add(lbl, gbc);
-
-        final JTextField txtDueDate = new JTextField(10);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 1; gbc.gridy = 1;
-        panelInvoiceSubmit.add(txtDueDate, gbc);
-
-        lbl = new JLabel("Invoice item:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 2;
-        panelInvoiceSubmit.add(lbl, gbc);
-
-        final JTextField txtInvoiceItem = new JTextField(12);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 1; gbc.gridy = 2;
-        panelInvoiceSubmit.add(txtInvoiceItem, gbc);
-
-        lbl = new JLabel("Payment Status:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 2; gbc.gridy = 0;
-        panelInvoiceSubmit.add(lbl, gbc);
-
-        JComboBox<String> cboxPaymentStatus = new JComboBox<>(paymentStatus);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 3; gbc.gridy = 0;
-        panelInvoiceSubmit.add(cboxPaymentStatus, gbc);
-
-        lbl = new JLabel("Payment Date:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 2; gbc.gridy = 1;
-        panelInvoiceSubmit.add(lbl, gbc);
-
-        JTextField txtPaymentDate = new JTextField(10);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 3; gbc.gridy = 1;
-        panelInvoiceSubmit.add(txtPaymentDate, gbc);
-
-        lbl = new JLabel("Payment Method:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 2; gbc.gridy = 2;
-        panelInvoiceSubmit.add(lbl, gbc);
-
-        JComboBox<String> cboxPaymentMethod = new JComboBox<String>(paymentMethod);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 3; gbc.gridy = 2;
-        panelInvoiceSubmit.add(cboxPaymentMethod, gbc);
-
-        lbl = new JLabel("Amount Owing:", SwingConstants.LEADING);
-        gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 2; gbc.gridy = 3;
-        panelInvoiceSubmit.add(lbl, gbc);
-
-        final JTextField txtAmountOwing = new JTextField(10);
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 3; gbc.gridy = 3;
-        panelInvoiceSubmit.add(txtAmountOwing, gbc);
-
-        JButton btnSubmitInvoice = new JButton();
-        btnSubmitInvoice.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Object obj = hdb.updateInvoice(txtCreationDate.getText(), txtDueDate.getText(), txtInvoiceItem.getText(),
-                        cboxPaymentStatus.getSelectedItem().toString(), txtPaymentDate.getText(), cboxPaymentMethod.getSelectedItem().toString(),
-                        txtAmountOwing.getText());
-
-                // updateInvoice(String creationDate, String dueDate, String invoiceItem,
-                //                              String paymentStatus, String paymentDate, String paymentMethod, String amountOwing)
-
-                /* TODO get tests */
-            }
-        });
-        btnSubmitInvoice.setText("Submit Invoices");
-        gbc = new GridBagConstraints();
-
-        gbc.insets = new Insets(5, 0, 5, 0);
-        gbc.gridwidth = 2;
-        gbc.gridx = 1; gbc.gridy = 4;
-        panelInvoiceSubmit.add(btnSubmitInvoice, gbc);
-    }
-
+    /**
+     * Start panel initialization for Plan Summary View and its components
+     */
     private void setPanelPlanSummary() {
-
-    	// --------------------------------------------------
-
         /* Row 0 */
         JLabel lbl = new JLabel("Plan Summary");
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
         lbl.setHorizontalAlignment(SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(0,5,0,0);
         panelPlanSummary.add(lbl, gbc);
 
         /* Row 1 */
@@ -2398,19 +2080,19 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         panelPlanSummary.add(panelPlanSummaryFinder, gbc);
-
-        // --------------------------------------------------
 
         /* Row 2 */
         lbl = new JLabel("Personal Information", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         panelPlanSummary.add(lbl, gbc);
 
         /* Row 3 */
@@ -2419,19 +2101,19 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         panelPlanSummary.add(panelPlanSummaryInfo, gbc);
-
-        // --------------------------------------------------
 
         /* Row 4 */
         lbl = new JLabel("Provincial Plan", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         panelPlanSummary.add(lbl, gbc);
 
         /* Row 5 */
@@ -2440,40 +2122,50 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
-        gbc.gridx = 0; gbc.gridy = 5;
+        gbc.gridx = 0;
+        gbc.gridy = 5;
         panelPlanSummary.add(panelProvincialPlan, gbc);
-
-        // --------------------------------------------------
 
         /* Row 6 */
         lbl = new JLabel("Extended Benefits Plan", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 6;
+        gbc.gridx = 0;
+        gbc.gridy = 6;
         panelPlanSummary.add(lbl, gbc);
 
         /* Row 7 */
-        panelExtendedBenefits = new JPanel();
-        panelExtendedBenefits.setLayout(new BorderLayout());
+        String colsEB[] = {"Chiropractic", "Chiropractic Annual Limit", "Chiropractic YTD", "Physiotherapy", "Physiotherapy Annual Limit", "Physiotherapy YTD",
+                "Non-Surgical Podiatry", "Non-Surgical Podiatry Annual Limit", "Non-Surgical Podiatry YTD", "Acupuncture", "Acupuncture Annual Limit", "Acupuncture YTD",
+                "Medication", "Medication Annual Limit", "Medication YTD"};
+        String data[][] = {};
+
+        extendedBenefitsTableModel = new DefaultTableModel(data, colsEB);
+        extendedBenefitsTable = new JTable(extendedBenefitsTableModel);
+
+        paneExtendedBenefits = new JScrollPane(extendedBenefitsTable);
+        paneExtendedBenefits.setLayout(new ScrollPaneLayout());
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 7;
-        panelPlanSummary.add(panelExtendedBenefits, gbc);
-
-        // --------------------------------------------------
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        panelPlanSummary.add(paneExtendedBenefits, gbc);
 
         /* Row 8 */
         lbl = new JLabel("Invoice History", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 8;
+        gbc.gridx = 0;
+        gbc.gridy = 8;
         panelPlanSummary.add(lbl, gbc);
 
         /* Row 9 */
@@ -2482,65 +2174,75 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
-        gbc.gridx = 0; gbc.gridy = 9;
+        gbc.gridx = 0;
+        gbc.gridy = 9;
         panelPlanSummary.add(panelInvoiceHistory, gbc);
 
-        // --------------------------------------------------
-
         /* Row 10 */
-        panelInvoiceHistoryGrid = new JPanel();
-        panelInvoiceHistoryGrid.setLayout(new BorderLayout());
+        String colsIH[] = {"Invoice ID", "Invoice Item", "Creation Date", "Due Date", "Status", "Balance"};
+        invoiceHistoryGridTableModel = new DefaultTableModel(data, colsIH);
+        invoiceHistoryGridTable = new JTable(invoiceHistoryGridTableModel);
+
+        paneInvoiceHistoryGrid = new JScrollPane(invoiceHistoryGridTable);
+        paneInvoiceHistoryGrid.setLayout(new ScrollPaneLayout());
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 10;
-        panelPlanSummary.add(panelInvoiceHistoryGrid, gbc);
-
-        // -------------------------------------
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 10;
+        panelPlanSummary.add(paneInvoiceHistoryGrid, gbc);
 
         /* Row 11 */
-        panelPlanSummaryActions= new JPanel();
+        panelPlanSummaryActions = new JPanel();
         panelPlanSummaryActions.setLayout(new FlowLayout());
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 11;
+        gbc.gridx = 0;
+        gbc.gridy = 11;
         panelPlanSummary.add(panelPlanSummaryActions, gbc);
-
-     // -------------------------------------
 
         /* Row 12 */
         lbl = new JLabel("Monthly Invoice Summary for Unpaid Amounts", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 12;
+        gbc.gridx = 0;
+        gbc.gridy = 12;
         panelPlanSummary.add(lbl, gbc);
 
         /* Row 13 */
-        panelMonthlyInvoiceSummary = new JPanel();
-        panelMonthlyInvoiceSummary.setLayout(new BorderLayout());
+        String cols[] = {"Invoice Item", "Month, Year", "Average Unpaid Balance"};
+        monthlyInvoiceSummaryTableModel = new DefaultTableModel(data, cols);
+        monthlyInvoiceSummaryTable = new JTable(monthlyInvoiceSummaryTableModel);
+
+        paneMonthlyInvoiceSummary = new JScrollPane(monthlyInvoiceSummaryTable);
+        paneMonthlyInvoiceSummary.setLayout(new ScrollPaneLayout());
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0; gbc.weighty = 1.0;
-        gbc.gridx = 0; gbc.gridy = 13;
-        panelPlanSummary.add(panelMonthlyInvoiceSummary, gbc);
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 13;
+        panelPlanSummary.add(paneMonthlyInvoiceSummary, gbc);
 
-     // -------------------------------------
         /* Row 14 */
         JButton btnGetSummary = new JButton();
         btnGetSummary.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-            	// Clear and update the table with new data
+                // Clear and update the table with new data
                 monthlyInvoiceSummaryTableModel.setRowCount(0);
 
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
                     monthlyInvoiceSummaryArray = hdb.getOwingInvoicesMonthlySummary(patientID);
                     printTuples(monthlyInvoiceSummaryArray);
                     String[][] data = createData(monthlyInvoiceSummaryArray);
-                    for(int row = 0; row < data.length; row++) {
+                    for (int row = 0; row < data.length; row++) {
                         monthlyInvoiceSummaryTableModel.addRow(data[row]);
                     }
                 } else {
@@ -2554,128 +2256,110 @@ public class HealthDBUI extends JFrame {
         panelMonthlyInvoiceSummaryPresBtn.setLayout(new FlowLayout());
         panelMonthlyInvoiceSummaryPresBtn.add(btnGetSummary);
         gbc = new GridBagConstraints();
-        gbc.gridx = 0; gbc.gridy = 14;
+        gbc.gridx = 0;
+        gbc.gridy = 14;
         panelPlanSummary.add(panelMonthlyInvoiceSummaryPresBtn, gbc);
-
-        // ----------------------------
     }
+
     private void setPanelProvincialPlan() {
-    	JLabel lbl = new JLabel("Plan ID:");
+        JLabel lbl = new JLabel("Plan ID:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         panelProvincialPlan.add(lbl, gbc);
 
         txtPlanID = new JTextField(12);
         txtPlanID.setEditable(false);
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
+        gbc.insets = new Insets(0, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 3;
+        gbc.gridx = 1;
+        gbc.gridy = 3;
         panelProvincialPlan.add(txtPlanID, gbc);
 
         lbl = new JLabel("Start Date:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 2;
+        gbc.gridy = 3;
         panelProvincialPlan.add(lbl, gbc);
 
         txtPolicyType = new JTextField(12);
         txtPolicyType.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 3;
+        gbc.gridy = 3;
         panelProvincialPlan.add(txtPolicyType, gbc);
 
         lbl = new JLabel("Policy Type:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         panelProvincialPlan.add(lbl, gbc);
 
         txtStartDate = new JTextField(20);
         txtStartDate.setEditable(false);
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
+        gbc.insets = new Insets(0, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 4;
+        gbc.gridx = 1;
+        gbc.gridy = 4;
         panelProvincialPlan.add(txtStartDate, gbc);
 
         lbl = new JLabel("End Date:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 4;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 2;
+        gbc.gridy = 4;
         panelProvincialPlan.add(lbl, gbc);
 
         txtEndDate = new JTextField(12);
         txtEndDate.setEditable(false);
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
+        gbc.insets = new Insets(0, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 3; gbc.gridy = 4;
+        gbc.gridx = 3;
+        gbc.gridy = 4;
         panelProvincialPlan.add(txtEndDate, gbc);
 
     }
-    private void setPanelExtendedBenefits() {
-    	String cols[] = {"Chiropractic", "Chiropractic Annual Limit", "Chiropractic YTD","Physiotherapy", "Physiotherapy Annual Limit", "Physiotherapy YTD",
-    			"Non-Surgical Podiatry", "Non-Surgical Podiatry Annual Limit", "Non-Surgical Podiatry YTD", "Acupuncture", "Acupuncture Annual Limit", "Acupuncture YTD",
-    			"Medication", "Medication Annual Limit", "Medication YTD"};
 
-        String data[][] = {};
-        extendedBenefitsTableModel = new DefaultTableModel (data, cols);
-        extendedBenefitsTable = new JTable(extendedBenefitsTableModel);
-        panelExtendedBenefits.add(extendedBenefitsTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelExtendedBenefits.add(extendedBenefitsTable, BorderLayout.CENTER);
-
-    }
-
-    private void setPanelMonthlyInvoiceSummary() {
-        String cols[] = {"Invoice Item", "Month, Year", "Average Unpaid Balance"};
-
-        String data[][] = {};
-        monthlyInvoiceSummaryTableModel = new DefaultTableModel (data, cols);
-        monthlyInvoiceSummaryTable = new JTable(monthlyInvoiceSummaryTableModel);
-        panelMonthlyInvoiceSummary.add(monthlyInvoiceSummaryTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelMonthlyInvoiceSummary.add(monthlyInvoiceSummaryTable, BorderLayout.CENTER);
-    }
-
-    private void setPanelInvoiceHistoryGrid() {
-    	String cols[] = {"Invoice ID", "Invoice Item", "Creation Date", "Due Date", "Status", "Balance"};
-        String data[][] = {};
-        invoiceHistoryGridTableModel = new DefaultTableModel (data, cols);
-        invoiceHistoryGridTable = new JTable(invoiceHistoryGridTableModel);
-        panelInvoiceHistoryGrid.add(invoiceHistoryGridTable.getTableHeader(), BorderLayout.PAGE_START);
-        panelInvoiceHistoryGrid.add(invoiceHistoryGridTable, BorderLayout.CENTER);
-    }
     private void setPanelInvoiceHistory() {
-    	JLabel lbl = new JLabel("Total Unpaid:", SwingConstants.LEADING);
+        JLabel lbl = new JLabel("Total Unpaid:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         panelInvoiceHistory.add(lbl, gbc);
 
         txtTotalUnpaid = new JTextField(10);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 1; gbc.gridy = 0;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
         panelInvoiceHistory.add(txtTotalUnpaid, gbc);
 
         lbl = new JLabel("Total Overdue:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 2; gbc.gridy = 0;
+        gbc.gridx = 2;
+        gbc.gridy = 0;
         panelInvoiceHistory.add(lbl, gbc);
 
         txtTotalOverDue = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 3; gbc.gridy = 0;
+        gbc.gridx = 3;
+        gbc.gridy = 0;
         panelInvoiceHistory.add(txtTotalOverDue, gbc);
 
         JButton btnUpdateInvoiceTotals = new JButton();
@@ -2687,7 +2371,7 @@ public class HealthDBUI extends JFrame {
                 txtTotalUnpaid.setText("");
                 txtTotalOverDue.setText("");
 
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
                     txtTotalUnpaid.setText(Double.toString((hdb.getAmountOwing(patientID))));
                     txtTotalOverDue.setText(Double.toString(hdb.getOverdueAmountOwing(patientID)));
                 } else {
@@ -2700,59 +2384,69 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 0);
         gbc.gridwidth = 2;
-        gbc.gridx = 4; gbc.gridy = 0;
+        gbc.gridx = 4;
+        gbc.gridy = 0;
         panelInvoiceHistory.add(btnUpdateInvoiceTotals, gbc);
 
     }
+
     private void setPanelPlanSummaryFinder() {
         JLabel lbl = new JLabel("PID:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         panelPlanSummaryFinder.add(lbl, gbc);
 
         JTextField txtPID = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 1; gbc.gridy = 0;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
         panelPlanSummaryFinder.add(txtPID, gbc);
 
         lbl = new JLabel("Name:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 2; gbc.gridy = 0;
+        gbc.gridx = 2;
+        gbc.gridy = 0;
         panelPlanSummaryFinder.add(lbl, gbc);
 
         JTextField txtName = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 3; gbc.gridy = 0;
+        gbc.gridx = 3;
+        gbc.gridy = 0;
         panelPlanSummaryFinder.add(txtName, gbc);
 
         lbl = new JLabel("Plan #:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         panelPlanSummaryFinder.add(lbl, gbc);
 
         JTextField txtNum = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 1; gbc.gridy = 1;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
         panelPlanSummaryFinder.add(txtNum, gbc);
 
         lbl = new JLabel("Invoice #:", SwingConstants.LEADING);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         panelPlanSummaryFinder.add(lbl, gbc);
 
         JTextField txtInvoiceNumber = new JTextField(12);
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 0);
-        gbc.gridx = 1; gbc.gridy = 2;
+        gbc.gridx = 1;
+        gbc.gridy = 2;
         panelPlanSummaryFinder.add(txtInvoiceNumber, gbc);
 
         JButton btnFindPlanPatientID = new JButton();
@@ -2812,7 +2506,6 @@ public class HealthDBUI extends JFrame {
                         }
                     }
 
-
                     invoiceHistoryGridArray = hdb.getInvoices(patientArray.get(2));
                     printTuples(invoiceHistoryGridArray);
                     if (invoiceHistoryGridArray.size() > 0) {
@@ -2821,7 +2514,6 @@ public class HealthDBUI extends JFrame {
                             invoiceHistoryGridTableModel.addRow(data[row]);
                         }
                     }
-
 
                     txtName.setText("");
                     txtPID.setText("");
@@ -2841,7 +2533,6 @@ public class HealthDBUI extends JFrame {
                     invoiceHistoryGridTableModel.setRowCount(0);
                     monthlyInvoiceSummaryTableModel.setRowCount(0);
 
-
                     JOptionPane.showMessageDialog(frame, "Plan Summary not found!", "Invalid Patient ID Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -2850,7 +2541,9 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 0);
         gbc.gridwidth = 2;
-        gbc.gridx = 4; gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 4;
+        gbc.gridy = 0;
         panelPlanSummaryFinder.add(btnFindPlanPatientID, gbc);
 
         JButton btnFindPlanSumPlanNum = new JButton();
@@ -2858,16 +2551,16 @@ public class HealthDBUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-            	planNumArray = hdb.findPlan(txtNum.getText());
+                planNumArray = hdb.findPlan(txtNum.getText());
 
-            	if(planNumArray.size() > 0) {
+                if (planNumArray.size() > 0) {
 
                     // Clear the data tables
-                	extendedBenefitsTableModel.setRowCount(0);
-                	invoiceHistoryGridTableModel.setRowCount(0);
-                	monthlyInvoiceSummaryTableModel.setRowCount(0);
+                    extendedBenefitsTableModel.setRowCount(0);
+                    invoiceHistoryGridTableModel.setRowCount(0);
+                    monthlyInvoiceSummaryTableModel.setRowCount(0);
 
-                	patientID = planNumArray.get(3);
+                    patientID = planNumArray.get(3);
 
                     if (!patientID.equals("")) {
                         patientArray = hdb.findPatient(patientID);
@@ -2900,7 +2593,6 @@ public class HealthDBUI extends JFrame {
                         }
                     }
 
-
                     invoiceHistoryGridArray = hdb.getInvoices(patientArray.get(2));
                     printTuples(invoiceHistoryGridArray);
                     if (invoiceHistoryGridArray.size() > 0) {
@@ -2921,8 +2613,8 @@ public class HealthDBUI extends JFrame {
 
                     // Clear the data tables
                     extendedBenefitsTableModel.setRowCount(0);
-                	invoiceHistoryGridTableModel.setRowCount(0);
-                	monthlyInvoiceSummaryTableModel.setRowCount(0);
+                    invoiceHistoryGridTableModel.setRowCount(0);
+                    monthlyInvoiceSummaryTableModel.setRowCount(0);
 
                     JOptionPane.showMessageDialog(frame, "Plan Summary not found!", "Invalid Plan Number Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -2932,7 +2624,9 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 0);
         gbc.gridwidth = 2;
-        gbc.gridx = 4; gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 4;
+        gbc.gridy = 1;
         panelPlanSummaryFinder.add(btnFindPlanSumPlanNum, gbc);
 
         JButton btnFindPlanInvoiceNum = new JButton();
@@ -2942,13 +2636,12 @@ public class HealthDBUI extends JFrame {
                 patientID = hdb.findPIDfromInvoice(txtInvoiceNumber.getText());
                 patientArray = hdb.findPatient(patientID);
 
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
 
                     // Clear the data tables
-
-                	extendedBenefitsTableModel.setRowCount(0);
-                	invoiceHistoryGridTableModel.setRowCount(0);
-                	monthlyInvoiceSummaryTableModel.setRowCount(0);
+                    extendedBenefitsTableModel.setRowCount(0);
+                    invoiceHistoryGridTableModel.setRowCount(0);
+                    monthlyInvoiceSummaryTableModel.setRowCount(0);
 
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
@@ -2981,10 +2674,10 @@ public class HealthDBUI extends JFrame {
                     invoiceHistoryGridArray = hdb.getInvoices(patientArray.get(2));
                     printTuples(invoiceHistoryGridArray);
                     if (invoiceHistoryGridArray.size() > 0) {
-                    	String[][] data = createData(invoiceHistoryGridArray);
-                    	for(int row = 0; row < data.length; row++) {
-                    		invoiceHistoryGridTableModel.addRow(data[row]);
-                    	}
+                        String[][] data = createData(invoiceHistoryGridArray);
+                        for (int row = 0; row < data.length; row++) {
+                            invoiceHistoryGridTableModel.addRow(data[row]);
+                        }
                     }
 
                     txtInvoiceNumber.setText("");
@@ -2992,13 +2685,13 @@ public class HealthDBUI extends JFrame {
                     txtTotalOverDue.setText(Double.toString(hdb.getOverdueAmountOwing(patientID)));
 
                 } else {
-                	txtInvoiceNumber.setText("");
+                    txtInvoiceNumber.setText("");
 
-                	clearPanelData();
+                    clearPanelData();
                     // Clear the data tables
                     extendedBenefitsTableModel.setRowCount(0);
-                	invoiceHistoryGridTableModel.setRowCount(0);
-                	monthlyInvoiceSummaryTableModel.setRowCount(0);
+                    invoiceHistoryGridTableModel.setRowCount(0);
+                    monthlyInvoiceSummaryTableModel.setRowCount(0);
 
                     JOptionPane.showMessageDialog(frame, "Invoice not found!", "Invalid Invoice Number Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -3008,86 +2701,99 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 0);
         gbc.gridwidth = 2;
-        gbc.gridx = 4; gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridx = 4;
+        gbc.gridy = 2;
         panelPlanSummaryFinder.add(btnFindPlanInvoiceNum, gbc);
     }
+
     private void setPanelPlanSummaryInfo() {
         JLabel lbl = new JLabel("Name:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         panelPlanSummaryInfo.add(lbl, gbc);
 
         txtPlanSumName = new JTextField(12);
         txtPlanSumName.setEditable(false);
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
+        gbc.insets = new Insets(0, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 3;
+        gbc.gridx = 1;
+        gbc.gridy = 3;
         panelPlanSummaryInfo.add(txtPlanSumName, gbc);
 
         lbl = new JLabel("PID:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 2;
+        gbc.gridy = 3;
         panelPlanSummaryInfo.add(lbl, gbc);
 
         txtPlanSumPID = new JTextField(12);
         txtPlanSumPID.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 3;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 3;
+        gbc.gridy = 3;
         panelPlanSummaryInfo.add(txtPlanSumPID, gbc);
 
         // address
         lbl = new JLabel("Address:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         panelPlanSummaryInfo.add(lbl, gbc);
 
         txtPlanSumAddress = new JTextField(30);
         txtPlanSumAddress.setEditable(false);
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
+        gbc.insets = new Insets(0, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 4;
+        gbc.gridx = 1;
+        gbc.gridy = 4;
         panelPlanSummaryInfo.add(txtPlanSumAddress, gbc);
 
         // mobile
         lbl = new JLabel("Mobile Phone:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 0; gbc.gridy = 5;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 5;
         panelPlanSummaryInfo.add(lbl, gbc);
 
         txtPlanSumMobilePhone = new JTextField(12);
         txtPlanSumMobilePhone.setEditable(false);
         gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,5,0,0);
+        gbc.insets = new Insets(0, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridx = 1; gbc.gridy = 5;
+        gbc.gridx = 1;
+        gbc.gridy = 5;
         panelPlanSummaryInfo.add(txtPlanSumMobilePhone, gbc);
 
         // home
         lbl = new JLabel("Home Phone:");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 2; gbc.gridy = 5;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 2;
+        gbc.gridy = 5;
         panelPlanSummaryInfo.add(lbl, gbc);
 
         txtPlanSumHomePhone = new JTextField(12);
         txtPlanSumHomePhone.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.insets= new Insets(0,5,0,0);
-        gbc.gridx = 3; gbc.gridy = 5;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        gbc.gridx = 3;
+        gbc.gridy = 5;
         panelPlanSummaryInfo.add(txtPlanSumHomePhone, gbc);
     }
 
@@ -3103,20 +2809,16 @@ public class HealthDBUI extends JFrame {
                 JComboBox<String> aPaymentStatus = new JComboBox<>(paymentStatus);
                 JComboBox<String> aPaymentMethod = new JComboBox<>(paymentMethod);
 
-
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
                     String name = patientArray.get(0) + " " + patientArray.get(1);
 
-
                     Object[] fields = {"Patient: " + name, "Invoice Item: ", aInvoiceItem, "Due Date (YYYY-MM-DD): ", aDueDate, "Payment Status: ", aPaymentStatus, "Payment Date (YYYY-MM-DD): ",
-                    		aPaymentDate, "Payment Method: ", aPaymentMethod, "Amount Owing: ", aAmountOwing};
-
+                            aPaymentDate, "Payment Method: ", aPaymentMethod, "Amount Owing: ", aAmountOwing};
 
                     int resp = JOptionPane.showConfirmDialog(frame, fields, "Create invoice for " + name, JOptionPane.OK_CANCEL_OPTION);
 
-                    if(resp == JOptionPane.OK_OPTION) {
-
-                    	String invoiceItem = aInvoiceItem.getText();
+                    if (resp == JOptionPane.OK_OPTION) {
+                        String invoiceItem = aInvoiceItem.getText();
                         String dueDate = aDueDate.getText();
                         String paymentStatus = aPaymentStatus.getSelectedItem().toString();
                         String paymentDate = aPaymentDate.getText();
@@ -3127,43 +2829,103 @@ public class HealthDBUI extends JFrame {
                         System.out.println(patientID + " " + invoiceItem + " " + dueDate + " " + paymentStatus + " " + paymentDate + " " + paymentMethod + " " + amountOwing + " " + planID);
 
                         hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus,
-                        		paymentDate, paymentMethod, amountOwing, planID);
+                                paymentDate, paymentMethod, amountOwing, planID);
 
-                     // Clear and update the table with new data
+                        // Clear and update the table with new data
                         invoiceHistoryGridTableModel.setRowCount(0);
                         invoiceHistoryGridArray = hdb.getInvoices(patientID);
                         updateTable(invoiceHistoryGridArray, invoiceHistoryGridTableModel);
-                    }
-                    else {
+                    } else {
                         System.out.println("No values entered");
                     }
-                }
-                else {
-                    JOptionPane.showMessageDialog(frame, "No Invoice selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No Invoice selected!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
         btnCreateInvoice.setText("Create Invoice");
         panelPlanSummaryActions.add(btnCreateInvoice);
 
-        JButton btnViewInvoice= new JButton();
+        JButton btnUpdateInvoice = new JButton();
+        btnUpdateInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTextField aInvoiceItem = new JTextField();
+                JTextField aDueDate = new JTextField();
+                JTextField aPaymentDate = new JTextField();
+                JTextField aAmountOwing = new JTextField();
+                JComboBox<String> aPaymentStatus = new JComboBox<>(paymentStatus);
+                JComboBox<String> aPaymentMethod = new JComboBox<>(paymentMethod);
+
+                if (patientArray.size() > 0) {
+                    int row = invoiceHistoryGridTable.getSelectedRow();
+                    String invoiceID = invoiceHistoryGridTableModel.getValueAt(row, 0).toString();
+                    ArrayList<String> tuple = hdb.findInvoice(invoiceID);
+
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    aInvoiceItem.setText(tuple.get(1));
+                    aDueDate.setText(tuple.get(2));
+                    //aPaymentDate.setText(tuple.get(4));
+                    aAmountOwing.setText(tuple.get(6));
+
+                    Object[] fields = {"Patient: " + name, "Invoice Item: ", aInvoiceItem, "Due Date (YYYY-MM-DD): ", aDueDate, "Payment Status: ", aPaymentStatus, "Payment Date (YYYY-MM-DD): ",
+                            aPaymentDate, "Payment Method: ", aPaymentMethod, "Amount Owing: ", aAmountOwing};
+
+                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Update invoice for " + name, JOptionPane.OK_CANCEL_OPTION);
+
+                    if (resp == JOptionPane.OK_OPTION) {
+                        String invoiceItem = aInvoiceItem.getText();
+                        String dueDate = aDueDate.getText().substring(0, 10);
+                        String paymentStatus = aPaymentStatus.getSelectedItem().toString();
+                        String paymentDate = aPaymentDate.getText();
+                        String paymentMethod = aPaymentMethod.getSelectedItem().toString();
+                        String amountOwing = aAmountOwing.getText();
+                        planID = hdb.getPlan(patientID).get(0);
+
+                        System.out.println(patientID + " " + invoiceItem + " " + dueDate + " " + paymentStatus + " " + paymentDate + " " + paymentMethod + " " + amountOwing + " " + planID);
+
+                        if(hdb.updateInvoice(invoiceID, dueDate, invoiceItem, paymentStatus, paymentDate, paymentMethod, amountOwing)) {
+                            JOptionPane.showMessageDialog(frame, "Invoice updated!", "Update Invoice", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Invoice update failed!", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+
+                        // Clear and update the table with new data
+                        invoiceHistoryGridTableModel.setRowCount(0);
+                        invoiceHistoryGridArray = hdb.getInvoices(patientID);
+                        updateTable(invoiceHistoryGridArray, invoiceHistoryGridTableModel);
+                    } else {
+                        System.out.println("No values entered");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No Invoice selected!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        btnUpdateInvoice.setText("Update Invoice");
+        panelPlanSummaryActions.add(btnUpdateInvoice);
+
+        JButton btnViewInvoice = new JButton();
         btnViewInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
-            	// viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
             }
         });
         btnViewInvoice.setText("View Selected Invoice");
         panelPlanSummaryActions.add(btnViewInvoice);
-
     }
 
+    /**
+     * Prints out invoice data to a dialog box
+     * @param table
+     * @param tableModel
+     */
     private void viewInvoiceData(JTable table, DefaultTableModel tableModel) {
 
-    	JTextField aPatientID = new JTextField();
-        // JTextField aInvoiceID = new JTextField();
+        JTextField aPatientID = new JTextField();
         JTextField aInvoiceItem = new JTextField();
         JTextField aDueDate = new JTextField();
         JTextField aPaymentStatus = new JTextField();
@@ -3174,17 +2936,16 @@ public class HealthDBUI extends JFrame {
         JTextField aPlanID = new JTextField();
         JTextField aCreationDate = new JTextField();
 
-        if(patientArray.size() > 0) {
+        if (patientArray.size() > 0) {
             String name = patientArray.get(0) + " " + patientArray.get(1);
 
             int row = table.getSelectedRow();
 
-            if(row >= 0) {
+            if (row >= 0) {
                 String invoiceID = tableModel.getValueAt(row, 0).toString();
                 ArrayList<String> testData = hdb.findInvoice(invoiceID);
 
                 aPatientID.setEditable(false);
-                // aInvoiceID.setEditable(false);
                 aInvoiceItem.setEditable(false);
                 aDueDate.setEditable(false);
                 aPaymentStatus.setEditable(false);
@@ -3196,7 +2957,6 @@ public class HealthDBUI extends JFrame {
                 aCreationDate.setEditable(false);
 
                 aPatientID.setText(testData.get(0));
-                // aInvoiceID.setText(testData.get(1));
                 aInvoiceItem.setText(testData.get(1));
                 aDueDate.setText(testData.get(2));
                 aPaymentStatus.setText(testData.get(3));
@@ -3208,21 +2968,22 @@ public class HealthDBUI extends JFrame {
                 aCreationDate.setText(testData.get(9));
 
                 Object[] data = {"Patient: " + name, "Invoice ID: " + invoiceID, " ",
-                		"Patiend ID: ", aPatientID, "Invoice Item: ", aInvoiceItem, "Due Date: ", aDueDate,
-                		"Payment Status: ", aPaymentStatus, "Payment Date: ", aPaymentDate, "Payment Method: ", aPaymentMethod,
-                		"Amount Owing: ", aAmountOwing, "Payment ID: ", aPaymentID, "Plan ID: ", aPlanID, "Creation Date: ", aCreationDate};
+                        "Patiend ID: ", aPatientID, "Invoice Item: ", aInvoiceItem, "Due Date: ", aDueDate,
+                        "Payment Status: ", aPaymentStatus, "Payment Date: ", aPaymentDate, "Payment Method: ", aPaymentMethod,
+                        "Amount Owing: ", aAmountOwing, "Payment ID: ", aPaymentID, "Plan ID: ", aPlanID, "Creation Date: ", aCreationDate};
 
                 JOptionPane.showMessageDialog(frame, data, "Invoice ID # " + invoiceID + " for Patient " + name, JOptionPane.PLAIN_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(frame, "Please select an invoice from the Invoice table.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            else {
-                JOptionPane.showMessageDialog(frame, "Please select an invoice from the Invoice table.", "Error",  JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        else {
-            JOptionPane.showMessageDialog(frame, "No invoice selected!", "Error",  JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(frame, "No invoice selected!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    /**
+     * Switches to View selection screen with empty view
+     */
     private void switchToUserSelectPanel() {
         /* Switch to User Class panel when login achieved */
         panelOracleLogin.setVisible(false);
@@ -3234,17 +2995,4 @@ public class HealthDBUI extends JFrame {
         panelPlanSummary.setVisible(false);
         panelInvoice.setVisible(false);
     }
-
-    private void switchToInvoicePanel() {
-        /* Switch to User Class panel when login achieved */
-        panelOracleLogin.setVisible(false);
-        panelUserClass.setVisible(false);
-        panelEmpty.setVisible(false);
-        panelPatientSummary.setVisible(false);
-        panelPrescription.setVisible(false);
-        panelTest.setVisible(false);
-        panelPlanSummary.setVisible(false);
-        panelInvoice.setVisible(true);
-    }
-
 }
