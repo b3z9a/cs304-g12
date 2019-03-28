@@ -3273,7 +3273,7 @@ public class HealthDBUI extends JFrame {
 
                     if (resp == JOptionPane.OK_OPTION) {
                         String invoiceItem = aInvoiceItem.getText();
-                        String dueDate = aDueDate.getText();
+                        String dueDate = aDueDate.getText().substring(0, 9);
                         String paymentStatus = aPaymentStatus.getSelectedItem().toString();
                         String paymentDate = aPaymentDate.getText();
                         String paymentMethod = aPaymentMethod.getSelectedItem().toString();
@@ -3281,9 +3281,6 @@ public class HealthDBUI extends JFrame {
                         planID = hdb.getPlan(patientID).get(0);
 
                         System.out.println(patientID + " " + invoiceItem + " " + dueDate + " " + paymentStatus + " " + paymentDate + " " + paymentMethod + " " + amountOwing + " " + planID);
-
-                        hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus,
-                                paymentDate, paymentMethod, amountOwing, planID);
 
                         if(hdb.updateInvoice(invoiceID, dueDate, invoiceItem, paymentStatus, paymentDate, paymentMethod, amountOwing)) {
                             JOptionPane.showMessageDialog(frame, "Invoice updated!", "Update Invoice", JOptionPane.INFORMATION_MESSAGE);
