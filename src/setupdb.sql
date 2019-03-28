@@ -30,7 +30,7 @@ CREATE TABLE HealthcareProfessional (
     officeNumber 	varchar2(10),
     street 			varchar2(60),
     postalCode 		varchar2(6),
-    homePhone 		varchar2(20),
+    officePhone 		varchar2(20),
     mobilePhone 	varchar2(20),
     PRIMARY KEY (HID),
     FOREIGN KEY (postalCode) REFERENCES PostalCode ON DELETE CASCADE
