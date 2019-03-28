@@ -328,7 +328,7 @@ public class HealthDBUI extends JFrame {
 
             if(row >= 0) {
                 String testID = tableModel.getValueAt(row, 0).toString();
-                ArrayList<String> testData = hdb.findTest(testID);
+                ArrayList<String> testData = hdb.findTestValues(testID);
 
                 dChol.setEditable(false);
                 dHDL.setEditable(false);
