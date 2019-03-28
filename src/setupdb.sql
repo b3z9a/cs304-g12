@@ -1,4 +1,4 @@
-/* Drops all tables */
+/* Drops all tables and views */
 DROP TABLE PostalCode CASCADE constraints;
 DROP TABLE Invoice CASCADE constraints;
 DROP TABLE HealthcareProfessional CASCADE constraints;
@@ -12,6 +12,7 @@ DROP TABLE LabTest CASCADE constraints;
 DROP TABLE ProvincialHealthPlan CASCADE constraints;
 DROP TABLE ExtendedBenefitsPlan CASCADE constraints;
 DROP TABLE Patient CASCADE constraints;
+DROP VIEW medInteraction;
 
 /* Create the tables.*/
 CREATE TABLE PostalCode (
@@ -32,7 +33,7 @@ CREATE TABLE HealthcareProfessional (
     homePhone 		varchar2(20),
     mobilePhone 	varchar2(20),
     PRIMARY KEY (HID),
-    FOREIGN KEY (postalCode) REFERENCES PostalCode
+    FOREIGN KEY (postalCode) REFERENCES PostalCode ON DELETE CASCADE
 );
 
 CREATE TABLE LabTechnician (
@@ -54,7 +55,7 @@ CREATE TABLE Doctor (
     certificationNumber integer,
     specialization  varchar(30) CHECK (specialization IN ('Anesthesiologist', 'Cardiologist', 'Dermatologist', 'Endocrinologist', 'Gastroenterologist', 'Geriatric Medicine Specialist', 'Gynecologist', 'Hematologist', 'Heptologist', 'Neonatologist', 'Nephrologist', 'Neurologist', 'Obstetrician', 'Oncologist', 'Oral Surgeon', 'Ophthalmologist', 'Orthopedic Surgeon', 'Otolaryngologist', 'Pediatrician', 'Psychiatrist', 'Pulmonologist', 'Radiologist', 'Rheumatologist', 'Sleep Disorder Specialist', 'Surgeon', 'Urologist', 'Family Doctor')),
     PRIMARY KEY(HID),
-    FOREIGN KEY (HID) REFERENCES HealthCareProfessional
+    FOREIGN KEY (HID) REFERENCES HealthCareProfessional ON DELETE CASCADE
 );
 
 CREATE TABLE Patient (
@@ -66,7 +67,7 @@ CREATE TABLE Patient (
     homePhone 		varchar2(20),
     mobilePhone 	varchar2(20),
     PRIMARY KEY (patientID),
-    FOREIGN KEY (postalCode) REFERENCES PostalCode
+    FOREIGN KEY (postalCode) REFERENCES PostalCode ON DELETE CASCADE
 );
 
 CREATE TABLE Referral (
@@ -76,8 +77,8 @@ CREATE TABLE Referral (
     referredDate		date not null,
     PRIMARY KEY (patientID, referrerHID, referreeHID),
     FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE,
-    FOREIGN KEY (referrerHID) REFERENCES Doctor,
-    FOREIGN KEY (referreeHID) REFERENCES Doctor
+    FOREIGN KEY (referrerHID) REFERENCES Doctor ON DELETE CASCADE,
+    FOREIGN KEY (referreeHID) REFERENCES Doctor ON DELETE CASCADE
 );
 
 CREATE TABLE Medication (
@@ -99,8 +100,8 @@ CREATE TABLE Prescription (
     PRIMARY KEY (prescriptionID),
     FOREIGN KEY (medication) REFERENCES Medication ON DELETE CASCADE,
     FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE,
-    FOREIGN KEY (drHID) REFERENCES Doctor ON DELETE SET NULL,
-    FOREIGN KEY (pharmHID) REFERENCES Pharmacist ON DELETE SET NULL
+    FOREIGN KEY (drHID) REFERENCES Doctor ON DELETE CASCADE,
+    FOREIGN KEY (pharmHID) REFERENCES Pharmacist ON DELETE CASCADE
 );
 
 CREATE TABLE LabTest (
@@ -125,8 +126,8 @@ CREATE TABLE LabTest (
     performedDate	date,
     PRIMARY KEY(testID),
     FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE,
-    FOREIGN KEY (drHID) REFERENCES Doctor ON DELETE SET NULL,
-    FOREIGN KEY (labTechHID) REFERENCES LabTechnician ON DELETE SET NULL
+    FOREIGN KEY (drHID) REFERENCES Doctor ON DELETE CASCADE,
+    FOREIGN KEY (labTechHID) REFERENCES LabTechnician ON DELETE CASCADE
 );
 
 CREATE TABLE ProvincialHealthPlan (
@@ -180,8 +181,14 @@ CREATE TABLE Invoice (
     planID				integer not null,
     PRIMARY KEY(invoiceID),
     FOREIGN KEY (patientID) REFERENCES Patient ON DELETE CASCADE,
-    FOREIGN KEY (planID) REFERENCES ProvincialHealthPlan
+    FOREIGN KEY (planID) REFERENCES ProvincialHealthPlan ON DELETE CASCADE
 );
+
+
+CREATE VIEW medInteraction AS
+    SELECT * FROM medication
+    WHERE medication.medication IN('Fluoxetine','Lipitor', 'Metformin', 'Esomeprazole');
+
 
 /* Populate the database. */
 
@@ -383,7 +390,9 @@ insert into Prescription values (448582, 'Lisinopril', 20, 200, 2, 58377, 58575,
 insert into Prescription values (433853, 'Pregabalin', 20, 300, 3, 52942, NULL, TO_DATE('2018-04-15','YYYY-MM-DD'), NULL);
 insert into Prescription values (429384, 'Simvastatin', 30, 50, 3, 52942, NULL, TO_DATE('2019-03-12','YYYY-MM-DD'), NULL);
 insert into Prescription values (448273, 'Lipitor', 5, 100, 3, 52942, NULL, TO_DATE('2018-03-11','YYYY-MM-DD'), NULL);
-
+insert into Prescription values (483840, 'Fluoxetine', 5, 100, 3, 52942, NULL, TO_DATE('2018-03-11','YYYY-MM-DD'), NULL);
+insert into Prescription values (438539, 'Esomeprazole', 5, 100, 3, 52942, NULL, TO_DATE('2018-03-11','YYYY-MM-DD'), NULL);
+insert into Prescription values (438531, 'Metformin', 5, 100, 3, 52942, NULL, TO_DATE('2018-03-11','YYYY-MM-DD'), NULL);
 
 insert into LabTest values (827432, 175.4, 70.8, 95.2, 104.6, 2.27, 3.51, 45.1, 195, 25.7, 0.75, 140, 3.8, 133.2, 12345678, 52918, 51833, TO_DATE('2019-01-29', 'YYYY-MM-DD'), NULL);
 insert into LabTest values (882475, 132.0, 70.2, 61.8, 85.7, 2.33, 3.46, 40.2, 206, 17.2, 0.66, 140, 3.6, 121.0, 12345678, 52918, 52856, TO_DATE('2019-02-23', 'YYYY-MM-DD'), NULL);
