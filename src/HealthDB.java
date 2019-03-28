@@ -142,7 +142,7 @@ public class HealthDB {
 		try {
 			System.out.println("PrescriptionID Counter pre: " + prescriptionIDCounter);
 			String query ="insert into prescription (prescriptionID, medication, dosage, quantity, patientID,"
-							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication + "', " + dosage
+							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication.toLowerCase().charAt(0).toUppercase(); + "', " + dosage
 							+ ", " + quantity +", " + patientID +", " + drHID + "," + today() + ")";
 			prescriptionIDCounter++;
 			System.out.println("prescriptionID Counter post: " + prescriptionIDCounter);
@@ -1218,15 +1218,16 @@ public class HealthDB {
      * tuple[] = {0 invoiceItem, 1 month, 2 , 3 balanceSumAvg}
      * @return
      */
-    public ArrayList<ArrayList<String>> getOwingInvoicesMonthlySummary(String pid)
+    private ArrayList<ArrayList<String>> getOwingInvoicesMonthlySummary(String pid)
     {
     	ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
     	try {
-            // basic query just to test if hooked up properly with ui
-            String query = "select i.invoiceItem, i.dueDate, sum(i.amountOwing) as balanceSum "
-            + "from invoice i where i.patientID = " + pid + " group by i.invoiceItem, i.dueDate, i.paymentStatus";
+    		String query = "select i.invoiceItem, monthNum, avg(balanceSum) as balanceSumAvg from("
+    				+ "select i.invoiceItem, extract(month) as monthNum, i.paymentStatus, sum(amountOwing) as balanceSum"
+    				+ "from invoice i where i.patientID = " + pid + " group by i.invoiceItem, i.paymentStatus)"
+    				+ "where i.paymentStatus = 'Unpaid' group by i.invoiceItem, monthNum order by monthNum, i.invoiceItem";
 
-            System.out.println(query);
+    				System.out.println(query);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -1235,14 +1236,57 @@ public class HealthDB {
 
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
-                // default results to test for now
 				tuple.add(rs.getString("invoiceItem"));
-                tuple.add("January");
-                tuple.add("100");
-                tuples.add(tuple);
-			
-                // monthNum returns the number representing month
-				
+				// monthNum returns the number representing month
+				if (rs.getString("monthNum") == "1")
+				{
+					tuple.add("January");
+				}
+				else if (rs.getString("monthNum") == "2")
+				{
+					tuple.add("February");
+				}
+				else if (rs.getString("monthNum") == "3")
+				{
+					tuple.add("March");
+				}
+				else if (rs.getString("April") == "4")
+				{
+					tuple.add("April");
+				}
+				else if (rs.getString("monthNum") == "5")
+				{
+					tuple.add("May");
+				}
+				else if (rs.getString("monthNum") == "6")
+				{
+					tuple.add("June");
+				}
+				else if (rs.getString("monthNum") == "7")
+				{
+					tuple.add("July");
+				}
+				else if (rs.getString("monthNum") == "8")
+				{
+					tuple.add("August");
+				}
+				else if (rs.getString("monthNum") == "9")
+				{
+					tuple.add("September");
+				}
+				else if (rs.getString("monthNum") == "10")
+				{
+					tuple.add("October");
+				}
+				else if (rs.getString("monthNum") == "11")
+				{
+					tuple.add("November");
+				}
+				else if (rs.getString("monthNum") == "12")
+				{
+					tuple.add("December");
+				}
+				tuple.add(rs.getString("balanceSumAvg"));
 			}
 			stmt.close();
     	} catch (SQLException ex){
@@ -1259,7 +1303,7 @@ public class HealthDB {
 		*  @return true if the medication would cause an interction, false
 		*          otherwise.
 		*/
-	public boolean checkInteraction(String patientID, String medication){
+	private boolean checkInteraction(String patientID, String medication){
 		boolean interaction = false;
 		try{
 			String query = "select p.patientID from patient p where not exists " +

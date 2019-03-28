@@ -13,7 +13,6 @@ public class HealthDBTest{
       hdb.connectToDB("ora_k1j8", "a30442115");
 
       // Test find methods. //
-      /*
       System.out.println("Test findPatient");
       System.out.println(hdb.findPatient("2"));
       System.out.println(hdb.findPatient("3"));
@@ -98,7 +97,7 @@ public class HealthDBTest{
       System.out.println("PID=2 Expected: 0, Actual: " + hdb.getOverdueAmountOwing("2"));
       System.out.println("PID=3 Expected: 150, Actual: " + hdb.getOverdueAmountOwing("3"));
       System.out.println("PID=4 Expected: 37.31, Actual: " + hdb.getOverdueAmountOwing("4"));
-      */
+
 
       // Test checkInteraction //
       System.out.println("Expected: true, Actual: " + hdb.checkInteraction("3", "Metformin"));
