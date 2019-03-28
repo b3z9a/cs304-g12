@@ -3273,7 +3273,7 @@ public class HealthDBUI extends JFrame {
 
                     if (resp == JOptionPane.OK_OPTION) {
                         String invoiceItem = aInvoiceItem.getText();
-                        String dueDate = aDueDate.getText().substring(0, 9);
+                        String dueDate = aDueDate.getText().substring(0, 10);
                         String paymentStatus = aPaymentStatus.getSelectedItem().toString();
                         String paymentDate = aPaymentDate.getText();
                         String paymentMethod = aPaymentMethod.getSelectedItem().toString();
