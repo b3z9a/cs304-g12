@@ -58,7 +58,7 @@ public class HealthDBUI extends JFrame {
     private JPasswordField passwordField;
 
     private JPanel panelUserClassSelect;
-    private JComboBox cboxUserClass = new JComboBox(userClass);
+    private JComboBox<String> cboxUserClass = new JComboBox<>(userClass);
     private JButton btnConfirmUserClass;
 
     private JPanel panelPatientSummaryFinder;
