@@ -99,6 +99,11 @@ public class HealthDBTest{
       System.out.println("PID=3 Expected: 150, Actual: " + hdb.getOverdueAmountOwing("3"));
       System.out.println("PID=4 Expected: 37.31, Actual: " + hdb.getOverdueAmountOwing("4"));
       */
+
+      // Test checkInteraction //
+      System.out.println("Expected: true, Actual: " + hdb.checkInteraction("3", "Metformin"));
+      System.out.println("Expected: false, Actual: " + hdb.checkInteraction("3", "Pregabalin"));
+      System.out.println("Expected: false, Actual: " + hdb.checkInteraction("1", "Metformin"));
   }
 
   private void printTuples(ArrayList<ArrayList<String>> tuples){
