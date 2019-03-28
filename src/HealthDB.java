@@ -721,10 +721,26 @@ public class HealthDB {
 				tuple.add(rs.getString("firstName"));
 				tuple.add(rs.getString("lastName"));
 				tuple.add(rs.getString("patientID"));
-				tuple.add(rs.getString("street"));
-				tuple.add(rs.getString("city"));
-				tuple.add(rs.getString("province"));
-				tuple.add(rs.getString("postalcode"));
+				if (rs.getString("street")==null){
+					tuple.add("");
+				} else{
+					tuple.add(rs.getString("street"));
+				}
+				if (rs.getString("city")==null){
+					tuple.add("");
+				} else{
+					tuple.add(rs.getString("city"));
+				}
+				if (rs.getString("province")==null){
+					tuple.add("");
+				} else{
+					tuple.add(rs.getString("province"));
+				}
+				if (rs.getString("postalcode")==null){
+					tuple.add("");
+				} else{
+					tuple.add(rs.getString("postalcode"));
+				}
 				tuple.add(rs.getString("country"));
 				tuple.add(rs.getString("homePhone"));
 				tuple.add(rs.getString("mobilePhone"));
@@ -867,7 +883,7 @@ public class HealthDB {
 	public ArrayList<String> findTest(String testID) {
 		ArrayList<String> test = new ArrayList<>();
 		try{
-			String query = "select testID, orderedDate, performedDate " + 
+			String query = "select testID, orderedDate, performedDate " +
 					"from labtest where testID=" + testID;
 
 			// Create a statement
@@ -900,7 +916,6 @@ public class HealthDB {
 		}
 		return test;
 	}
-
 
 	/**
 	 * Finds the patientID associated with a test and returns it
@@ -1002,7 +1017,6 @@ public class HealthDB {
 		}
 		return test;
 	}
-
 	// patientID, invoiceItem, dueDate, paymentStatus, paymentDate, paymentMethod, amountOwing, paymentID , planID, creationDate
 
 
@@ -1271,10 +1285,10 @@ public class HealthDB {
     	ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
     	try {
             // basic query just to test if hooked up properly with ui
-            String query = "select invoiceItem, to_char(dueDate, 'Month') as monthName, avg(balanceSum) as balanceSumAvg from( "
+            String query = "select invoiceItem, to_char(dueDate, 'Month, YYYY') as monthYear, avg(balanceSum) as balanceSumAvg from( "
             + "select invoiceItem, dueDate, paymentStatus, sum(amountOwing) as balanceSum "
             + "from invoice where patientID = " + pid + " group by invoiceItem, dueDate, paymentStatus) "
-            + "where paymentStatus = 'Unpaid' group by invoiceItem, to_char(dueDate, 'Month') order by invoiceItem, monthName";
+            + "where paymentStatus = 'Unpaid' group by invoiceItem, to_char(dueDate, 'Month, YYYY') order by invoiceItem, monthYear";
 
             System.out.println(query);
 			// Create a statement
@@ -1287,7 +1301,7 @@ public class HealthDB {
 				ArrayList<String> tuple = new ArrayList<String>();
                 // default results to test for now
 				tuple.add(rs.getString("invoiceItem"));
-                tuple.add(rs.getString("monthName"));
+                tuple.add(rs.getString("monthYear"));
                 tuple.add(rs.getString("balanceSumAvg"));
                 tuples.add(tuple);
 
