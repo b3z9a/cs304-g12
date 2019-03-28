@@ -2935,7 +2935,7 @@ public class HealthDBUI extends JFrame {
 
                     aInvoiceItem.setText(tuple.get(1));
                     aDueDate.setText(tuple.get(2));
-                    aPaymentDate.setText(tuple.get(4));
+                    //aPaymentDate.setText(tuple.get(4));
                     aAmountOwing.setText(tuple.get(6));
 
                     Object[] fields = {"Patient: " + name, "Invoice Item: ", aInvoiceItem, "Due Date (YYYY-MM-DD): ", aDueDate, "Payment Status: ", aPaymentStatus, "Payment Date (YYYY-MM-DD): ",
