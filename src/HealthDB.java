@@ -1244,6 +1244,8 @@ public class HealthDB {
 				tuple.add(rs.getString("invoiceItem"));
                 tuple.add("January");
                 tuple.add("100");
+                tuples.add(tuple);
+			
                 // monthNum returns the number representing month
 				
 			}
