@@ -1404,8 +1404,8 @@ public class HealthDBUI extends JFrame {
                     txtPharmName.setText(name);
                     txtPharmPID.setText(patientArray.get(2));
                     txtPharmAddr.setText(addr);
-                    txtPharmHomeNum.setText(patientArray.get(8));
-                    txtPharmMobileNum.setText(patientArray.get(9));
+                    txtPharmHomeNum.setText(patientArray.get(7));
+                    txtPharmMobileNum.setText(patientArray.get(8));
 
                     int row = 0;
                     if(tuple.size() > 0) {
@@ -1706,13 +1706,10 @@ public class HealthDBUI extends JFrame {
         btnFindTestNum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String testNum = txtTest.getText();
 
-                ArrayList<String> tuple = hdb.findTest(testNum);
+                String pid = hdb.findPIDfromTest(txtTest.getText());
 
-                String[] data = new String[tuple.size()];
-
-                patientArray = hdb.findPatient(hdb.findPIDfromTest(testNum));
+                patientArray = hdb.findPatient(pid);
 
                 if(patientArray.size() > 0) {
 
@@ -1731,14 +1728,15 @@ public class HealthDBUI extends JFrame {
                     txtLabHomeNum.setText(patientArray.get(8));
                     txtLabMobileNum.setText(patientArray.get(9));
 
-                    int row = 0;
-                    if(tuple.size() > 0) {
-                        for (String s : tuple) {
-                            data[row] = s;
-                            row++;
+                    tests = hdb.getTests(patientArray.get(2));
+                    printTuples(tests);
+                    if(tests.size() > 0)
+                    {
+                        String[][] data = createData(tests);
+                        for(int row = 0; row < data.length; row++)
+                        {
+                            testTPTableModel.addRow(data[row]);
                         }
-
-                        testTPTableModel.addRow(data);
                     }
 
                     txtTest.setText("");
@@ -1825,8 +1823,8 @@ public class HealthDBUI extends JFrame {
                     txtLabName.setText(name);
                     txtLabPID.setText(patientArray.get(2));
                     txtLabAddr.setText(addr);
-                    txtLabHomeNum.setText(patientArray.get(8));
-                    txtLabMobileNum.setText(patientArray.get(9));
+                    txtLabHomeNum.setText(patientArray.get(7));
+                    txtLabMobileNum.setText(patientArray.get(8));
 
                     tests = hdb.getTests(patientArray.get(2));
                     printTuples(tests);
