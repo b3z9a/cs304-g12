@@ -564,15 +564,61 @@ public class HealthDBUI extends JFrame {
         panelOracleLogin.setEnabled(true);
         panelRoot.add(panelOracleLogin, "Card1");
 
-        JLabel lbl = new JLabel();
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weighty = 1.0;
+        panelOracleLogin.add(panel, gbc);
+
+        JPanel loginPanel = new JPanel();
+        loginPanel.setLayout(new GridBagLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        panelOracleLogin.add(loginPanel, gbc);
+
+        JPanel aboutPanel = new JPanel();
+        aboutPanel.setLayout(new BorderLayout());
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.PAGE_END;
+        gbc.insets = new Insets(0,0,10,0);
+        gbc.weighty = 1.0;
+        panelOracleLogin.add(aboutPanel, gbc);
+
+        JLabel lbl = new JLabel("Integrated Healthcare Management System");
+        lbl.setFont(new Font("Arial", Font.BOLD, 32));
+        lbl.setHorizontalAlignment(SwingConstants.CENTER);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(0,0,10, 0);
+        panel.add(lbl, gbc);
+
+        lbl = new JLabel("CPSC 304 - Group 12");
+        lbl.setFont(new Font("Arial", Font.BOLD, 24));
+        lbl.setHorizontalAlignment(SwingConstants.CENTER);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.insets = new Insets(0,0,10, 0);
+        panel.add(lbl, gbc);
+
+        lbl = new JLabel();
         lbl.setHorizontalAlignment(0);
         lbl.setHorizontalTextPosition(0);
         lbl.setText("Oracle Database Login");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
+        gbc.insets = new Insets(0,0,10, 0);
         gbc.anchor = GridBagConstraints.WEST;
-        panelOracleLogin.add(lbl, gbc);
+        loginPanel.add(lbl, gbc);
 
         lbl = new JLabel();
         lbl.setHorizontalAlignment(4);
@@ -581,7 +627,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        panelOracleLogin.add(lbl, gbc);
+        loginPanel.add(lbl, gbc);
 
         usernameField = new JTextField();
         gbc = new GridBagConstraints();
@@ -589,7 +635,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(usernameField, gbc);
+        loginPanel.add(usernameField, gbc);
 
         lbl = new JLabel();
         lbl.setHorizontalAlignment(4);
@@ -598,7 +644,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panelOracleLogin.add(lbl, gbc);
+        loginPanel.add(lbl, gbc);
 
         passwordField = new JPasswordField();
         gbc = new GridBagConstraints();
@@ -606,7 +652,7 @@ public class HealthDBUI extends JFrame {
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(passwordField, gbc);
+        loginPanel.add(passwordField, gbc);
 
         JButton btnLogin = new JButton();
         btnLogin.setHorizontalTextPosition(0);
@@ -650,132 +696,26 @@ public class HealthDBUI extends JFrame {
         gbc.gridy = 3;
         gbc.insets = new Insets(5, 0, 0, 0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(btnLogin, gbc);
+        loginPanel.add(btnLogin, gbc);
 
 
-        JButton btnLauraLogin = new JButton();
-        btnLauraLogin.setHorizontalTextPosition(0);
-        btnLauraLogin.setPreferredSize(new Dimension(80, 30));
-        btnLauraLogin.setText("Laura Login");
+        JButton btnAbout = new JButton();
+        btnAbout.setHorizontalTextPosition(0);
+        btnAbout.setText("About the Team");
         /* Login button action listener */
-        btnLauraLogin.addActionListener(new ActionListener() {
+        btnAbout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                username = "ora_k1j8";
-                password = "a30442115"; /* Fill in if you want */
-
-                hdb.setOracleCredentials(username, password);
-
-                /* Switch to next view only if database connection is made */
-                if (hdb.connectToDB(username, password)) {
-
-                    /* Switch to User Class panel when login achieved */
-                    switchToUserSelectPanel();
-                } else {
-                    System.out.println("Login Failed!");
-                    JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
-                }
+                JOptionPane.showMessageDialog(frame, "Integrated Healthcare Management System\n" +
+                        "CPSC 304 - Group 12\n\n" +
+                        "J. Bains\n" +
+                        "L. Greenstreet\n" +
+                        "M. Kong\n" +
+                        "J. Evangelista", "About the Team", JOptionPane.PLAIN_MESSAGE);
             }
         });
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.insets = new Insets(10, 0, 0, 0);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(btnLauraLogin, gbc);
+        aboutPanel.add(btnAbout, BorderLayout.PAGE_END);
 
-        JButton btnMichelleLogin = new JButton();
-        btnMichelleLogin.setHorizontalTextPosition(0);
-        btnMichelleLogin.setPreferredSize(new Dimension(80, 30));
-        btnMichelleLogin.setText("Michelle Login");
-        /* Login button action listener */
-        btnMichelleLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                username = "ora_u4d9";
-                password = "a32746133"; /* Fill in if you want */
-
-                hdb.setOracleCredentials(username, password);
-
-                /* Switch to next view only if database connection is made */
-                if (hdb.connectToDB(username, password)) {
-
-                    /* Switch to User Class panel when login achieved */
-                    switchToUserSelectPanel();
-                } else {
-                    System.out.println("Login Failed!");
-                    JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 5;
-        gbc.insets = new Insets(5, 0, 0, 0);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(btnMichelleLogin, gbc);
-
-        JButton btnJennaLogin = new JButton();
-        btnJennaLogin.setHorizontalTextPosition(0);
-        btnJennaLogin.setPreferredSize(new Dimension(80, 30));
-        btnJennaLogin.setText("Jenna Login");
-        /* Login button action listener */
-        btnJennaLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                username = "ora_b3z9a";
-                password = "a31823115"; /* Fill in if you want */
-
-                hdb.setOracleCredentials(username, password);
-
-                /* Switch to next view only if database connection is made */
-                if (hdb.connectToDB(username, password)) {
-
-                    /* Switch to User Class panel when login achieved */
-                    switchToUserSelectPanel();
-                } else {
-                    System.out.println("Login Failed!");
-                    JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 6;
-        gbc.insets = new Insets(5, 0, 0, 0);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(btnJennaLogin, gbc);
-
-        JButton btnJanLogin = new JButton();
-        btnJanLogin.setHorizontalTextPosition(0);
-        btnJanLogin.setPreferredSize(new Dimension(80, 30));
-        btnJanLogin.setText("Jan Login");
-        /* Login button action listener */
-        btnJanLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                username = "ora_b3a0b";
-                password = "a28912146";
-
-                hdb.setOracleCredentials(username, password);
-
-                /* Switch to next view only if database connection is made */
-                if (hdb.connectToDB(username, password)) {
-
-                    /* Switch to User Class panel when login achieved */
-                    switchToUserSelectPanel();
-                } else {
-                    System.out.println("Login Failed!");
-                    JOptionPane.showMessageDialog(frame, "Login Failed: Database could not connect!", "Login Failed Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 7;
-        gbc.insets = new Insets(5, 0, 0, 0);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelOracleLogin.add(btnJanLogin, gbc);
     }
 
     /**
