@@ -39,7 +39,6 @@ public class HealthDB {
 	static Integer prescriptionIDCounter;
 	static Integer testIDCounter;
 	static Integer invoiceIDCounter;
-	static Integer paymentIDCounter;
 	private DateFormat format = new SimpleDateFormat("MMMM dd yyyy");
 
 	/**
@@ -85,7 +84,6 @@ public class HealthDB {
 			// Set counters
 			String maxTest = "select max(testID) as max from labtest";
 			String maxInvoice = "select max(invoiceID) as max from invoice";
-			String maxPayment = "select max(paymentID) as max from invoice";
 			String maxPrescription = "select max(prescriptionID) as max from prescription";
 
 			Statement stmt = con.createStatement();
@@ -133,7 +131,7 @@ public class HealthDB {
 	 * @param quantity
 	 * @param patientID
 	 * @param drHID
-	 * 
+	 *
 	 * @return return true if prescription was created
 	 *
 	 * Creates a prescription with current date as prescribedDate
@@ -229,7 +227,7 @@ public class HealthDB {
 	 * Optional on creating a new invoice
 	 * @param paymentDate
 	 * @param paymentMethod
-	 * 
+	 *
 	 * @return return true if invoice was created
 	 *
 	 * Creates an unpaid/fully paid invoice with current date as creation date
@@ -1219,9 +1217,9 @@ public class HealthDB {
 
     /**
      * Get monthly summary for average unpaid balance owing per invoice item
-     * 
+     *
      * tuple[] = {0 invoiceItem, 1 month, 2 , 3 balanceSumAvg}
-     * @return invoices grouped by invoice item, month, average unpaid balance owing 
+     * @return invoices grouped by invoice item, month, average unpaid balance owing
      */
     public ArrayList<ArrayList<String>> getOwingInvoicesMonthlySummary(String pid)
     {
@@ -1247,8 +1245,8 @@ public class HealthDB {
                 tuple.add(rs.getString("monthName"));
                 tuple.add(rs.getString("balanceSumAvg"));
                 tuples.add(tuple);
-			
-				
+
+
 			}
 			stmt.close();
     	} catch (SQLException ex){
