@@ -108,11 +108,6 @@ public class HealthDB {
 			if(rs.next()){
 				prescriptionIDCounter = rs.getInt("max") + 1;
 			}
-			System.out.println("invoiceIDCounter: " + invoiceIDCounter);
-			System.out.println("paymentIDCounter: " + paymentIDCounter);
-			System.out.println("prescriptionIDCounter: " + prescriptionIDCounter);
-			System.out.println("testIDCounter: " + testIDCounter);
-
 			stmt.close();
 
 			return true;}
@@ -141,18 +136,15 @@ public class HealthDB {
 	public boolean createPrescription(String medication, String dosage, String quantity,
 																 String patientID, String drHID) {
 		try {
-			System.out.println("PrescriptionID Counter pre: " + prescriptionIDCounter);
 			String query ="insert into prescription (prescriptionID, medication, dosage, quantity, patientID,"
 							+ " drHID, prescribedDate) values (" + prescriptionIDCounter + ",'" + medication + "', " + dosage
 							+ ", " + quantity +", " + patientID +", " + drHID + "," + today() + ")";
 			prescriptionIDCounter++;
-			System.out.println("prescriptionID Counter post: " + prescriptionIDCounter);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
 			stmt.close();
-			System.out.println("Prescription successfully created");
 			return !checkInteraction(patientID, medication);
 		} catch (SQLException ex){
 			System.out.println("Failed to create prescription" + ex.getMessage());
@@ -171,17 +163,14 @@ public class HealthDB {
 	 */
 	public boolean createTest(String patientID, String drHID) {
 		try {
-			System.out.println("TestID Counter pre: " + testIDCounter);
 			String query = "insert into labtest (testID, patientID, drHID, orderedDate) values (" + testIDCounter + ", "
 							+ patientID + ", " + drHID + ", " + today() + ")";
 			testIDCounter++;
-			System.out.println("TestID Counter post: " + testIDCounter);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
 			stmt.close();
-			System.out.println("Test successfully created");
 			return true;
 		} catch (SQLException ex){
 			System.out.println("Failed to create test" + ex.getMessage());
@@ -208,7 +197,6 @@ public class HealthDB {
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
 			stmt.close();
-			System.out.println("Referral successfully created");
 			return true;
 		} catch (SQLException ex){
 			System.out.println("Failed to create referral" + ex.getMessage());
@@ -237,9 +225,6 @@ public class HealthDB {
 	public boolean createInvoice(String patientID, String invoiceItem, String dueDate, String paymentStatus,
 														String paymentDate, String paymentMethod, String amountOwing, String planID) {
         try {
-            System.out.println("invoiceID Counter pre: " + invoiceIDCounter);
-            System.out.println("paymentID Counter pre: " + paymentIDCounter);
-
             String paymentDateValue = "''";
             String paymentIDValue = "''";
             if(!paymentDate.isEmpty()){
@@ -255,21 +240,17 @@ public class HealthDB {
                     + "paymentDate, paymentMethod, amountOwing, paymentID, planID) values (" + invoiceIDCounter + ", "
                     + patientID + ", '" + invoiceItem + "', " + today() + ", " + "to_date('" + dueDate + "', 'yyyy-MM-dd'), '" + paymentStatus + "', "
                     + paymentDateValue + ", '" + paymentMethod + "', " + amountOwing + ", " + paymentIDValue + ", " + planID + ")";
-            System.out.println(query);
             invoiceIDCounter++;
             // Don't increase paymentIDCounter if no payment info was entered
             if (!paymentDate.isEmpty() && !paymentMethod.isEmpty())
             {
             	paymentIDCounter++;
             }
-            System.out.println("invoiceID Counter post: " + invoiceIDCounter);
-            System.out.println("paymentID Counter post: " + paymentIDCounter);
             // Create a statement
             Statement stmt = con.createStatement();
             // Execute the query.
             ResultSet rs = stmt.executeQuery(query);
             stmt.close();
-            System.out.println("Invoice successfully created");
             return true;
         } catch (SQLException ex){
             System.out.println("Failed to create invoice" + ex.getMessage());
@@ -296,7 +277,6 @@ public class HealthDB {
 			// Execute the query.
 			ResultSet rs = stmt.executeQuery(query);
 			stmt.close();
-			System.out.println("Patient successfully deleted");
 			return true;
 		} catch (SQLException ex){
 			System.out.println("Failed to delete patient" + ex.getMessage());
@@ -710,7 +690,6 @@ public class HealthDB {
 										 " pc.city, pc.province, pc.postalcode, pc.country, "+
 										 "p.homePhone, p.mobilePhone from patient p left join postalcode"+
 										 " pc on p.postalcode = pc.postalcode where p.patientID = " + PID;
-			System.out.println(query);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -821,7 +800,7 @@ public class HealthDB {
 			}
 
 		} catch (SQLException ex){
-			System.out.println("Error finding prescription. " + ex.getMessage());
+			System.out.println("Error finding PID from prescription. " + ex.getMessage());
 		}
 		return "";
 	}
@@ -845,7 +824,7 @@ public class HealthDB {
 			}
 
 		} catch (SQLException ex){
-			System.out.println("Error finding prescription. " + ex.getMessage());
+			System.out.println("Error getting PID from invoice. " + ex.getMessage());
 		}
 		return "";
 	}
@@ -869,7 +848,7 @@ public class HealthDB {
 			}
 
 		} catch (SQLException ex){
-			System.out.println("Error finding test. " + ex.getMessage());
+			System.out.println("Error finding PID from test. " + ex.getMessage());
 		}
 		return "";
 	}
@@ -1094,7 +1073,7 @@ public class HealthDB {
 			// Close the statement, the result set will be closed in the process.
 			stmt.close();
 		} catch (SQLException ex){
-			System.out.println("Failed to get plan summary. " + ex.getMessage());
+			System.out.println("Failed to get invoice summary. " + ex.getMessage());
 		}
 		return tuple;
 
@@ -1110,7 +1089,6 @@ public class HealthDB {
 		ArrayList<String> tuple = new ArrayList<String>();
 		try{
 			String query = "select policyType, startDate, endDate, patientID from ProvincialHealthPlan where planID = " + planID;
-			System.out.println(query);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -1290,8 +1268,6 @@ public class HealthDB {
             + "select invoiceItem, dueDate, paymentStatus, sum(amountOwing) as balanceSum "
             + "from invoice where patientID = " + pid + " group by invoiceItem, dueDate, paymentStatus) "
             + "where paymentStatus = 'Unpaid' group by invoiceItem, to_char(dueDate, 'Month') order by invoiceItem, monthName";
-
-            System.out.println(query);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -1333,7 +1309,6 @@ public class HealthDB {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			if(rs.next() && !rs.getString("patientID").isEmpty()){
-				System.out.println(rs.getString("patientID"));
 				String update = "delete from Prescription where patientID =" + patientID + " and medication='" + medication + "'";
 				stmt.executeUpdate(update);
 				return true;
