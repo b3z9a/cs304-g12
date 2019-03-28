@@ -2507,10 +2507,13 @@ public class HealthDBUI extends JFrame {
                     txtPlanSumMobilePhone.setText(mobile);
                     txtPlanSumHomePhone.setText(home);
 
-                    txtPlanID.setText(planArray.get(0));
-                    txtStartDate.setText(planArray.get(1));
-                    txtPolicyType.setText(planArray.get(2));
-                    txtEndDate.setText(planArray.get(3));
+                    if(planArray.size() > 0)
+                    {
+                        txtPlanID.setText(planArray.get(0));
+                        txtStartDate.setText(planArray.get(1));
+                        txtPolicyType.setText(planArray.get(2));
+                        txtEndDate.setText(planArray.get(3));
+                    }
 
                     extendedBenefitsArray = hdb.getExtendedBenefits(patientArray.get(2));
                     printTuples(extendedBenefitsArray);
