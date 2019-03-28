@@ -1457,7 +1457,6 @@ public class HealthDBUI extends JFrame {
         panelPrescription.add(panelPrescriptionBtns, gbc);
     }
 
-
     private void setPanelPrescriptionFinder() {
         JTextField txtPID = new JTextField(10);
         JTextField txtName = new JTextField(12);
@@ -3244,13 +3243,75 @@ public class HealthDBUI extends JFrame {
         btnCreateInvoice.setText("Create Invoice");
         panelPlanSummaryActions.add(btnCreateInvoice);
 
+        JButton btnUpdateInvoice = new JButton();
+        btnUpdateInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTextField aInvoiceItem = new JTextField();
+                JTextField aDueDate = new JTextField();
+                JTextField aPaymentDate = new JTextField();
+                JTextField aAmountOwing = new JTextField();
+                JComboBox<String> aPaymentStatus = new JComboBox<>(paymentStatus);
+                JComboBox<String> aPaymentMethod = new JComboBox<>(paymentMethod);
+
+                if (patientArray.size() > 0) {
+                    int row = invoiceHistoryGridTable.getSelectedRow();
+                    String invoiceID = invoiceHistoryGridTableModel.getValueAt(row, 0).toString();
+                    ArrayList<String> tuple = hdb.findInvoice(invoiceID);
+
+                    String name = patientArray.get(0) + " " + patientArray.get(1);
+
+                    aInvoiceItem.setText(tuple.get(1));
+                    aDueDate.setText(tuple.get(2));
+                    aPaymentDate.setText(tuple.get(4));
+                    aAmountOwing.setText(tuple.get(6));
+
+                    Object[] fields = {"Patient: " + name, "Invoice Item: ", aInvoiceItem, "Due Date (YYYY-MM-DD): ", aDueDate, "Payment Status: ", aPaymentStatus, "Payment Date (YYYY-MM-DD): ",
+                            aPaymentDate, "Payment Method: ", aPaymentMethod, "Amount Owing: ", aAmountOwing};
+
+                    int resp = JOptionPane.showConfirmDialog(frame, fields, "Update invoice for " + name, JOptionPane.OK_CANCEL_OPTION);
+
+                    if (resp == JOptionPane.OK_OPTION) {
+                        String invoiceItem = aInvoiceItem.getText();
+                        String dueDate = aDueDate.getText();
+                        String paymentStatus = aPaymentStatus.getSelectedItem().toString();
+                        String paymentDate = aPaymentDate.getText();
+                        String paymentMethod = aPaymentMethod.getSelectedItem().toString();
+                        String amountOwing = aAmountOwing.getText();
+                        planID = hdb.getPlan(patientID).get(0);
+
+                        System.out.println(patientID + " " + invoiceItem + " " + dueDate + " " + paymentStatus + " " + paymentDate + " " + paymentMethod + " " + amountOwing + " " + planID);
+
+                        hdb.createInvoice(patientID, invoiceItem, dueDate, paymentStatus,
+                                paymentDate, paymentMethod, amountOwing, planID);
+
+                        if(hdb.updateInvoice(invoiceID, dueDate, invoiceItem, paymentStatus, paymentDate, paymentMethod, amountOwing)) {
+                            JOptionPane.showMessageDialog(frame, "Invoice updated!", "Update Invoice", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Invoice update failed!", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+
+                        // Clear and update the table with new data
+                        invoiceHistoryGridTableModel.setRowCount(0);
+                        invoiceHistoryGridArray = hdb.getInvoices(patientID);
+                        updateTable(invoiceHistoryGridArray, invoiceHistoryGridTableModel);
+                    } else {
+                        System.out.println("No values entered");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No Invoice selected!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        btnUpdateInvoice.setText("Update Invoice");
+        panelPlanSummaryActions.add(btnUpdateInvoice);
+
         JButton btnViewInvoice = new JButton();
         btnViewInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
-                // viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
             }
         });
         btnViewInvoice.setText("View Selected Invoice");
