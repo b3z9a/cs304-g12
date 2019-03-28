@@ -121,7 +121,7 @@ public class HealthDBUI extends JFrame {
     private ArrayList<ArrayList<String>> extendedBenefitsArray;
     private ArrayList<ArrayList<String>> invoiceHistoryGridArray;
     private ArrayList<ArrayList<String>> monthlyInvoiceSummaryArray;
-    
+
 
     private JTextField txtPharmName;
     private JTextField txtPharmPID;
@@ -2488,9 +2488,9 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 11;
         panelPlanSummary.add(panelPlanSummaryActions, gbc);
-        
+
      // -------------------------------------
-        
+
         /* Row 12 */
         lbl = new JLabel("Monthly Invoice Summary for Unpaid Amounts", SwingConstants.LEADING);
         lbl.setFont(new Font("Arial", Font.BOLD, 20));
@@ -2509,17 +2509,17 @@ public class HealthDBUI extends JFrame {
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         gbc.gridx = 0; gbc.gridy = 13;
         panelPlanSummary.add(panelMonthlyInvoiceSummary, gbc);
-        
+
      // -------------------------------------
         /* Row 14 */
         JButton btnGetSummary = new JButton();
         btnGetSummary.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	
+
             	// Clear and update the table with new data
                 monthlyInvoiceSummaryTableModel.setRowCount(0);
-                
+
                 // Call method
                 monthlyInvoiceSummaryArray = hdb.getOwingInvoicesMonthlySummary(patientID);
                 printTuples(monthlyInvoiceSummaryArray);
@@ -2538,7 +2538,7 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 14;
         panelPlanSummary.add(panelMonthlyInvoiceSummaryPresBtn, gbc);
-        
+
         // ----------------------------
     }
     private void setPanelProvincialPlan() {
@@ -2615,17 +2615,17 @@ public class HealthDBUI extends JFrame {
         panelExtendedBenefits.add(extendedBenefitsTable, BorderLayout.CENTER);
 
     }
-    
+
     private void setPanelMonthlyInvoiceSummary() {
         String cols[] = {"Invoice Item", "Month, Year", "Average Unpaid Balance"};
-        
+
         String data[][] = {};
         monthlyInvoiceSummaryTableModel = new DefaultTableModel (data, cols);
         monthlyInvoiceSummaryTable = new JTable(monthlyInvoiceSummaryTableModel);
         panelMonthlyInvoiceSummary.add(monthlyInvoiceSummaryTable.getTableHeader(), BorderLayout.PAGE_START);
         panelMonthlyInvoiceSummary.add(monthlyInvoiceSummaryTable, BorderLayout.CENTER);
     }
-    
+
     private void setPanelInvoiceHistoryGrid() {
     	String cols[] = {"Invoice ID", "Invoice Item", "Creation Date", "Due Date", "Status", "Balance"};
         String data[][] = {};
@@ -3102,7 +3102,7 @@ public class HealthDBUI extends JFrame {
         btnViewInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	
+
                 viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
             	// viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
             }
