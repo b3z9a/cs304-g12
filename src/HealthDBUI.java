@@ -265,6 +265,11 @@ public class HealthDBUI extends JFrame {
         txtTotalUnpaid.setText("");
         txtTotalOverDue.setText("");
 
+        txtPlanID.setText("");
+        txtStartDate.setText("");
+        txtPolicyType.setText("");
+        txtEndDate.setText("");
+
         extendedBenefitsTableModel.setRowCount(0);
         invoiceHistoryGridTableModel.setRowCount(0);
         monthlyInvoiceSummaryTableModel.setRowCount(0);
@@ -2718,27 +2723,25 @@ public class HealthDBUI extends JFrame {
 
                 System.out.println(pidTxt + " " + nameTxt);
 
-                if(pidTxt.equals("") && !nameTxt.isEmpty())
-                {
+                if (pidTxt.equals("") && !nameTxt.isEmpty()) {
                     ArrayList<ArrayList<String>> names = hdb.getPatients(nameTxt);
                     pidTxt = getPIDfromName(names, nameTxt);
 
                     patientArray = hdb.findPatient(pidTxt);
-                }
-                else if(!pidTxt.isEmpty()) {
+                } else if (!pidTxt.isEmpty()) {
                     patientArray = hdb.findPatient(pidTxt);
                 }
 
-            	planArray = hdb.getPlan(pidTxt);
+                planArray = hdb.getPlan(pidTxt);
 
-                if(patientArray.size() > 0) {
+                if (patientArray.size() > 0) {
 
                     // Clear the data tables
-                	extendedBenefitsTableModel.setRowCount(0);
-                	invoiceHistoryGridTableModel.setRowCount(0);
-                	monthlyInvoiceSummaryTableModel.setRowCount(0);
+                    extendedBenefitsTableModel.setRowCount(0);
+                    invoiceHistoryGridTableModel.setRowCount(0);
+                    monthlyInvoiceSummaryTableModel.setRowCount(0);
 
-                	patientID = patientArray.get(2);
+                    patientID = patientArray.get(2);
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
                     String mobile = patientArray.get(9);
@@ -2760,19 +2763,21 @@ public class HealthDBUI extends JFrame {
                     extendedBenefitsArray = hdb.getExtendedBenefits(patientArray.get(2));
                     printTuples(extendedBenefitsArray);
                     if (extendedBenefitsArray.size() > 0) {
-                    	String[][] data = createData(extendedBenefitsArray);
-                    	for(int row = 0; row < data.length; row++) { 
-                    		extendedBenefitsTableModel.addRow(data[row]);
-                    	}
+                        String[][] data = createData(extendedBenefitsArray);
+                        for (int row = 0; row < data.length; row++) {
+                            extendedBenefitsTableModel.addRow(data[row]);
+                        }
+                    }
 
 
                     invoiceHistoryGridArray = hdb.getInvoices(patientArray.get(2));
                     printTuples(invoiceHistoryGridArray);
                     if (invoiceHistoryGridArray.size() > 0) {
-                    	String[][] data = createData(invoiceHistoryGridArray);
-                    	for(int row = 0; row < data.length; row++) {
-                    		invoiceHistoryGridTableModel.addRow(data[row]);
-                    	}
+                        String[][] data = createData(invoiceHistoryGridArray);
+                        for (int row = 0; row < data.length; row++) {
+                            invoiceHistoryGridTableModel.addRow(data[row]);
+                        }
+                    }
 
 
                     txtName.setText("");
@@ -2786,16 +2791,16 @@ public class HealthDBUI extends JFrame {
                     txtTotalUnpaid.setText("");
                     txtTotalOverDue.setText("");
 
+                    clearPanelData();
+
                     // Clear the data tables
                     extendedBenefitsTableModel.setRowCount(0);
-                	invoiceHistoryGridTableModel.setRowCount(0);
-                	monthlyInvoiceSummaryTableModel.setRowCount(0);
+                    invoiceHistoryGridTableModel.setRowCount(0);
+                    monthlyInvoiceSummaryTableModel.setRowCount(0);
 
 
                     JOptionPane.showMessageDialog(frame, "Plan Summary not found!", "Invalid Patient ID Error", JOptionPane.ERROR_MESSAGE);
-
                 }
-
             }
         });
         btnFindPlanPatientID.setText("Find by Patient");
@@ -2866,6 +2871,8 @@ public class HealthDBUI extends JFrame {
 
                 } else {
                     txtNum.setText("");
+
+                    clearPanelData();
 
                     // Clear the data tables
                     extendedBenefitsTableModel.setRowCount(0);
@@ -2943,6 +2950,7 @@ public class HealthDBUI extends JFrame {
                 } else {
                 	txtInvoiceNumber.setText("");
 
+                	clearPanelData();
                     // Clear the data tables
                     extendedBenefitsTableModel.setRowCount(0);
                 	invoiceHistoryGridTableModel.setRowCount(0);
