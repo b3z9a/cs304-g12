@@ -82,6 +82,7 @@ public class HealthDBUI extends JFrame {
     private JPanel panelInvoiceHistory;
     private JPanel panelInvoiceHistoryGrid;
     private JPanel panelPlanSummaryActions;
+    private JPanel panelMonthlyInvoiceSummary;
 
     private JTextField txtPlanSumName;
     private JTextField txtPlanSumPID;
@@ -116,6 +117,8 @@ public class HealthDBUI extends JFrame {
     private ArrayList<ArrayList<String>> referrals;
     private ArrayList<ArrayList<String>> extendedBenefitsArray;
     private ArrayList<ArrayList<String>> invoiceHistoryGridArray;
+    private ArrayList<ArrayList<String>> monthlyInvoiceSummaryArray;
+    
 
     private JTextField txtPharmName;
     private JTextField txtPharmPID;
@@ -144,13 +147,12 @@ public class HealthDBUI extends JFrame {
     private JTable invoiceTPTable;
     private DefaultTableModel invoiceTPTableModel;
 
-
-
-    //
     private JTable extendedBenefitsTable;
     private DefaultTableModel extendedBenefitsTableModel;
     private JTable invoiceHistoryGridTable;
     private DefaultTableModel invoiceHistoryGridTableModel;
+    private JTable monthlyInvoiceSummaryTable;
+    private DefaultTableModel monthlyInvoiceSummaryTableModel;
 
     public static void main(String args[]) {
         hdb = new HealthDB();
@@ -197,6 +199,7 @@ public class HealthDBUI extends JFrame {
         setPanelInvoiceHistory();
         setPanelInvoiceHistoryGrid();
         setPanelPlanSummaryActions();
+        setPanelMonthlyInvoiceSummary();
     }
 
     /**
@@ -264,6 +267,7 @@ public class HealthDBUI extends JFrame {
 
         extendedBenefitsTableModel.setRowCount(0);
         invoiceHistoryGridTableModel.setRowCount(0);
+        monthlyInvoiceSummaryTableModel.setRowCount(0);
     }
 
     private String getPIDfromName(ArrayList<ArrayList<String>> names, String nameTxt) {
@@ -1527,7 +1531,7 @@ public class HealthDBUI extends JFrame {
                 }
             }
         });
-        btnFindPrescPatient.setText("Find by Patient ID");
+        btnFindPrescPatient.setText("Find Patient ID");
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets = new Insets(5,5,0,0);
@@ -2449,18 +2453,6 @@ public class HealthDBUI extends JFrame {
         // --------------------------------------------------
 
         /* Row 10 */
-        /*
-        lbl = new JLabel("Invoice History Info", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
-        gbc = new GridBagConstraints();
-        gbc.insets= new Insets(10,0,0,0);
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridwidth = 2;
-        gbc.gridx = 0; gbc.gridy = 10;
-        panelPlanSummary.add(lbl, gbc);
-        */
-
-        /* Row 10 */
         panelInvoiceHistoryGrid = new JPanel();
         panelInvoiceHistoryGrid.setLayout(new BorderLayout());
         gbc = new GridBagConstraints();
@@ -2477,6 +2469,58 @@ public class HealthDBUI extends JFrame {
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 11;
         panelPlanSummary.add(panelPlanSummaryActions, gbc);
+        
+     // -------------------------------------
+        
+        /* Row 12 */
+        lbl = new JLabel("Monthly Invoice Summary", SwingConstants.LEADING);
+        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        gbc = new GridBagConstraints();
+        gbc.insets= new Insets(10,0,0,0);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 12;
+        panelPlanSummary.add(lbl, gbc);
+
+        /* Row 13 */
+        panelMonthlyInvoiceSummary = new JPanel();
+        panelMonthlyInvoiceSummary.setLayout(new BorderLayout());
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0; gbc.weighty = 1.0;
+        gbc.gridx = 0; gbc.gridy = 13;
+        panelPlanSummary.add(panelMonthlyInvoiceSummary, gbc);
+        
+     // -------------------------------------
+        /* Row 14 */
+        JButton btnGetSummary = new JButton();
+        btnGetSummary.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	// Clear and update the table with new data
+                monthlyInvoiceSummaryTableModel.setRowCount(0);
+                
+                // Call method
+                monthlyInvoiceSummaryArray = hdb.getOwingInvoicesMonthlySummary(patientID);
+                printTuples(monthlyInvoiceSummaryArray);
+                String[][] data = createData(monthlyInvoiceSummaryArray);
+                for(int row = 0; row < data.length; row++)
+                {
+                	monthlyInvoiceSummaryTableModel.addRow(data[row]);
+                }
+            }
+        });
+        btnGetSummary.setText("Get Summary");
+
+        JPanel panelMonthlyInvoiceSummaryPresBtn = new JPanel();
+        panelMonthlyInvoiceSummaryPresBtn.setLayout(new FlowLayout());
+        panelMonthlyInvoiceSummaryPresBtn.add(btnGetSummary);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 14;
+        panelPlanSummary.add(panelMonthlyInvoiceSummaryPresBtn, gbc);
+        
+        // ----------------------------
     }
     private void setPanelProvincialPlan() {
     	JLabel lbl = new JLabel("Plan ID:");
@@ -2552,6 +2596,17 @@ public class HealthDBUI extends JFrame {
         panelExtendedBenefits.add(extendedBenefitsTable, BorderLayout.CENTER);
 
     }
+    
+    private void setPanelMonthlyInvoiceSummary() {
+        String cols[] = {"Invoice Item", "Month", "Average Balance"};
+        
+        String data[][] = {};
+        monthlyInvoiceSummaryTableModel = new DefaultTableModel (data, cols);
+        monthlyInvoiceSummaryTable = new JTable(monthlyInvoiceSummaryTableModel);
+        panelMonthlyInvoiceSummary.add(monthlyInvoiceSummaryTable.getTableHeader(), BorderLayout.PAGE_START);
+        panelMonthlyInvoiceSummary.add(monthlyInvoiceSummaryTable, BorderLayout.CENTER);
+    }
+    
     private void setPanelInvoiceHistoryGrid() {
     	String cols[] = {"Invoice ID", "Invoice Item", "Creation Date", "Due Date", "Status", "Balance"};
         String data[][] = {};
@@ -2586,15 +2641,10 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 3; gbc.gridy = 0;
         panelInvoiceHistory.add(txtTotalOverDue, gbc);
 
-     // ----------------------------------------------------------------------------------
-        // TODO: FIX UPDATE BUTTON FUNCTIONALITY
-
         JButton btnUpdateInvoiceTotals = new JButton();
         btnUpdateInvoiceTotals.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-            	System.out.println(patientID);
 
             	txtTotalUnpaid.setText(Double.toString((hdb.getAmountOwing(patientID))));
                 txtTotalOverDue.setText(Double.toString(hdb.getOverdueAmountOwing(patientID)));
@@ -2606,8 +2656,6 @@ public class HealthDBUI extends JFrame {
         gbc.gridwidth = 2;
         gbc.gridx = 4; gbc.gridy = 0;
         panelInvoiceHistory.add(btnUpdateInvoiceTotals, gbc);
-
-        // ----------------------------------------------------------------------------------
 
     }
     private void setPanelPlanSummaryFinder() {
@@ -2732,6 +2780,8 @@ public class HealthDBUI extends JFrame {
                 } else {
                     txtPID.setText("");
                     txtName.setText("");
+                    txtTotalUnpaid.setText("");
+                    txtTotalOverDue.setText("");
 
                     // Clear the data tables
                     extendedBenefitsTableModel.setRowCount(0);
@@ -2743,7 +2793,7 @@ public class HealthDBUI extends JFrame {
 
             }
         });
-        btnFindPlanPatientID.setText("Find by Patient ID");
+        btnFindPlanPatientID.setText("Find by Patient");
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 0);
         gbc.gridwidth = 2;
@@ -3033,9 +3083,9 @@ public class HealthDBUI extends JFrame {
         btnViewInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	// TODO: Figure out what tables to pass to method. Either one of these two below:
-                // viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
-            	viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
+            	
+                viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
+            	// viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
             }
         });
         btnViewInvoice.setText("View Selected Invoice");
