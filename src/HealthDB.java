@@ -1230,19 +1230,19 @@ public class HealthDB {
                 invoice.append("dueDate= to_date('" + dueDate + "', 'yyyy-MM-dd'), ");
             }
             if (!invoiceItem.isEmpty()) {
-                invoice.append("invoiceItem=" + invoiceItem + ", ");
+                invoice.append("invoiceItem='" + invoiceItem + "', ");
             }
             if (!paymentStatus.isEmpty()) {
-                invoice.append("paymentStatus=" + paymentStatus + ", ");
+                invoice.append("paymentStatus='" + paymentStatus + "', ");
             }
             if (!paymentMethod.isEmpty()) {
-                invoice.append("paymentMethod=" + paymentMethod + ", ");
+                invoice.append("paymentMethod='" + paymentMethod + "', ");
             }
             if (!amountOwing.isEmpty()) {
                 invoice.append("amountOwing=" + amountOwing + ", ");
             }
             if (!paymentDate.isEmpty()) {
-                invoice.append("paymentDate=to_date('" + paymentDate + "', 'yyyy-MM-dd'), ");
+            	invoice.append("paymentDate=trunc(to_timestamp('" + paymentDate + "','yyyy-mm-dd HH24:MI:SS.FF1')), ");
             }
             invoice.delete(invoice.length() - 2, invoice.length() - 1);
             invoice.append("where invoiceID=" + invoiceID);
