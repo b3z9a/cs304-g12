@@ -1238,9 +1238,13 @@ public class HealthDB {
             if (!paymentMethod.isEmpty()) {
                 invoice.append("paymentMethod='" + paymentMethod + "', ");
                 if (paymentMethod.equals("Credit\\Debit")) {
-                	invoice.append("paymentID='" + paymentIDCounter.toString() + "', ");
-                	paymentIDCounter++;
+                    invoice.append("paymentID= case when paymentID is null then " + paymentIDCounter.toString() + " else paymentID end, ");
+                    paymentIDCounter++;
                 }
+                else if (paymentMethod.equals("Cash") || paymentMethod.equals("Cheque")) {
+                    invoice.append("paymentID='', ");
+                }
+                System.out.println(invoice);
             }
             if (!amountOwing.isEmpty()) {
                 invoice.append("amountOwing=" + amountOwing + ", ");
