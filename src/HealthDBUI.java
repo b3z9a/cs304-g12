@@ -890,6 +890,7 @@ public class HealthDBUI extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.insets = new Insets(0,5,0,0);
         panelPatientSummary.add(lbl, gbc);
 
         /* Row 1 */
@@ -904,9 +905,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 2 */
         lbl = new JLabel("Personal Information", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
@@ -966,9 +967,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 4 */
         lbl = new JLabel("Prescriptions", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
@@ -1039,9 +1040,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 6 */
         lbl = new JLabel("Tests", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
@@ -1109,9 +1110,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 8 */
         lbl = new JLabel("Referrals", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
@@ -1352,6 +1353,7 @@ public class HealthDBUI extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.insets = new Insets(0,5,0,0);
         panelPrescription.add(lbl, gbc);
 
         /* Row 1 */
@@ -1366,9 +1368,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 2 */
         lbl = new JLabel("Personal Information", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
@@ -1387,9 +1389,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 4 */
         lbl = new JLabel("Prescriptions", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
@@ -1702,6 +1704,7 @@ public class HealthDBUI extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.insets = new Insets(0,5,0,0);
         panelTest.add(lbl, gbc);
 
         /* Row 1 */
@@ -1716,9 +1719,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 2 */
         lbl = new JLabel("Personal Information", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
@@ -1737,9 +1740,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 4 */
         lbl = new JLabel("Tests", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
@@ -2469,6 +2472,7 @@ public class HealthDBUI extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.insets = new Insets(0,5,0,0);
         panelPlanSummary.add(lbl, gbc);
 
         /* Row 1 */
@@ -2483,9 +2487,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 2 */
         lbl = new JLabel("Personal Information", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
@@ -2504,9 +2508,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 4 */
         lbl = new JLabel("Provincial Plan", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
@@ -2525,9 +2529,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 6 */
         lbl = new JLabel("Extended Benefits Plan", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
@@ -2556,9 +2560,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 8 */
         lbl = new JLabel("Invoice History", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
@@ -2601,9 +2605,9 @@ public class HealthDBUI extends JFrame {
 
         /* Row 12 */
         lbl = new JLabel("Monthly Invoice Summary for Unpaid Amounts", SwingConstants.LEADING);
-        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        lbl.setFont(new Font("Arial", Font.BOLD, 18));
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 0, 0);
+        gbc.insets = new Insets(10, 5, 0, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.gridwidth = 2;
         gbc.gridx = 0;
