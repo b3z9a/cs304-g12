@@ -1264,10 +1264,12 @@ public class HealthDB {
     	ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
     	try {
             // basic query just to test if hooked up properly with ui
+
             String query = "select invoiceItem, to_char(dueDate, 'Month, YYYY') as monthYear, avg(balanceSum) as balanceSumAvg from( "
+
             + "select invoiceItem, dueDate, paymentStatus, sum(amountOwing) as balanceSum "
             + "from invoice where patientID = " + pid + " group by invoiceItem, dueDate, paymentStatus) "
-            + "where paymentStatus = 'Unpaid' group by invoiceItem, to_char(dueDate, 'Month') order by invoiceItem, monthName";
+            + "where paymentStatus = 'Unpaid' group by invoiceItem, to_char(dueDate, 'Month, YYYY') order by invoiceItem, monthYear";
 
 			// Create a statement
 			Statement stmt = con.createStatement();
@@ -1282,8 +1284,6 @@ public class HealthDB {
                 tuple.add(rs.getString("monthYear"));
                 tuple.add(rs.getString("balanceSumAvg"));
                 tuples.add(tuple);
-
-
 			}
 			stmt.close();
     	} catch (SQLException ex){
