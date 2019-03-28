@@ -35,7 +35,6 @@ public class HealthDBTest{
       System.out.println("  Actual: " + hdb.findInvoice("183746") + "\n");
       System.out.println("  Expected: ");
       System.out.println("  Actual: " + hdb.findPrescription("1234") + "\n");
-      */
 
       // Test get methods //
       /*System.out.println("Test getPatients");
@@ -102,7 +101,7 @@ public class HealthDBTest{
       // Test checkInteraction //
       System.out.println("Expected: true, Actual: " + hdb.checkInteraction("3", "Metformin"));
       System.out.println("Expected: false, Actual: " + hdb.checkInteraction("3", "Pregabalin"));
-      System.out.println("Expected: false, Actual: " + hdb.checkInteraction("1", "Metformin"));
+      System.out.println("Expected: false, Actual: " + hdb.checkInteraction("1", "Metformin"));*/
   }
 
   private void printTuples(ArrayList<ArrayList<String>> tuples){
