@@ -2641,15 +2641,10 @@ public class HealthDBUI extends JFrame {
         gbc.gridx = 3; gbc.gridy = 0;
         panelInvoiceHistory.add(txtTotalOverDue, gbc);
 
-     // ----------------------------------------------------------------------------------
-        // TODO: FIX UPDATE BUTTON FUNCTIONALITY
-
         JButton btnUpdateInvoiceTotals = new JButton();
         btnUpdateInvoiceTotals.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	
-            	
 
             	txtTotalUnpaid.setText(Double.toString((hdb.getAmountOwing(patientID))));
                 txtTotalOverDue.setText(Double.toString(hdb.getOverdueAmountOwing(patientID)));
@@ -2661,8 +2656,6 @@ public class HealthDBUI extends JFrame {
         gbc.gridwidth = 2;
         gbc.gridx = 4; gbc.gridy = 0;
         panelInvoiceHistory.add(btnUpdateInvoiceTotals, gbc);
-
-        // ----------------------------------------------------------------------------------
 
     }
     private void setPanelPlanSummaryFinder() {
@@ -3090,9 +3083,9 @@ public class HealthDBUI extends JFrame {
         btnViewInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	// TODO: Figure out what tables to pass to method. Either one of these two below:
-                // viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
-            	viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
+            	
+                viewInvoiceData(invoiceHistoryGridTable, invoiceHistoryGridTableModel);
+            	// viewInvoiceData(invoiceTPTable, invoiceTPTableModel);
             }
         });
         btnViewInvoice.setText("View Selected Invoice");
