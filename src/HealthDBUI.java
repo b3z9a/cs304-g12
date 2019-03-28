@@ -2736,6 +2736,7 @@ public class HealthDBUI extends JFrame {
                     // Clear the data tables
                 	extendedBenefitsTableModel.setRowCount(0);
                 	invoiceHistoryGridTableModel.setRowCount(0);
+                	monthlyInvoiceSummaryTableModel.setRowCount(0);
 
                 	patientID = patientArray.get(2);
                     String name = patientArray.get(0) + " " + patientArray.get(1);
@@ -2756,20 +2757,23 @@ public class HealthDBUI extends JFrame {
                     txtPolicyType.setText(planArray.get(2));
                     txtEndDate.setText(planArray.get(3));
 
+                    
                     extendedBenefitsArray = hdb.getExtendedBenefits(patientArray.get(2));
                     printTuples(extendedBenefitsArray);
-                    String[][] data = createData(extendedBenefitsArray);
-                    for(int row = 0; row < data.length; row++)
-                    {
-                        extendedBenefitsTableModel.addRow(data[row]);
+                    if (extendedBenefitsArray.size() > 0) {
+                    	String[][] data = createData(extendedBenefitsArray);
+                    	for(int row = 0; row < data.length; row++) { 
+                    		extendedBenefitsTableModel.addRow(data[row]);
+                    	}
                     }
 
                     invoiceHistoryGridArray = hdb.getInvoices(patientArray.get(2));
                     printTuples(invoiceHistoryGridArray);
-                    data = createData(invoiceHistoryGridArray);
-                    for(int row = 0; row < data.length; row++)
-                    {
-                        invoiceHistoryGridTableModel.addRow(data[row]);
+                    if (invoiceHistoryGridArray.size() > 0) {
+                    	String[][] data = createData(invoiceHistoryGridArray);
+                    	for(int row = 0; row < data.length; row++) {
+                    		invoiceHistoryGridTableModel.addRow(data[row]);
+                    	}
                     }
 
                     txtName.setText("");
@@ -2786,6 +2790,7 @@ public class HealthDBUI extends JFrame {
                     // Clear the data tables
                     extendedBenefitsTableModel.setRowCount(0);
                 	invoiceHistoryGridTableModel.setRowCount(0);
+                	monthlyInvoiceSummaryTableModel.setRowCount(0);
 
                     JOptionPane.showMessageDialog(frame, "Plan Summary not found!", "Invalid Patient ID Error", JOptionPane.ERROR_MESSAGE);
 
@@ -2812,6 +2817,7 @@ public class HealthDBUI extends JFrame {
                     // Clear the data tables
                 	extendedBenefitsTableModel.setRowCount(0);
                 	invoiceHistoryGridTableModel.setRowCount(0);
+                	monthlyInvoiceSummaryTableModel.setRowCount(0);
 
                 	patientID = planNumArray.get(3);
 
@@ -2837,18 +2843,20 @@ public class HealthDBUI extends JFrame {
 
                     extendedBenefitsArray = hdb.getExtendedBenefits(patientArray.get(2));
                     printTuples(extendedBenefitsArray);
-                    String[][] data = createData(extendedBenefitsArray);
-                    for(int row = 0; row < data.length; row++)
-                    {
-                        extendedBenefitsTableModel.addRow(data[row]);
+                    if (extendedBenefitsArray.size() > 0) {
+                    	String[][] data = createData(extendedBenefitsArray);
+                    	for(int row = 0; row < data.length; row++) { 
+                    		extendedBenefitsTableModel.addRow(data[row]);
+                    	}
                     }
 
                     invoiceHistoryGridArray = hdb.getInvoices(patientArray.get(2));
                     printTuples(invoiceHistoryGridArray);
-                    data = createData(invoiceHistoryGridArray);
-                    for(int row = 0; row < data.length; row++)
-                    {
-                        invoiceHistoryGridTableModel.addRow(data[row]);
+                    if (invoiceHistoryGridArray.size() > 0) {
+                    	String[][] data = createData(invoiceHistoryGridArray);
+                    	for(int row = 0; row < data.length; row++) {
+                    		invoiceHistoryGridTableModel.addRow(data[row]);
+                    	}
                     }
 
                     txtNum.setText("");
@@ -2861,6 +2869,7 @@ public class HealthDBUI extends JFrame {
                     // Clear the data tables
                     extendedBenefitsTableModel.setRowCount(0);
                 	invoiceHistoryGridTableModel.setRowCount(0);
+                	monthlyInvoiceSummaryTableModel.setRowCount(0);
 
                     JOptionPane.showMessageDialog(frame, "Plan Summary not found!", "Invalid Plan Number Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -2886,6 +2895,7 @@ public class HealthDBUI extends JFrame {
 
                 	extendedBenefitsTableModel.setRowCount(0);
                 	invoiceHistoryGridTableModel.setRowCount(0);
+                	monthlyInvoiceSummaryTableModel.setRowCount(0);
 
                     String name = patientArray.get(0) + " " + patientArray.get(1);
                     String addr = patientArray.get(3) + " " + patientArray.get(4) + " " + patientArray.get(6) + " " + patientArray.get(5);
@@ -2908,21 +2918,23 @@ public class HealthDBUI extends JFrame {
 
                     extendedBenefitsArray = hdb.getExtendedBenefits(patientArray.get(2));
                     printTuples(extendedBenefitsArray);
-                    String[][] data = createData(extendedBenefitsArray);
-                    for(int row = 0; row < data.length; row++)
-                    {
-                        extendedBenefitsTableModel.addRow(data[row]);
+                    if (extendedBenefitsArray.size() > 0) {
+                    	String[][] data = createData(extendedBenefitsArray);
+                    	for(int row = 0; row < data.length; row++) { 
+                    		extendedBenefitsTableModel.addRow(data[row]);
+                    	}
                     }
+
                     invoiceHistoryGridArray = hdb.getInvoices(patientArray.get(2));
                     printTuples(invoiceHistoryGridArray);
-                    data = createData(invoiceHistoryGridArray);
-                    for(int row = 0; row < data.length; row++)
-                    {
-                        invoiceHistoryGridTableModel.addRow(data[row]);
+                    if (invoiceHistoryGridArray.size() > 0) {
+                    	String[][] data = createData(invoiceHistoryGridArray);
+                    	for(int row = 0; row < data.length; row++) {
+                    		invoiceHistoryGridTableModel.addRow(data[row]);
+                    	}
                     }
-
+                    
                     txtInvoiceNumber.setText("");
-
                     txtTotalUnpaid.setText(Double.toString((hdb.getAmountOwing(patientID))));
                     txtTotalOverDue.setText(Double.toString(hdb.getOverdueAmountOwing(patientID)));
 
@@ -2932,6 +2944,7 @@ public class HealthDBUI extends JFrame {
                     // Clear the data tables
                     extendedBenefitsTableModel.setRowCount(0);
                 	invoiceHistoryGridTableModel.setRowCount(0);
+                	monthlyInvoiceSummaryTableModel.setRowCount(0);
 
                     JOptionPane.showMessageDialog(frame, "Invoice not found!", "Invalid Invoice Number Error", JOptionPane.ERROR_MESSAGE);
                 }

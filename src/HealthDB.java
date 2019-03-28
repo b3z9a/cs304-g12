@@ -133,12 +133,13 @@ public class HealthDB {
 	 * @param quantity
 	 * @param patientID
 	 * @param drHID
+	 * 
+	 * @return return true if prescription was created
 	 *
 	 * Creates a prescription with current date as prescribedDate
 	 */
 	public boolean createPrescription(String medication, String dosage, String quantity,
 																 String patientID, String drHID) {
-
 		try {
 			System.out.println("PrescriptionID Counter pre: " + prescriptionIDCounter);
 			String query ="insert into prescription (prescriptionID, medication, dosage, quantity, patientID,"
@@ -152,7 +153,7 @@ public class HealthDB {
 			ResultSet rs = stmt.executeQuery(query);
 			stmt.close();
 			System.out.println("Prescription successfully created");
-			return !checkInteraction(patientID, medication);
+			return true;
 		} catch (SQLException ex){
 			System.out.println("Failed to create prescription" + ex.getMessage());
 			return false;
@@ -165,6 +166,7 @@ public class HealthDB {
 	 * @param patientID
 	 * @param drHID
 	 *
+	 * @return return true if test was created
 	 * Creates a lab test with current date as ordered date
 	 */
 	public boolean createTest(String patientID, String drHID) {
@@ -227,7 +229,8 @@ public class HealthDB {
 	 * Optional on creating a new invoice
 	 * @param paymentDate
 	 * @param paymentMethod
-	 * @param planID
+	 * 
+	 * @return return true if invoice was created
 	 *
 	 * Creates an unpaid/fully paid invoice with current date as creation date
 	 */
@@ -238,7 +241,6 @@ public class HealthDB {
             System.out.println("paymentID Counter pre: " + paymentIDCounter);
 
             String paymentDateValue = "''";
-            String paymentMethodValue = "''";
             String paymentIDValue = "''";
             if(!paymentDate.isEmpty()){
                 paymentDateValue = "to_date('" + paymentDate + "', 'yyyy-MM-dd')";
@@ -255,6 +257,7 @@ public class HealthDB {
                     + paymentDateValue + ", '" + paymentMethod + "', " + amountOwing + ", " + paymentIDValue + ", " + planID + ")";
             System.out.println(query);
             invoiceIDCounter++;
+            // Don't increase paymentIDCounter if no payment info was entered
             if (!paymentDate.isEmpty() && !paymentMethod.isEmpty())
             {
             	paymentIDCounter++;
@@ -306,7 +309,7 @@ public class HealthDB {
 
 	/** Finds all patients with a name containing the string provided.
 	* @param name: the name of the patient to be searched for
-	* @return tuples of all patients whose first or last name contains the string provided.
+	* @return tuples of all patients whose first or last name starts with the string provided.
 	*/
 	public ArrayList<ArrayList<String>> getPatients(String name){
 		ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
@@ -403,7 +406,7 @@ public class HealthDB {
 	}
 
 	/**
-	 * Returns the tests of the specified doctor
+	 * Returns the tests of the specified patient
 	 *
 	 * tuple = {0 testID, 1 orderedDate, 2 performedDate}
 	 *
@@ -538,7 +541,7 @@ public class HealthDB {
 	/**
 	 * Returns extended benefits information for specified patient
 	 *
-	 * tuple = {0 chiropractic}
+	 * tuple = {0 chiropractic, 1 chiropracticAnnualLimit, 2 chiropracticYTD, ...} query/tuple below to see rest of tuple values
 	 *
 	 * @param pid - the PID of the selected Patient
 	 * @return extended benefits information
@@ -707,6 +710,7 @@ public class HealthDB {
 										 " pc.city, pc.province, pc.postalcode, pc.country, "+
 										 "p.homePhone, p.mobilePhone from patient p left join postalcode"+
 										 " pc on p.postalcode = pc.postalcode where p.patientID = " + PID;
+			System.out.println(query);
 			// Create a statement
 			Statement stmt = con.createStatement();
 			// Execute the query.
@@ -735,7 +739,7 @@ public class HealthDB {
 
 
 	/**
-	 * Finds tuple for given prescriptionID
+	 * Finds prescription tuple for given prescriptionID
 	 * @param prescriptionID: ID of the prescription
 	 * @return tuple for given prescriptionID
 	 					 string if no prescription is found.
@@ -855,7 +859,7 @@ public class HealthDB {
 	}
 
 	/**
-	 * Finds the patientID associated with a test and returns it
+	 * Finds test tuple for given testID
 	 * @param testID: ID of the test to be found
 	 * @return the tuple of the test with the ID provided if no tuple is found
 	 * 				returns the empty string.
@@ -960,9 +964,10 @@ public class HealthDB {
 
 
 	/**
-     * Finds an invoice and returns it
+     * Finds an invoice by given invoiceID
      * @param invoiceID
-     * @return
+     * @return the tuple of the invoice with the ID provided if no tuple is found
+	 * 				returns the empty string.
      */
     public ArrayList<String> findInvoice(String invoiceID) {
 		ArrayList<String> tuple = new ArrayList<String>();
@@ -1038,8 +1043,7 @@ public class HealthDB {
     }
 
 	/**
-	 * findPlanNum
-	 * Finds a plan number in the database, stores tuple information in a data structure
+	 * Finds a plan number by given planID
 	 * tuple[] = {0 planID, 1 policyType, 2 startDate, 3 endDate, 4 patientID}
 	 * @param planID
 	 * @return the single tuple for the plan with the given planID
@@ -1214,18 +1218,18 @@ public class HealthDB {
     }
 
     /**
-     * Get monthly summary for average unapaid balance owing per invoice item
+     * Get monthly summary for average unpaid balance owing per invoice item
+     * 
      * tuple[] = {0 invoiceItem, 1 month, 2 , 3 balanceSumAvg}
-     * @return
+     * @return invoices grouped by invoice item, month, average unpaid balance owing 
      */
     public ArrayList<ArrayList<String>> getOwingInvoicesMonthlySummary(String pid)
     {
     	ArrayList<ArrayList<String>> tuples = new ArrayList<ArrayList<String>>();
     	try {
-    		String query = "select invoiceItem, to_char(dueDate, 'Month') as monthName, avg(balanceSum) as balanceSumAvg from( "
-                    + "select invoiceItem, dueDate, paymentStatus, sum(amountOwing) as balanceSum "
-                    + "from invoice where patientID = " + pid + " group by invoiceItem, dueDate, paymentStatus) "
-                    + "where paymentStatus = 'Unpaid' group by invoiceItem, to_char(dueDate, 'Month') order by invoiceItem, monthName";
+            // basic query just to test if hooked up properly with ui
+            String query = "select i.invoiceItem, i.dueDate, sum(i.amountOwing) as balanceSum "
+            + "from invoice i where i.patientID = " + pid + " group by i.invoiceItem, i.dueDate, i.paymentStatus";
 
             System.out.println(query);
 			// Create a statement
@@ -1236,10 +1240,12 @@ public class HealthDB {
 
 			while(rs.next()){
 				ArrayList<String> tuple = new ArrayList<String>();
+                // default results to test for now
 				tuple.add(rs.getString("invoiceItem"));
-                tuple.add(rs.getString("monthName"));
-                tuple.add(rs.getString("balanceSumAvg"));
-                tuples.add(tuple);
+                tuple.add("January");
+                tuple.add("100");
+                // monthNum returns the number representing month
+				
 			}
 			stmt.close();
     	} catch (SQLException ex){
@@ -1249,34 +1255,15 @@ public class HealthDB {
     }
 
 		/**
-		*  Checks if a new medication would cause an interaction. If so,
-		*  deletes it.
+		*  Checks if a new medication would cause an interaction.
 		*  @param patientID
 		 * @param medication
 		*  @return true if the medication would cause an interction, false
 		*          otherwise.
 		*/
-	public boolean checkInteraction(String patientID, String medication){
-		boolean interaction = false;
-		try{
-			String query = "select p.patientID from patient p where not exists " +
-										 "(select * from medInteraction med where not exists " +
-										 "(select * from prescription pr where p.patientID=" +
-										 "pr.patientID and pr.medication=med.medication and p.patientID=" + patientID + "))";
-
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			if(rs.next() && !rs.getString("patientID").isEmpty()){
-				System.out.println(rs.getString("patientID"));
-				String update = "delete from Prescription where patientID =" + patientID + " and medication='" + medication + "'";
-				stmt.executeUpdate(update);
-				return true;
-			}
-
-		} catch (SQLException ex){
-				System.out.println("Error checking for medication interaction. " + ex.getMessage());
-		}
-		return interaction;
+	private boolean checkInteraction(String patientID, String medication){
+		// TODO: Check for interactions. //
+		return false;
 	}
 
 	private void printTuple(ArrayList<String> tuple){
