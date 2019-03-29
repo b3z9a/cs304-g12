@@ -1280,7 +1280,7 @@ public class HealthDB {
 
                     + "select invoiceItem, dueDate, paymentStatus, sum(amountOwing) as balanceSum "
                     + "from invoice where patientID = " + pid + " group by invoiceItem, dueDate, paymentStatus) "
-                    + "where paymentStatus = 'Unpaid' group by invoiceItem, to_char(dueDate, 'Month, YYYY') order by invoiceItem, monthYear";
+                    + "where paymentStatus = 'Unpaid' group by invoiceItem, to_char(dueDate, 'Month, YYYY') order by monthYear, invoiceItem";
 
             // Create a statement
             Statement stmt = con.createStatement();
